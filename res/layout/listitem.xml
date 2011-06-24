@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   android:layout_height="wrap_content" 
+   android:layout_width="fill_parent" 
+   android:paddingBottom="5px"
+   android:paddingTop="5px" 
+   android:paddingLeft="5px" android:orientation="horizontal">
+    
+    <LinearLayout
+       android:orientation="vertical"
+       android:layout_height="fill_parent"
+       android:layout_width="wrap_content" android:layout_weight="1">
+       <TextView android:id="@+id/day"
+       		android:text="Day 1"
+       		android:textAppearance="?android:attr/textAppearanceMedium"
+       		android:layout_height="wrap_content" android:layout_width="fill_parent">
+       </TextView>
+       <TextView android:id="@+id/time"
+       		android:text="12:30"
+       		android:textAppearance="?android:attr/textAppearanceMedium"
+       		android:layout_height="wrap_content" android:layout_width="fill_parent">
+       </TextView>
+    </LinearLayout>
+    <LinearLayout
+       android:orientation="vertical"
+       android:layout_height="fill_parent"
+       android:layout_width="wrap_content" android:layout_gravity="center_vertical" android:layout_weight="50">
+      
+        <TextView android:id="@+id/title"
+        	android:text="Event Name"
+      		android:layout_width="wrap_content"
+      		android:layout_height="wrap_content" android:layout_marginTop="5px"/>
+  		<TextView android:id="@+id/location"
+  			android:text="Location" 
+      		android:layout_width="wrap_content" 
+      		android:layout_height="wrap_content"
+      		android:layout_marginLeft="10px" 
+      		android:textSize="15px"/>
+      	<TextView android:id="@+id/speaker"
+      		android:text="Speaker" 
+      		android:layout_width="wrap_content" 
+      		android:layout_height="wrap_content"
+      		android:layout_marginLeft="10px"
+      		android:textSize="15px"/>
+    </LinearLayout>
+    <CheckBox
+    	android:id="@+id/favourite"
+    	android:layout_width="wrap_content"
+    	android:gravity="right" android:layout_height="fill_parent" android:layout_weight="1">
+    </CheckBox>
+</LinearLayout>
