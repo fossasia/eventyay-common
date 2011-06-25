@@ -1,41 +1,42 @@
 package org.splitbrain.eventplanner;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.util.ArrayList;
-
-import net.fortuna.ical4j.data.CalendarBuilder;
-import net.fortuna.ical4j.model.Calendar;
-
 import android.app.Activity;
-import android.content.res.AssetManager;
+import android.content.Context;
 import android.os.Bundle;
-import android.widget.ArrayAdapter;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ListView;
-import android.util.Log;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class EventPlannerActivity extends Activity {
-
+    Context context; 
+    DBAdapter db;
+    
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.main);
 
+            this.context = this;
+            
             ListView list = (ListView) findViewById(R.id.listView1);
 
+            TextView titlebar = (TextView) findViewById(R.id.titlebar);
+            titlebar.setOnClickListener(onRefresh);
+            
             //String[] items = {"red","blue","green"};
             //list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items));
 
             // fake 1st entry
             //EventLoader el = new EventLoader(this);
 
-            DBAdapter db = new DBAdapter(this);
+            db = new DBAdapter(this);
             db.open();
             ArrayList<EventRecord> records = db.getEvents();
-            db.close();
+            //db.close();
 
             /*
             new ArrayList<EventRecord>();
@@ -51,7 +52,15 @@ public class EventPlannerActivity extends Activity {
 
 
             list.setAdapter(new EventItemAdapter(this,R.layout.listitem,records));
-
-
-    }
+    }      
+            
+    private OnClickListener onRefresh = new OnClickListener() {
+	public void onClick(View v){
+	    ProgressBar prg = (ProgressBar) findViewById(R.id.progress);
+	    prg.setVisibility(ProgressBar.VISIBLE);
+	    
+	    EventLoader ep = new EventLoader(context);
+	    ep.execute();
+	}
+    };
 }

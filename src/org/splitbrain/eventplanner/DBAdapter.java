@@ -29,16 +29,49 @@ public class DBAdapter {
         DBHelper = new DatabaseHelper(context);
     }
 
+    /**
+     * Open the Database
+     * 
+     * @return
+     * @throws SQLException
+     */
     public DBAdapter open() throws SQLException {
         db = DBHelper.getWritableDatabase();
         return this;
     }
 
+    /**
+     * Close the database
+     */
     public void close(){
         if(db != null) DBHelper.close();
         db = null;
     }
 
+    /**
+     * Begin a transaction
+     */
+    public void begin(){
+	if(db == null) open();
+	db.beginTransaction();
+    }
+    
+    /**
+     * Commit all changes made during the current transaction and end it
+     */
+    public void commit(){
+	db.setTransactionSuccessful();
+	db.endTransaction();
+    }
+
+    /**
+     * Revert all changes made during the current transaction and end it
+     */
+    public void rollback(){
+	db.endTransaction();
+    }
+    
+    
     //FIXME add params to pass WHERE clauses
     public ArrayList<EventRecord> getEvents(){
 	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
@@ -72,6 +105,7 @@ public class DBAdapter {
 	    
 	    records.add(record);
 	}
+	result.close();
 	
 	return records;
     }
@@ -79,7 +113,7 @@ public class DBAdapter {
     //FIXME add event name later
     public void deleteEvents(){
 	if(db == null) open();
-	db.delete("events", "", null);
+	db.delete("events", "1", null);
     }
     
     public void addEventRecord(EventRecord record){
@@ -106,9 +140,6 @@ public class DBAdapter {
             this.context = context;
         }
 
-        
-        
-      
         /**
          *
          */
@@ -132,7 +163,7 @@ public class DBAdapter {
                 }
             }
         }
-
+        
         /**
          * Execute the given file as a series of SQL queries within a transaction
          * 
@@ -146,16 +177,18 @@ public class DBAdapter {
             if(queries == null) return ok;
             
             db.beginTransaction();
+            String sql = "";
             try{
         	for(int i=0; i<queries.length; i++){
-        	    String sql = queries[i].trim(); 
-        	    if(sql == "") continue;
+        	    sql = queries[i].trim();
+        	    if(sql.length() == 0) continue;
         	    db.execSQL(sql);
         	}
         	db.setTransactionSuccessful();
         	ok = true;
-            }catch(SQLException e){
-        	Log.e("db","Failed to execute SQL :"+e.toString());
+            }catch(Exception e){
+        	Log.e("db","Failed to execute SQL: "+e.toString());
+        	Log.e("db","Query was: '"+sql+"'");
             }finally{
         	db.endTransaction();
             }
