@@ -2,4 +2,5 @@
 <resources>
     <string name="hello">Hello World, EventPlannerActivity!</string>
     <string name="app_name">EventPlanner</string>
+    <string name="app_about">This is still beta :-)</string>
 </resources>

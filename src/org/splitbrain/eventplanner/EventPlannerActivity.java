@@ -2,8 +2,12 @@ package org.splitbrain.eventplanner;
 
 import java.util.ArrayList;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
@@ -53,7 +57,30 @@ public class EventPlannerActivity extends Activity {
 
             list.setAdapter(new EventItemAdapter(this,R.layout.listitem,records));
     }      
-            
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuItem item1 = menu.add("Options");
+        item1.setIcon(android.R.drawable.ic_menu_preferences);
+        
+        MenuItem item2 = menu.add("About");
+        item2.setIcon(android.R.drawable.ic_menu_info_details);
+        item2.setOnMenuItemClickListener(clickAbout);
+        
+        return super.onCreateOptionsMenu(menu);
+    }
+    
+    private OnMenuItemClickListener clickAbout = new OnMenuItemClickListener(){
+	public boolean onMenuItemClick(MenuItem arg0) {
+	    AlertDialog ad = new AlertDialog.Builder(context).create();
+	    ad.setCanceledOnTouchOutside(true);
+	    ad.setTitle(R.string.app_name);
+	    ad.setMessage(context.getText(R.string.app_about));  
+	    ad.show();
+	    return true;
+	}
+    };
+    
     private OnClickListener onRefresh = new OnClickListener() {
 	public void onClick(View v){
 	    ProgressBar prg = (ProgressBar) findViewById(R.id.progress);
