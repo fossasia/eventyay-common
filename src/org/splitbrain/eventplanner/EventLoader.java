@@ -1,25 +1,21 @@
 package org.splitbrain.eventplanner;
 
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
 
 import org.splitbrain.simpleical.SimpleIcalEvent;
 import org.splitbrain.simpleical.SimpleIcalParser;
 
-import android.content.Context;
 import android.content.res.AssetManager;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
-import android.os.AsyncTask;
 
 
-public class EventLoader extends AsyncTask<Void, Integer, Integer>{
-    private Context context;
-    
-    public EventLoader(Context context){
+public class EventLoader extends AsyncTask<Void, String, Integer>{
+    private final OptionsActivity context;
+
+    public EventLoader(OptionsActivity context){
 	this.context = context;
     }
 
@@ -28,7 +24,7 @@ public class EventLoader extends AsyncTask<Void, Integer, Integer>{
 	Log.e("eventloader","preExecute");
 	//db.begin();
     }
-    
+
     @Override
     protected Integer doInBackground(Void... params) {
 	Log.e("eventloader","doInBackground");
@@ -39,15 +35,21 @@ public class EventLoader extends AsyncTask<Void, Integer, Integer>{
     protected void onCancelled(){
         Toast toast = Toast.makeText(context, "Loading cancelled", Toast.LENGTH_LONG);
         toast.show();
+        context.resetLayout();
     }
-    
+
     @Override
     protected void onPostExecute(Integer count){
         Toast toast = Toast.makeText(context, "Loaded "+count+" events", Toast.LENGTH_LONG);
         toast.show();
+        context.resetLayout();
     }
-    
-    
+
+    @Override
+    protected void onProgressUpdate(String... values) {
+	context.writeProgress(values[0]);
+    }
+
     // FIXME take URL as  parameter
     public int fetchEvents(){
         int count = 0;
@@ -59,7 +61,7 @@ public class EventLoader extends AsyncTask<Void, Integer, Integer>{
         // http://re-publica.de/11/rp2011.ics
         try{
     	    db.deleteEvents();
-            
+
             AssetManager assetManager = context.getAssets();
             InputStream inputStream = assetManager.open("rp2011.ics");
 
@@ -69,21 +71,21 @@ public class EventLoader extends AsyncTask<Void, Integer, Integer>{
         	// build record
         	EventRecord record = getEventRecord(event);
                 if(record == null) continue;
-                
+
                 // add to database:
                 db.addEventRecord(record);
                 count++;
-                
+
                 // progress feedback
-                publishProgress(count);
-                
+                publishProgress("Loaded "+count+" events...");
+
                 // abort if cancelled
                 if(isCancelled()){
                     Log.e("eventloader","cancel");
                     db.rollback();
                     return 0;
                 }
-                
+
                 // FIXME
         	Log.e("eventloader",event.get("SUMMARY"));
             }
