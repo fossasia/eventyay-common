@@ -93,6 +93,7 @@ public class OptionsActivity extends Activity {
 	    // save the URL
 	    Editor edit = prefs.edit();
 	    edit.putString("url", url);
+	    edit.commit();
 
 	    // hide the button
 	    v.setVisibility(View.GONE);

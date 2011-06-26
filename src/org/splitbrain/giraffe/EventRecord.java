@@ -2,7 +2,6 @@ package org.splitbrain.giraffe;
 
 public class EventRecord {
     public String  id;
-    public String  event;
     public String  title;
     public String  location;
     public String  speaker;
@@ -13,7 +12,6 @@ public class EventRecord {
 
     public EventRecord(){
         id          = "";
-        event       = "only-one-for-now";
         title       = "";
         location    = "";
         speaker     = "";

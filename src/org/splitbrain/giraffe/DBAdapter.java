@@ -71,21 +71,44 @@ public class DBAdapter {
 	db.endTransaction();
     }
 
+    public boolean toggleFavorite(String id){
+	if(db == null) open();
+
+	// read current state
+	boolean fav = false;
+	Cursor result = db.query("favorites", new String[] {"favorite"},"_id=?",new String[] {id}, null, null, null);
+	if(result.moveToFirst()){
+	    if(result.getInt(0)>0) fav = true;
+	}
+	result.close();
+
+	// flip
+	fav = !fav;
+
+	// save
+	ContentValues row = new ContentValues();
+	row.put("_id", id);
+	row.put("favorite", fav);
+	db.replace("favorites", null, row);
+
+	return fav;
+    }
 
     //FIXME add params to pass WHERE clauses
     public ArrayList<EventRecord> getEvents(){
 	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
 
 	if(db == null) open();
-	Cursor result = db.query("events",
+	Cursor result = db.query("events LEFT OUTER JOIN favorites ON (events._id = favorites._id)",
 				 new String[] {
-					"id",
+					"events._id",
 					"starts",
 					"ends",
 					"title",
 					"description",
 					"location",
-					"speaker"
+					"speaker",
+					"favorite"
 				 },
 				 null,
 				 null,
@@ -102,6 +125,9 @@ public class DBAdapter {
 	    record.description = result.getString(4);
 	    record.location = result.getString(5);
 	    record.speaker = result.getString(6);
+	    if(result.getInt(7) > 0){
+		record.favorite = true;
+	    }
 
 	    records.add(record);
 	}
@@ -120,8 +146,7 @@ public class DBAdapter {
 	if(db == null) open();
 
         ContentValues row = new ContentValues();
-        row.put("event", record.event);
-        row.put("id", record.id);
+        row.put("_id", record.id);
         row.put("starts", record.starts);
         row.put("ends", record.ends);
         row.put("title", record.title);

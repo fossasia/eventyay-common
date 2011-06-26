@@ -100,7 +100,7 @@ public class EventLoader extends AsyncTask<URL, String, String>{
             db.rollback();
             return "Failed to read from "+e.toString();
         }
-        return "Sucessfully loaded "+count+"entries.";
+        return "Sucessfully loaded "+count+" entries.";
     }
 
 
