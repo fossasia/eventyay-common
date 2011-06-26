@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -59,6 +60,10 @@ public class EventItemAdapter extends ArrayAdapter<EventRecord> {
 
             df = new SimpleDateFormat("HH:mm");
             timeTV.setText( df.format(new Date(record.starts*1000)));
+
+            v.setTag(record.id);
+            v.setClickable(true);
+            v.setOnClickListener(click_row);
         }
         return v;
     }
@@ -82,4 +87,17 @@ public class EventItemAdapter extends ArrayAdapter<EventRecord> {
 	    db.close();
 	}
     };
+
+    /**
+     * Handles clicks on the whole row
+     */
+    private final OnClickListener click_row = new OnClickListener(){
+	public void onClick(View row) {
+	    String id = (String) row.getTag();
+	    Intent i = new Intent(context,DetailActivity.class);
+	    i.putExtra("id", id);
+	    context.startActivity(i);
+	}
+    };
+
 }

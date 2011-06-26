@@ -24,6 +24,21 @@ public class DBAdapter {
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db = null;;
 
+    /**
+     * Database filed names as read in getEvent(s)
+     */
+    private final String[] FIELDS = {
+		"events._id",
+		"starts",
+		"ends",
+		"title",
+		"description",
+		"location",
+		"speaker",
+		"url",
+		"favorite"
+	};
+
     public DBAdapter(Context context){
         this.context = context;
         DBHelper = new DatabaseHelper(context);
@@ -71,6 +86,12 @@ public class DBAdapter {
 	db.endTransaction();
     }
 
+    /**
+     * Sets/unsets the favorite state of the given event
+     *
+     * @param id
+     * @return the new state
+     */
     public boolean toggleFavorite(String id){
 	if(db == null) open();
 
@@ -94,43 +115,61 @@ public class DBAdapter {
 	return fav;
     }
 
+    /**
+     * Fetch a single event identified by its id from the database
+     *
+     * @param id
+     * @return
+     */
+    public EventRecord getEvent(String id){
+	EventRecord record = new EventRecord();
+
+	if(db == null) open();
+	Cursor result = db.query("events LEFT OUTER JOIN favorites ON (events._id = favorites._id)",
+		 FIELDS, "events._id=?", new String[] {id}, null, null, null);
+
+	if(result.moveToFirst()){
+	    record = getEventFromCursor(result);
+	}
+	result.close();
+
+	return record;
+    }
+
+    /**
+     * Creates an Event record from the given Cursor
+     *
+     * Results need to be in order of FILDS
+     *
+     * @param row
+     * @return
+     */
+    private EventRecord getEventFromCursor(Cursor row){
+	EventRecord record = new EventRecord();
+	record.id          = row.getString(0);
+	record.starts      = row.getLong(1);
+	record.ends        = row.getLong(2);
+	record.title       = row.getString(3);
+	record.description = row.getString(4);
+	record.location    = row.getString(5);
+	record.speaker 	   = row.getString(6);
+	record.url         = row.getString(7);
+	if(row.getInt(8) > 0){
+	    record.favorite = true;
+	}
+	return record;
+    }
+
     //FIXME add params to pass WHERE clauses
     public ArrayList<EventRecord> getEvents(){
 	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
 
 	if(db == null) open();
 	Cursor result = db.query("events LEFT OUTER JOIN favorites ON (events._id = favorites._id)",
-				 new String[] {
-					"events._id",
-					"starts",
-					"ends",
-					"title",
-					"description",
-					"location",
-					"speaker",
-					"url",
-					"favorite"
-				 },
-				 null,
-				 null,
-				 null,
-				 null,
-				 "starts");
+				 FIELDS, null, null, null, null, "starts");
 
 	while(result.moveToNext()){
-	    EventRecord record = new EventRecord();
-	    record.id = result.getString(0);
-	    record.starts = result.getLong(1);
-	    record.ends = result.getLong(2);
-	    record.title = result.getString(3);
-	    record.description = result.getString(4);
-	    record.location = result.getString(5);
-	    record.speaker = result.getString(6);
-	    record.url = result.getString(7);
-	    if(result.getInt(8) > 0){
-		record.favorite = true;
-	    }
-
+	    EventRecord record = getEventFromCursor(result);
 	    records.add(record);
 	}
 	result.close();
@@ -155,6 +194,7 @@ public class DBAdapter {
         row.put("description", record.description);
         row.put("location", record.location);
         row.put("speaker", record.speaker);
+        row.put("url", record.url);
 
         db.insert("events", null, row);
     }

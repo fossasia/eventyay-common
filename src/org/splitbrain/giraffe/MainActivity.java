@@ -15,6 +15,8 @@ import android.widget.ListView;
 public class MainActivity extends Activity {
     Context context;
     DBAdapter db;
+    EventItemAdapter listAdapter;
+
 
     /** Called when the activity is first created. */
     @Override
@@ -26,31 +28,28 @@ public class MainActivity extends Activity {
 
             ListView list = (ListView) findViewById(R.id.listView1);
 
-            //String[] items = {"red","blue","green"};
-            //list.setAdapter(new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items));
-
-            // fake 1st entry
-            //EventLoader el = new EventLoader(this);
-
             db = new DBAdapter(this);
             db.open();
             ArrayList<EventRecord> records = db.getEvents();
-            //db.close();
+            db.close();
 
-            /*
-            new ArrayList<EventRecord>();
-            for(int i=0; i<30; i++){
-                EventRecord record = new EventRecord();
-                record.event = "Test"+i;
-                record.location = "Test"+i;
-                record.speaker = "Test"+i;
-                records.add(record);
-            }
-            */
+            listAdapter = new EventItemAdapter(this,R.layout.listitem,records);
+            list.setAdapter(listAdapter);
+    }
 
-
-
-            list.setAdapter(new EventItemAdapter(this,R.layout.listitem,records));
+    /**
+     * Refresh list view whenever the view is shown again
+     *
+     * @FIXME doesn't work
+     */
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+	/*
+	if(hasFocus){
+	    listAdapter.notifyDataSetChanged();
+	}
+	*/
+        super.onWindowFocusChanged(hasFocus);
     }
 
     @Override

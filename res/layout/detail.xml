@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:layout_width="fill_parent"
+  android:layout_height="fill_parent" android:padding="5dip">
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout1" android:layout_height="wrap_content" android:layout_weight="0" android:layout_marginBottom="5dip">
+        <LinearLayout android:layout_width="wrap_content" android:id="@+id/linearLayout2" android:orientation="vertical" android:layout_weight="1" android:layout_height="wrap_content">
+            <TextView android:layout_weight="1" android:layout_width="wrap_content" android:text="Headline" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceLarge" android:id="@+id/detail_title"></TextView>
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:text="Wed, 12:00 - 13:30" android:id="@+id/detail_timeslot"></TextView>
+        </LinearLayout>
+        <ImageView android:layout_width="wrap_content" android:src="@drawable/icongray" android:layout_height="wrap_content" android:id="@+id/detail_favorite"></ImageView>
+    </LinearLayout>
+    <TextView android:id="@+id/detail_speaker" android:text="Speaker" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_weight="0" android:layout_width="fill_parent"></TextView>
+    <TextView android:id="@+id/detail_location" android:text="Location" android:layout_height="wrap_content" android:textAppearance="?android:attr/textAppearanceMedium" android:layout_weight="0" android:layout_width="fill_parent"></TextView>
+    <TextView android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="Details" android:layout_weight="1" android:id="@+id/detail_text" android:layout_marginTop="10dip"></TextView>
+    <LinearLayout android:layout_width="fill_parent" android:id="@+id/linearLayout4" android:layout_height="wrap_content" android:layout_marginTop="5dip">
+        <TextView android:layout_width="wrap_content" android:text="http://www.example.com" android:layout_height="wrap_content" android:layout_weight="1" android:id="@+id/detail_url"></TextView>
+        <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Share" android:id="@+id/detail_sharebtn" android:visibility="invisible"></Button>
+    </LinearLayout>
+    
+</LinearLayout>

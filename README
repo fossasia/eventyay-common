@@ -1,0 +1,17 @@
+Giraffe - A Conference Schedule Planner for Android
+
+2011 (c) Andreas Gohr <andi@splitbrain.org>
+All rights reserved (until I decided on a license)
+
+Note: this is still beta while I'm taking my first steps in Android.
+
+Missing features:
+
+  * faster list view (load on demand)
+  * filter for favorites
+  * filter for current/future events
+  * refresh list after loading data (you currently need to exit
+    and restart the app)
+  * sharing options
+  * giraffe themed color style
+  * ...
