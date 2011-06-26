@@ -114,20 +114,22 @@ public class EventLoader extends AsyncTask<URL, String, String>{
         if(dateStart == null) return null;
 
         // optional fields
-        Date dateEnd     = event.getEndDate();
-        String location  = event.get("LOCATION");
-        String organizer = event.get("ORGANIZER");
-        String url       = event.get("URL");
+        Date dateEnd       = event.getEndDate();
+        String location    = event.get("LOCATION");
+        String organizer   = event.get("ORGANIZER");
+        String url         = event.get("URL");
+        String description = event.get("DESCRIPTION");
 
         // create event
         EventRecord record = new EventRecord();
         record.id     = uid;
         record.title  = summary;
         record.starts = dateStart.getTime()/1000;
-        if(dateEnd   != null) record.ends     = dateEnd.getTime()/1000;
-        if(location  != null) record.location = location;
-        if(organizer != null) record.speaker  = organizer;
-        if(url       != null) record.url      = url;
+        if(dateEnd     != null) record.ends        = dateEnd.getTime()/1000;
+        if(location    != null) record.location    = location;
+        if(organizer   != null) record.speaker     = organizer;
+        if(url         != null) record.url         = url;
+        if(description != null) record.description = description;
 
         return record;
     }

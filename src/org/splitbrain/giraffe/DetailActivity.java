@@ -45,7 +45,7 @@ public class DetailActivity extends Activity {
 	tv.setText(record.location);
 
 	tv = (TextView) findViewById(R.id.detail_url);
-	tv.setText(record.url);
+	tv.setTag(record.url);
 	tv.setOnClickListener(click_url);
 
 	String dt = "";
@@ -101,7 +101,7 @@ public class DetailActivity extends Activity {
     private final OnClickListener click_url = new OnClickListener(){
 	public void onClick(View link) {
 	    TextView tv = (TextView) link;
-	    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse(tv.getText().toString()));
+	    Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse((String) tv.getTag()));
 	    startActivity(i);
 	}
     };
