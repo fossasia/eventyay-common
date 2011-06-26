@@ -1,18 +1,18 @@
-package org.splitbrain.eventplanner;
+package org.splitbrain.giraffe;
 
 import java.io.InputStream;
+import java.net.URL;
 import java.util.Date;
 
 import org.splitbrain.simpleical.SimpleIcalEvent;
 import org.splitbrain.simpleical.SimpleIcalParser;
 
-import android.content.res.AssetManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 
 
-public class EventLoader extends AsyncTask<Void, String, Integer>{
+public class EventLoader extends AsyncTask<URL, String, String>{
     private final OptionsActivity context;
 
     public EventLoader(OptionsActivity context){
@@ -26,9 +26,9 @@ public class EventLoader extends AsyncTask<Void, String, Integer>{
     }
 
     @Override
-    protected Integer doInBackground(Void... params) {
+    protected String doInBackground(URL... urls) {
 	Log.e("eventloader","doInBackground");
-	return new Integer(fetchEvents());
+	return fetchEvents(urls[0]);
     }
 
     @Override
@@ -39,8 +39,8 @@ public class EventLoader extends AsyncTask<Void, String, Integer>{
     }
 
     @Override
-    protected void onPostExecute(Integer count){
-        Toast toast = Toast.makeText(context, "Loaded "+count+" events", Toast.LENGTH_LONG);
+    protected void onPostExecute(String msg){
+        Toast toast = Toast.makeText(context, msg, Toast.LENGTH_LONG);
         toast.show();
         context.resetLayout();
     }
@@ -51,19 +51,25 @@ public class EventLoader extends AsyncTask<Void, String, Integer>{
     }
 
     // FIXME take URL as  parameter
-    public int fetchEvents(){
+    public String fetchEvents(URL url){
         int count = 0;
 
+        publishProgress("Opening database...");
 	DBAdapter db = new DBAdapter(context);
 	db.open();
 	db.begin();
 
         // http://re-publica.de/11/rp2011.ics
         try{
+            publishProgress("Connecting to iCal URL...");
+            InputStream inputStream = url.openStream();
+
+
+            publishProgress("Clearing database...");
     	    db.deleteEvents();
 
-            AssetManager assetManager = context.getAssets();
-            InputStream inputStream = assetManager.open("rp2011.ics");
+            //AssetManager assetManager = context.getAssets();
+            //InputStream inputStream = assetManager.open("rp2011.ics");
 
             SimpleIcalParser ical = new SimpleIcalParser(inputStream);
             SimpleIcalEvent event = null;
@@ -83,7 +89,7 @@ public class EventLoader extends AsyncTask<Void, String, Integer>{
                 if(isCancelled()){
                     Log.e("eventloader","cancel");
                     db.rollback();
-                    return 0;
+                    return "Cancelled";
                 }
 
                 // FIXME
@@ -91,10 +97,10 @@ public class EventLoader extends AsyncTask<Void, String, Integer>{
             }
             db.commit();
         } catch (Exception e) {
-            Log.e("calender","Failed to open Asset File. "+e.toString());
             db.rollback();
+            return "Failed to read from "+e.toString();
         }
-        return count;
+        return "Sucessfully loaded "+count+"entries.";
     }
 
 

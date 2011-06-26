@@ -1,4 +1,4 @@
-package org.splitbrain.eventplanner;
+package org.splitbrain.giraffe;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.widget.ListView;
 
-public class EventPlannerActivity extends Activity {
+public class MainActivity extends Activity {
     Context context;
     DBAdapter db;
 

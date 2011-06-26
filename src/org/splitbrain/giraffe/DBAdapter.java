@@ -1,4 +1,4 @@
-package org.splitbrain.eventplanner;
+package org.splitbrain.giraffe;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class DBAdapter {
 
     private final Context context;
 
-    private DatabaseHelper DBHelper;
+    private final DatabaseHelper DBHelper;
     private SQLiteDatabase db = null;;
 
     public DBAdapter(Context context){
@@ -31,7 +31,7 @@ public class DBAdapter {
 
     /**
      * Open the Database
-     * 
+     *
      * @return
      * @throws SQLException
      */
@@ -55,7 +55,7 @@ public class DBAdapter {
 	if(db == null) open();
 	db.beginTransaction();
     }
-    
+
     /**
      * Commit all changes made during the current transaction and end it
      */
@@ -70,12 +70,12 @@ public class DBAdapter {
     public void rollback(){
 	db.endTransaction();
     }
-    
-    
+
+
     //FIXME add params to pass WHERE clauses
     public ArrayList<EventRecord> getEvents(){
 	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
-	
+
 	if(db == null) open();
 	Cursor result = db.query("events",
 				 new String[] {
@@ -92,7 +92,7 @@ public class DBAdapter {
 				 null,
 				 null,
 				 "starts");
-	
+
 	while(result.moveToNext()){
 	    EventRecord record = new EventRecord();
 	    record.id = result.getString(0);
@@ -102,23 +102,23 @@ public class DBAdapter {
 	    record.description = result.getString(4);
 	    record.location = result.getString(5);
 	    record.speaker = result.getString(6);
-	    
+
 	    records.add(record);
 	}
 	result.close();
-	
+
 	return records;
     }
-    
+
     //FIXME add event name later
     public void deleteEvents(){
 	if(db == null) open();
 	db.delete("events", "1", null);
     }
-    
+
     public void addEventRecord(EventRecord record){
 	if(db == null) open();
-	
+
         ContentValues row = new ContentValues();
         row.put("event", record.event);
         row.put("id", record.id);
@@ -128,7 +128,7 @@ public class DBAdapter {
         row.put("description", record.description);
         row.put("location", record.location);
         row.put("speaker", record.speaker);
-        
+
         db.insert("events", null, row);
     }
 
@@ -163,10 +163,10 @@ public class DBAdapter {
                 }
             }
         }
-        
+
         /**
          * Execute the given file as a series of SQL queries within a transaction
-         * 
+         *
          * @param db - the SQLite database reference
          * @param filename - the path of the file to load from assets
          * @return true if the execution was successful
@@ -175,12 +175,12 @@ public class DBAdapter {
             boolean ok = false;
             String[] queries = loadQueryFile(filename);
             if(queries == null) return ok;
-            
+
             db.beginTransaction();
             String sql = "";
             try{
-        	for(int i=0; i<queries.length; i++){
-        	    sql = queries[i].trim();
+        	for (String querie : queries) {
+        	    sql = querie.trim();
         	    if(sql.length() == 0) continue;
         	    db.execSQL(sql);
         	}
@@ -192,17 +192,17 @@ public class DBAdapter {
             }finally{
         	db.endTransaction();
             }
-            
+
             return ok;
         }
-        
+
         /**
          * Load SQL queries from the given Assetfile
          *
          * @return separate queries
          */
         private String[] loadQueryFile(String filename) {
-           
+
             AssetManager assetManager = context.getAssets();
             InputStream inputStream = null;
             try{
@@ -224,7 +224,7 @@ public class DBAdapter {
             } catch (IOException e) {
                 Log.e("db","Failed to read Asset File "+e.toString());
             }
-            
+
             String[] queries = outputStream.toString().split(";[\r\n]+");
             return queries;
         }

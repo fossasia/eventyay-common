@@ -1,4 +1,4 @@
-package org.splitbrain.eventplanner;
+package org.splitbrain.giraffe;
 
 public class EventRecord {
     public String  id;

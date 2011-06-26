@@ -1,4 +1,4 @@
-package org.splitbrain.eventplanner;
+package org.splitbrain.giraffe;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 public class EventItemAdapter extends ArrayAdapter<EventRecord> {
-    private ArrayList<EventRecord> records;
+    private final ArrayList<EventRecord> records;
 
     public EventItemAdapter(Context context, int textViewResourceId, ArrayList<EventRecord> records) {
         super(context, textViewResourceId, records);
@@ -34,15 +34,15 @@ public class EventItemAdapter extends ArrayAdapter<EventRecord> {
             TextView speakerTV  = (TextView) v.findViewById(R.id.speaker);
             TextView dayTV	= (TextView) v.findViewById(R.id.day);
             TextView timeTV	= (TextView) v.findViewById(R.id.time);
-            
+
             titleTV.setText(record.title);
             locationTV.setText(record.location);
             speakerTV.setText(record.speaker);
-            
+
             SimpleDateFormat df;
             df = new SimpleDateFormat("E");
             dayTV.setText( df.format(new Date(record.starts*1000)));
-            
+
             df = new SimpleDateFormat("HH:mm");
             timeTV.setText( df.format(new Date(record.starts*1000)));
         }

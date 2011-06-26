@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, EventPlannerActivity!</string>
-    <string name="app_name">EventPlanner</string>
-    <string name="app_about">This is still beta :-)</string>
+    <string name="app_name">Giraffe Beta</string>
+    <string name="app_about">beta</string>
     <string name="opt_info">Enter the iCal URL of the conference schedule in the field above.</string>
     <string name="opt_url">iCal URL:</string>
     <string name="opt_refresh">(re)load data</string>

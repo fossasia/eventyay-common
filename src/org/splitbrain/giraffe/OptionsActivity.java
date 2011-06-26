@@ -1,4 +1,7 @@
-package org.splitbrain.eventplanner;
+package org.splitbrain.giraffe;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import android.app.Activity;
 import android.content.Context;
@@ -73,7 +76,16 @@ public class OptionsActivity extends Activity {
 	    EditText txturl = (EditText) findViewById(R.id.opt_txt_url);
 	    String url = txturl.getText().toString().trim();
 	    if(url.length() == 0){
-		Toast toast = Toast.makeText(context, "No URL given", Toast.LENGTH_SHORT);
+		Toast toast = Toast.makeText(context, "No valid URL given", Toast.LENGTH_SHORT);
+	        toast.show();
+		return;
+	    }
+
+	    URL link = null;
+	    try {
+		link = new URL(url);
+	    } catch (MalformedURLException e) {
+		Toast toast = Toast.makeText(context, "Not valid URL given", Toast.LENGTH_SHORT);
 	        toast.show();
 		return;
 	    }
@@ -90,7 +102,7 @@ public class OptionsActivity extends Activity {
 	    ll.setVisibility(View.VISIBLE);
 
 	    // run the action
-	    eventloader.execute();
+	    eventloader.execute(link);
 	}
     };
 
