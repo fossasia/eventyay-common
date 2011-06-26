@@ -63,6 +63,9 @@ public class EventItemAdapter extends ArrayAdapter<EventRecord> {
         return v;
     }
 
+    /**
+     * Handles clicks on the favorite Icon
+     */
     private final OnClickListener click_favorite = new OnClickListener(){
 	public void onClick(View fav) {
 	    ImageView favIV = (ImageView) fav;

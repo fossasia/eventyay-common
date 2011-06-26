@@ -108,6 +108,7 @@ public class DBAdapter {
 					"description",
 					"location",
 					"speaker",
+					"url",
 					"favorite"
 				 },
 				 null,
@@ -125,7 +126,8 @@ public class DBAdapter {
 	    record.description = result.getString(4);
 	    record.location = result.getString(5);
 	    record.speaker = result.getString(6);
-	    if(result.getInt(7) > 0){
+	    record.url = result.getString(7);
+	    if(result.getInt(8) > 0){
 		record.favorite = true;
 	    }
 

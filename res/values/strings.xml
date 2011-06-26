@@ -6,4 +6,6 @@
     <string name="opt_info">Enter the iCal URL of the conference schedule in the field above.</string>
     <string name="opt_url">iCal URL:</string>
     <string name="opt_refresh">(re)load data</string>
+    <string name="menu_urlsetup">iCal URL</string>
+    <string name="menu_about">About</string>
 </resources>

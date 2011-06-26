@@ -6,7 +6,7 @@
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_margin="5px"></TextView>
 	<EditText android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_margin="5px" android:id="@+id/opt_txt_url">
+		android:layout_height="wrap_content" android:layout_margin="5px" android:id="@+id/opt_txt_url" android:inputType="textUri">
 		<requestFocus></requestFocus>
 	</EditText>
 	<TextView android:text="@string/opt_info" android:id="@+id/textView2"

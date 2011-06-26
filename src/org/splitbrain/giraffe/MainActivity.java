@@ -55,11 +55,11 @@ public class MainActivity extends Activity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item1 = menu.add("Options");
+        MenuItem item1 = menu.add(R.string.menu_urlsetup);
         item1.setIcon(android.R.drawable.ic_menu_preferences);
         item1.setOnMenuItemClickListener(click_options);
 
-        MenuItem item2 = menu.add("About");
+        MenuItem item2 = menu.add(R.string.menu_about);
         item2.setIcon(android.R.drawable.ic_menu_info_details);
         item2.setOnMenuItemClickListener(click_about);
 

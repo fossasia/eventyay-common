@@ -5,7 +5,8 @@ CREATE TABLE events (
 	title TEXT,
 	description TEXT,
 	location TEXT,
-	speaker TEXT
+	speaker TEXT,
+	url TEXT
 );
 
 CREATE TABLE favorites (

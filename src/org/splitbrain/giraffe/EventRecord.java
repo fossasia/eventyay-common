@@ -9,6 +9,7 @@ public class EventRecord {
     public long    starts;
     public long    ends;
     public boolean favorite;
+    public String  url;
 
     public EventRecord(){
         id          = "";
@@ -19,6 +20,7 @@ public class EventRecord {
         starts      = 0;
         ends        = 0;
         favorite    = false;
+        url         = "";
     }
 
 }
