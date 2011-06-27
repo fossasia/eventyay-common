@@ -30,9 +30,6 @@ public class OptionsActivity extends Activity {
 
 	resetLayout();
 
-	// prepare event loader
-	eventloader = new EventLoader(this);
-
 	// attach Event listeners
 	Button btn_refresh = (Button) findViewById(R.id.opt_btn_refresh);
 	btn_refresh.setOnClickListener(click_refresh);
@@ -66,7 +63,7 @@ public class OptionsActivity extends Activity {
 
     private final OnClickListener click_cancel = new OnClickListener() {
 	public void onClick(View v){
-	    eventloader.cancel(true);
+	    eventloader.cancel(false);
 	}
     };
 
@@ -102,7 +99,7 @@ public class OptionsActivity extends Activity {
 	    LinearLayout ll = (LinearLayout) findViewById(R.id.opt_panel_running);
 	    ll.setVisibility(View.VISIBLE);
 
-	    // run the action
+	    eventloader = new EventLoader(OptionsActivity.this);
 	    eventloader.execute(link);
 	}
     };

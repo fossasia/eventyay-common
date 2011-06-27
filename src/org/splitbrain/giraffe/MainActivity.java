@@ -22,9 +22,10 @@ public class MainActivity extends ListActivity {
             this.context = this;
 
             db = new DBAdapter(this);
-            db.open();
+            db.openReadOnly();
             Cursor cursor = db.getEventsCursor();
             startManagingCursor(cursor);
+
 
             EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this,cursor);
             setListAdapter(listAdapter);

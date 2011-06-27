@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 public class EventLoader extends AsyncTask<URL, String, String>{
     private final OptionsActivity context;
+    private DBAdapter db = null;
 
     public EventLoader(OptionsActivity context){
 	this.context = context;
@@ -26,13 +27,8 @@ public class EventLoader extends AsyncTask<URL, String, String>{
     }
 
     @Override
-    protected String doInBackground(URL... urls) {
-	Log.e("eventloader","doInBackground");
-	return fetchEvents(urls[0]);
-    }
-
-    @Override
     protected void onCancelled(){
+	if(db != null) db.close();
         Toast toast = Toast.makeText(context, "Loading cancelled", Toast.LENGTH_LONG);
         toast.show();
         context.resetLayout();
@@ -50,23 +46,33 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 	context.writeProgress(values[0]);
     }
 
-    // FIXME take URL as  parameter
-    public String fetchEvents(URL url){
+    @Override
+    protected String doInBackground(URL... urls) {
+	Log.e("eventloader","doInBackground");
+
         int count = 0;
 
         publishProgress("Opening database...");
-	DBAdapter db = new DBAdapter(context);
+	db = new DBAdapter(context);
 	db.open();
 	db.begin();
 
         // http://re-publica.de/11/rp2011.ics
         try{
             publishProgress("Connecting to iCal URL...");
-            InputStream inputStream = url.openStream();
+            InputStream inputStream = urls[0].openStream();
 
 
             publishProgress("Clearing database...");
     	    db.deleteEvents();
+
+    	    // abort if cancelled
+            if(isCancelled()){
+                Log.e("eventloader","cancel");
+                db.rollback();
+                db.close();
+                return "Cancelled";
+            }
 
             //AssetManager assetManager = context.getAssets();
             //InputStream inputStream = assetManager.open("rp2011.ics");
@@ -89,6 +95,7 @@ public class EventLoader extends AsyncTask<URL, String, String>{
                 if(isCancelled()){
                     Log.e("eventloader","cancel");
                     db.rollback();
+                    db.close();
                     return "Cancelled";
                 }
 
@@ -98,8 +105,10 @@ public class EventLoader extends AsyncTask<URL, String, String>{
             db.commit();
         } catch (Exception e) {
             db.rollback();
+            db.close();
             return "Failed to read from "+e.toString();
         }
+        db.close();
         return "Sucessfully loaded "+count+" entries.";
     }
 

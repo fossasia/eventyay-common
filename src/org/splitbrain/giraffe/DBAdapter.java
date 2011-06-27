@@ -69,6 +69,17 @@ public class DBAdapter {
     }
 
     /**
+     * Open the Database
+     *
+     * @return
+     * @throws SQLException
+     */
+    public DBAdapter openReadOnly() throws SQLException {
+        db = DBHelper.getReadableDatabase();
+        return this;
+    }
+
+    /**
      * Close the database
      */
     public void close(){
