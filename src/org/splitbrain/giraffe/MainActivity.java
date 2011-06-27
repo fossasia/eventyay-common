@@ -1,6 +1,5 @@
 package org.splitbrain.giraffe;
 
-import android.app.AlertDialog;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -56,11 +55,8 @@ public class MainActivity extends ListActivity {
 
     private final OnMenuItemClickListener click_about = new OnMenuItemClickListener(){
 	public boolean onMenuItemClick(MenuItem arg0) {
-	    AlertDialog ad = new AlertDialog.Builder(context).create();
-	    ad.setCanceledOnTouchOutside(true);
-	    ad.setTitle(R.string.app_name);
-	    ad.setMessage(context.getText(R.string.app_about));
-	    ad.show();
+	    Intent i = new Intent(context,AboutActivity.class);
+	    startActivity(i);
 	    return true;
 	}
     };
@@ -69,6 +65,7 @@ public class MainActivity extends ListActivity {
 	public boolean onMenuItemClick(MenuItem arg0) {
 	    Intent i = new Intent(context,OptionsActivity.class);
 	    startActivity(i);
+
 	    return true;
 	}
     };
