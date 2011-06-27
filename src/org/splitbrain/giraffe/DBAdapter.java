@@ -24,19 +24,32 @@ public class DBAdapter {
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db = null;;
 
+
+    private final static String EVENT_ID    = "events._id";
+    private final static String FAVORITE_ID = "favorites._id";
+
+    private final static String STARTS      = "starts";
+    private final static String ENDS        = "ends";
+    private final static String TITLE       = "title";
+    private final static String DESCRIPTION = "description";
+    private final static String LOCATION    = "location";
+    private final static String SPEAKER     = "speaker";
+    private final static String URL         = "url";
+    private final static String FAVORITE    = "favorite";
+
     /**
      * Database filed names as read in getEvent(s)
      */
     private final String[] FIELDS = {
-		"events._id",
-		"starts",
-		"ends",
-		"title",
-		"description",
-		"location",
-		"speaker",
-		"url",
-		"favorite"
+	    EVENT_ID,
+	    STARTS,
+	    ENDS,
+	    TITLE,
+	    DESCRIPTION,
+	    LOCATION,
+	    SPEAKER,
+	    URL,
+	    FAVORITE
 	};
 
     public DBAdapter(Context context){
@@ -144,17 +157,17 @@ public class DBAdapter {
      * @param row
      * @return
      */
-    private EventRecord getEventFromCursor(Cursor row){
+    public static EventRecord getEventFromCursor(Cursor row){
 	EventRecord record = new EventRecord();
-	record.id          = row.getString(0);
-	record.starts      = row.getLong(1);
-	record.ends        = row.getLong(2);
-	record.title       = row.getString(3);
-	record.description = row.getString(4);
-	record.location    = row.getString(5);
-	record.speaker 	   = row.getString(6);
-	record.url         = row.getString(7);
-	if(row.getInt(8) > 0){
+	record.id          = row.getString(row.getColumnIndex("_id")); //getColumnIndex doesn't work with table names WTF!?
+	record.starts      = row.getLong(row.getColumnIndex(STARTS));
+	record.ends        = row.getLong(row.getColumnIndex(ENDS));
+	record.title       = row.getString(row.getColumnIndex(TITLE));
+	record.description = row.getString(row.getColumnIndex(DESCRIPTION));
+	record.location    = row.getString(row.getColumnIndex(LOCATION));
+	record.speaker 	   = row.getString(row.getColumnIndex(SPEAKER));
+	record.url         = row.getString(row.getColumnIndex(URL));
+	if(row.getInt(row.getColumnIndex(FAVORITE)) > 0){
 	    record.favorite = true;
 	}
 	return record;
@@ -164,9 +177,7 @@ public class DBAdapter {
     public ArrayList<EventRecord> getEvents(){
 	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
 
-	if(db == null) open();
-	Cursor result = db.query("events LEFT OUTER JOIN favorites ON (events._id = favorites._id)",
-				 FIELDS, null, null, null, null, "starts");
+	Cursor result = getEventsCursor();
 
 	while(result.moveToNext()){
 	    EventRecord record = getEventFromCursor(result);
@@ -175,6 +186,12 @@ public class DBAdapter {
 	result.close();
 
 	return records;
+    }
+
+    public Cursor getEventsCursor(){
+	if(db == null) open();
+	return db.query("events LEFT OUTER JOIN favorites ON ("+EVENT_ID+" = "+FAVORITE_ID+")",
+			 FIELDS, null, null, null, null, STARTS);
     }
 
     //FIXME add event name later

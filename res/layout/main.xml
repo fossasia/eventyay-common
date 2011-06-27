@@ -16,14 +16,6 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_weight="1"/>
-        <ProgressBar
-        	android:id="@+id/progress"
-        	style="?android:attr/progressBarStyleSmall"
-        	android:layout_height="wrap_content"
-        	android:layout_gravity="right"
-        	android:layout_width="wrap_content"
-        	android:layout_weight="0"
-        	android:visibility="invisible"/>
     </LinearLayout>
-<ListView android:id="@+id/listView1" android:layout_height="wrap_content" android:layout_width="fill_parent"></ListView>
+<ListView android:id="@android:id/list" android:layout_height="wrap_content" android:layout_width="fill_parent"></ListView>
 </LinearLayout>

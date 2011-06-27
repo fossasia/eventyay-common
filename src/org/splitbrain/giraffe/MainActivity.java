@@ -1,55 +1,43 @@
 package org.splitbrain.giraffe;
 
-import java.util.ArrayList;
-
-import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
-import android.widget.ListView;
 
-public class MainActivity extends Activity {
+public class MainActivity extends ListActivity {
     Context context;
     DBAdapter db;
-    EventItemAdapter listAdapter;
-
 
     /** Called when the activity is first created. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.main);
-
             this.context = this;
-
-            ListView list = (ListView) findViewById(R.id.listView1);
 
             db = new DBAdapter(this);
             db.open();
-            ArrayList<EventRecord> records = db.getEvents();
-            db.close();
+            Cursor cursor = db.getEventsCursor();
+            startManagingCursor(cursor);
 
-            listAdapter = new EventItemAdapter(this,R.layout.listitem,records);
-            list.setAdapter(listAdapter);
+            EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this,cursor);
+            setListAdapter(listAdapter);
     }
 
     /**
-     * Refresh list view whenever the view is shown again
-     *
-     * @FIXME doesn't work
+     * Refresh list view with current data whenever the view is shown again
      */
     @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-	/*
-	if(hasFocus){
-	    listAdapter.notifyDataSetChanged();
-	}
-	*/
-        super.onWindowFocusChanged(hasFocus);
+    public void onResume() {
+	EventItemCursorAdapter eica = (EventItemCursorAdapter) getListAdapter();
+	eica.getCursor().requery();
+        super.onResume();
     }
 
     @Override
