@@ -9,4 +9,8 @@
     <string name="opt_refresh">(re)load data</string>
     <string name="menu_urlsetup">iCal URL</string>
     <string name="menu_about">About</string>
+    <string name="filter0">now showing all sessions</string>
+    <string name="filter1">now showing favorite sessions</string>
+    <string name="filter2">now showing current/future sessions</string>
+    <string name="filter3">now showing favorite, current/future sessions</string>
 </resources>

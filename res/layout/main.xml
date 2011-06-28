@@ -16,6 +16,8 @@
 			android:layout_height="wrap_content"
 			android:layout_width="wrap_content"
 			android:layout_weight="1"/>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/filterbtn_fav" android:tag="1" android:src="@drawable/filter1_off"></ImageView>
+        <ImageView android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/filterbtn_future" android:tag="2" android:src="@drawable/filter2_off"></ImageView>
     </LinearLayout>
 <ListView android:id="@android:id/list" android:layout_height="wrap_content" android:layout_width="fill_parent"></ListView>
 </LinearLayout>

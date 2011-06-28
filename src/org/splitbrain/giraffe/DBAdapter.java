@@ -25,17 +25,17 @@ public class DBAdapter {
     private SQLiteDatabase db = null;;
 
 
-    private final static String EVENT_ID    = "events._id";
-    private final static String FAVORITE_ID = "favorites._id";
+    public final static String EVENT_ID    = "events._id";
+    public final static String FAVORITE_ID = "favorites._id";
 
-    private final static String STARTS      = "starts";
-    private final static String ENDS        = "ends";
-    private final static String TITLE       = "title";
-    private final static String DESCRIPTION = "description";
-    private final static String LOCATION    = "location";
-    private final static String SPEAKER     = "speaker";
-    private final static String URL         = "url";
-    private final static String FAVORITE    = "favorite";
+    public final static String STARTS      = "starts";
+    public final static String ENDS        = "ends";
+    public final static String TITLE       = "title";
+    public final static String DESCRIPTION = "description";
+    public final static String LOCATION    = "location";
+    public final static String SPEAKER     = "speaker";
+    public final static String URL         = "url";
+    public final static String FAVORITE    = "favorite";
 
     /**
      * Database filed names as read in getEvent(s)
@@ -185,10 +185,11 @@ public class DBAdapter {
     }
 
     //FIXME add params to pass WHERE clauses
+    //FIXME shouldn't be used anymore?
     public ArrayList<EventRecord> getEvents(){
 	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
 
-	Cursor result = getEventsCursor();
+	Cursor result = getEventsCursor(null);
 
 	while(result.moveToNext()){
 	    EventRecord record = getEventFromCursor(result);
@@ -199,10 +200,10 @@ public class DBAdapter {
 	return records;
     }
 
-    public Cursor getEventsCursor(){
+    public Cursor getEventsCursor(String where){
 	if(db == null) open();
 	return db.query("events LEFT OUTER JOIN favorites ON ("+EVENT_ID+" = "+FAVORITE_ID+")",
-			 FIELDS, null, null, null, null, STARTS);
+			 FIELDS, where, null, null, null, STARTS);
     }
 
     //FIXME add event name later
