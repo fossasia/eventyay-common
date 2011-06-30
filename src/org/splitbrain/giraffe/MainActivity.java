@@ -30,18 +30,15 @@ public class MainActivity extends ListActivity {
             setContentView(R.layout.main);
             this.context = this;
 
-            prefs = PreferenceManager.getDefaultSharedPreferences(this);
-            setFilter(0);
-
-
             db = new DBAdapter(this);
             db.openReadOnly();
-            Cursor cursor = db.getEventsCursor(null);
-            startManagingCursor(cursor);
 
-
+            prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            Cursor cursor = null;
             EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this,cursor);
             setListAdapter(listAdapter);
+            setFilter(0);
+
 
             ImageView iv;
             iv = (ImageView) findViewById(R.id.filterbtn_fav);
@@ -58,13 +55,16 @@ public class MainActivity extends ListActivity {
     @Override
     public void onResume() {
 	EventItemCursorAdapter eica = (EventItemCursorAdapter) getListAdapter();
-	eica.getCursor().requery();
+	Cursor cursor = eica.getCursor();
+	if(cursor != null){
+	    cursor.requery();
+	}
         super.onResume();
     }
 
 
     /**
-     * Set the filter state
+     * Set the filter state and initialize the appropriate cursor
      *
      * @param filter 0 (for init) 1 (for favs) 2 (for future)
      */
@@ -108,16 +108,20 @@ public class MainActivity extends ListActivity {
 	// create WHERE clause
 	String where = "";
 	if((filterstate & 1) > 0){
-	    where += db.FAVORITE+" > 0 ";
+	    where += DBAdapter.FAVORITE+" > 0 ";
 	}
 	if((filterstate & 2) > 0){
 	    if(where.length() > 0){
 		    where += " AND ";
 	    }
-	    where += "("+db.STARTS+" > NOW() OR "+db.ENDS+" > NOW() )";
+	    where += "(datetime("+DBAdapter.STARTS+",'unixexpoch') > datetime('now') OR datetime("+DBAdapter.ENDS+",'unixepoch') > datetime('now') )";
 	}
 
-	// FIXME find out how to apply filter
+	// apply the filter
+	Cursor cursor = db.getEventsCursor(where);
+	startManagingCursor(cursor);
+	EventItemCursorAdapter eica = (EventItemCursorAdapter) getListAdapter();
+	eica.changeCursor(cursor);
     }
 
 
