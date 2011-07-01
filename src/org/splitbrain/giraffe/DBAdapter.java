@@ -12,7 +12,6 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 import android.widget.Toast;
 
 public class DBAdapter {
@@ -283,8 +282,6 @@ public class DBAdapter {
         	db.setTransactionSuccessful();
         	ok = true;
             }catch(Exception e){
-        	Log.e("db","Failed to execute SQL: "+e.toString());
-        	Log.e("db","Query was: '"+sql+"'");
             }finally{
         	db.endTransaction();
             }
@@ -304,7 +301,6 @@ public class DBAdapter {
             try{
                 inputStream = assetManager.open(filename);
             } catch (IOException e) {
-                Log.e("db","Failed to open Asset File. "+e.toString());
                 return null;
             }
 
@@ -318,7 +314,7 @@ public class DBAdapter {
                 outputStream.close();
                 inputStream.close();
             } catch (IOException e) {
-                Log.e("db","Failed to read Asset File "+e.toString());
+                return null;
             }
 
             String[] queries = outputStream.toString().split(";[\r\n]+");

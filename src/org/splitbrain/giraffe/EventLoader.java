@@ -8,7 +8,6 @@ import org.splitbrain.simpleical.SimpleIcalEvent;
 import org.splitbrain.simpleical.SimpleIcalParser;
 
 import android.os.AsyncTask;
-import android.util.Log;
 import android.widget.Toast;
 
 
@@ -22,8 +21,6 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
     @Override
     protected void onPreExecute(){
-	Log.e("eventloader","preExecute");
-	//db.begin();
     }
 
     @Override
@@ -48,8 +45,6 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
     @Override
     protected String doInBackground(URL... urls) {
-	Log.e("eventloader","doInBackground");
-
         int count = 0;
 
         publishProgress("Opening database...");
@@ -68,7 +63,6 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
     	    // abort if cancelled
             if(isCancelled()){
-                Log.e("eventloader","cancel");
                 db.rollback();
                 db.close();
                 return "Cancelled";
@@ -93,14 +87,10 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
                 // abort if cancelled
                 if(isCancelled()){
-                    Log.e("eventloader","cancel");
                     db.rollback();
                     db.close();
                     return "Cancelled";
                 }
-
-                // FIXME
-        	Log.e("eventloader",event.get("SUMMARY"));
             }
             db.commit();
         } catch (Exception e) {
