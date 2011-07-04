@@ -45,8 +45,13 @@ public class DetailActivity extends Activity {
 	tv.setText(record.location);
 
 	tv = (TextView) findViewById(R.id.detail_url);
-	tv.setTag(record.url);
-	tv.setOnClickListener(click_url);
+	if(record.url.length() > 0){
+	    tv.setTag(record.url);
+	    tv.setOnClickListener(click_url);
+	    tv.setVisibility(View.VISIBLE);
+	}else{
+	    tv.setVisibility(View.GONE);
+	}
 
 	String dt = "";
 	SimpleDateFormat df = new SimpleDateFormat("E, HH:mm");
