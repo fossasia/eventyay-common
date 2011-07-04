@@ -46,8 +46,8 @@ public class SimpleIcalParser {
             lineup = line.toUpperCase();
 
             // look into the future for unfolding
-            if(nextline != null && nextline.matches("^\\s+")){
-        	line = line + nextline.replaceAll("^\\s+", "");
+            if((nextline != null) && nextline.matches("^\\s.*")){
+        	line = line + nextline.replaceAll("^\\s", "");
         	continue;
             }
 
