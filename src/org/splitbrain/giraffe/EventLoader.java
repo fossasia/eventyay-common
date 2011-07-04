@@ -108,9 +108,13 @@ public class EventLoader extends AsyncTask<URL, String, String>{
         String uid     = event.get("UID");
         String summary = event.get("SUMMARY");
         Date dateStart = event.getStartDate();
-        if(uid == null) return null;
         if(summary == null) return null;
         if(dateStart == null) return null;
+
+        // fake UID
+        if(uid == null){
+            uid = summary+dateStart.getTime();
+        }
 
         // optional fields
         Date dateEnd       = event.getEndDate();
