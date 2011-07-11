@@ -29,6 +29,7 @@ public class OptionsActivity extends Activity {
 	setContentView(R.layout.options);
 	this.context = this;
 
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 	resetLayout();
 
 	// attach Event listeners
@@ -36,8 +37,6 @@ public class OptionsActivity extends Activity {
 	btn_refresh.setOnClickListener(click_refresh);
 	Button btn_cancel = (Button) findViewById(R.id.opt_btn_cancel);
 	btn_cancel.setOnClickListener(click_cancel);
-
-        prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
     }
 
