@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -45,6 +46,14 @@ public class MainActivity extends ListActivity {
             iv.setOnClickListener(click_filter);
             iv = (ImageView) findViewById(R.id.filterbtn_future);
             iv.setOnClickListener(click_filter);
+
+            // pass URL intents to the option activity
+            Uri intentdata = getIntent().getData();
+            if(intentdata != null){
+                Intent i = new Intent(context,OptionsActivity.class);
+                i.setData(intentdata);
+                startActivity(i);
+            }
     }
 
     /**

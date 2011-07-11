@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.View;
@@ -35,13 +36,20 @@ public class OptionsActivity extends Activity {
 	btn_refresh.setOnClickListener(click_refresh);
 	Button btn_cancel = (Button) findViewById(R.id.opt_btn_cancel);
 	btn_cancel.setOnClickListener(click_cancel);
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
     }
 
     public void resetLayout(){
-	// set URL field from preferences
-	prefs = PreferenceManager.getDefaultSharedPreferences(this);
+	// set URL field from intent or preferences
 	EditText txturl = (EditText) findViewById(R.id.opt_txt_url);
-	txturl.setText(prefs.getString("url", ""));
+	Uri intenturl = getIntent().getData();
+        if(intenturl != null){
+            txturl.setText(intenturl.toString().replaceAll("^webcal://", "http://"));
+        }else{
+            txturl.setText(prefs.getString("url", ""));
+        }
 
 	// hide progress panel
 	LinearLayout ll = (LinearLayout) findViewById(R.id.opt_panel_running);
