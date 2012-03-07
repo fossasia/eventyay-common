@@ -12,7 +12,32 @@
 	<TextView android:text="@string/opt_info" android:id="@+id/textView2"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_margin="5px"></TextView>
-	<Button android:text="@string/opt_refresh" android:layout_gravity="center_horizontal" android:id="@+id/opt_btn_refresh" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
+
+	<RelativeLayout
+	    android:id="@+id/relativeLayout1"
+	    android:layout_width="fill_parent"
+	    android:layout_height="wrap_content" >
+
+	    <Button
+	        android:id="@+id/opt_btn_refresh"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentRight="true"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginRight="50dp"
+	        android:text="@string/opt_refresh" />
+
+	    <Button
+	        android:id="@+id/opt_btn_barcode"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_alignParentTop="true"
+	        android:layout_marginRight="26dp"
+	        android:layout_toLeftOf="@+id/opt_btn_refresh"
+	        android:text="@string/opt_barcode" />
+
+	</RelativeLayout>
+
 	<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/opt_panel_running">
 		<ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/progressBar1" android:layout_gravity="center_horizontal"></ProgressBar>
 		<TextView android:text="TextView" android:layout_gravity="center_horizontal" android:id="@+id/opt_txt_progress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10px"></TextView>

@@ -13,4 +13,15 @@
     <string name="filter1">now showing favorite sessions</string>
     <string name="filter2">now showing current/future sessions</string>
     <string name="filter3">now showing favorite, current/future sessions</string>
+    <string name="opt_barcode">Scan Barcode</string>
+    <string name="opt_zxing_title">Barcode Scanner Not Found</string>
+    <string name="opt_zxing_text">We were unable to find the barcode scanner app, which is required to scan barcodes. Do you want to download it now?</string>
+    <string name="common_yes">Yes</string>
+    <string name="common_no">No</string>
+    <string name="url_market_zxing">market://details?id=com.google.zxing.client.android</string>
+    <string name="url_web_zxing">https://code.google.com/p/zxing/downloads/detail?name=BarcodeScanner4.0.apk&amp;can=2</string>
+    <string name="opt_error_bad_url">Invalid URL given.</string>
+    <string name="opt_barcode_ok">Barcode data retrieved.</string>
+    <string name="opt_error_no_url">No URL found.</string>
+    <string name="opt_barcode_fail">Unable to retrieve barcode data. Please try again.</string>
 </resources>
