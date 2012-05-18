@@ -1,8 +1,16 @@
 package org.splitbrain.giraffe;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
 
 import org.splitbrain.simpleical.SimpleIcalEvent;
 import org.splitbrain.simpleical.SimpleIcalParser;
@@ -14,9 +22,18 @@ import android.widget.Toast;
 public class EventLoader extends AsyncTask<URL, String, String>{
     private final OptionsActivity context;
     private DBAdapter db = null;
+    private boolean ignoreSSLCerts = false;
 
     public EventLoader(OptionsActivity context){
-	this.context = context;
+        this.context = context;
+    }
+
+
+    /**
+     * @param ignoreSSLCerts the ignoreSSLCerts to set
+     */
+    public void setIgnoreSSLCerts(boolean ignoreSSLCerts) {
+        this.ignoreSSLCerts = ignoreSSLCerts;
     }
 
     @Override
@@ -25,7 +42,7 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
     @Override
     protected void onCancelled(){
-	if(db != null) db.close();
+        if(db != null) db.close();
         Toast toast = Toast.makeText(context, "Loading cancelled", Toast.LENGTH_LONG);
         toast.show();
         context.resetLayout();
@@ -40,28 +57,41 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
     @Override
     protected void onProgressUpdate(String... values) {
-	context.writeProgress(values[0]);
+        context.writeProgress(values[0]);
     }
+
+
 
     @Override
     protected String doInBackground(URL... urls) {
         int count = 0;
 
         publishProgress("Opening database...");
-	db = new DBAdapter(context);
-	db.open();
-	db.begin();
+        db = new DBAdapter(context);
+        db.open();
+        db.begin();
 
         // http://re-publica.de/11/rp2011.ics
         try{
             publishProgress("Connecting to iCal URL...");
-            InputStream inputStream = urls[0].openStream();
+
+            // connect without SSL verification
+            HttpURLConnection http = null;
+            if (urls[0].getProtocol().toLowerCase().equals("https")) {
+                if(this.ignoreSSLCerts) trustAllHosts();
+                HttpsURLConnection https = (HttpsURLConnection) urls[0].openConnection();
+                if(this.ignoreSSLCerts) https.setHostnameVerifier(DO_NOT_VERIFY);
+                http = https;
+            } else {
+                http = (HttpURLConnection) urls[0].openConnection();
+            }
+            InputStream inputStream = http.getInputStream();
 
 
             publishProgress("Clearing database...");
-    	    db.deleteEvents();
+            db.deleteEvents();
 
-    	    // abort if cancelled
+            // abort if cancelled
             if(isCancelled()){
                 db.rollback();
                 db.close();
@@ -74,8 +104,8 @@ public class EventLoader extends AsyncTask<URL, String, String>{
             SimpleIcalParser ical = new SimpleIcalParser(inputStream);
             SimpleIcalEvent event = null;
             while((event = ical.nextEvent()) != null){
-        	// build record
-        	EventRecord record = getEventRecord(event);
+                // build record
+                EventRecord record = getEventRecord(event);
                 if(record == null) continue;
 
                 // add to database:
@@ -104,7 +134,7 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
 
     private EventRecord getEventRecord(SimpleIcalEvent event){
-	// mandatory fields
+        // mandatory fields
         String uid     = event.get("UID");
         String summary = event.get("SUMMARY");
         Date dateStart = event.getStartDate();
@@ -136,4 +166,55 @@ public class EventLoader extends AsyncTask<URL, String, String>{
 
         return record;
     }
+
+
+    /**
+     *  always verify the host - don't check for certificate
+     * 
+     *  @http://stackoverflow.com/a/9133562/172068
+     */
+    final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+        public boolean verify(String hostname, SSLSession session) {
+            return true;
+        }
+    };
+
+    /**
+     * Trust every server - don't check for any certificate
+     * 
+     * @link http://stackoverflow.com/a/9133562/172068
+     */
+    private static void trustAllHosts() {
+        // Create a trust manager that does not validate certificate chains
+        TrustManager[] trustAllCerts = new TrustManager[] { new X509TrustManager() {
+            public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                return new java.security.cert.X509Certificate[] {};
+            }
+
+            public void checkClientTrusted(
+                    java.security.cert.X509Certificate[] chain, String authType)
+                            throws java.security.cert.CertificateException {
+                // TODO Auto-generated method stub
+
+            }
+
+            public void checkServerTrusted(
+                    java.security.cert.X509Certificate[] chain, String authType)
+                            throws java.security.cert.CertificateException {
+                // TODO Auto-generated method stub
+
+            }
+        } };
+
+        // Install the all-trusting trust manager
+        try {
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection
+            .setDefaultSSLSocketFactory(sc.getSocketFactory());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 }

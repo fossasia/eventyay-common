@@ -18,8 +18,6 @@ public class DBAdapter {
     private static final String DATABASE_NAME = "EventPlanner";
     private static final int DATABASE_VERSION = 1;
 
-    private final Context context;
-
     private final DatabaseHelper DBHelper;
     private SQLiteDatabase db = null;;
 
@@ -40,19 +38,18 @@ public class DBAdapter {
      * Database filed names as read in getEvent(s)
      */
     private final String[] FIELDS = {
-	    EVENT_ID,
-	    STARTS,
-	    ENDS,
-	    TITLE,
-	    DESCRIPTION,
-	    LOCATION,
-	    SPEAKER,
-	    URL,
-	    FAVORITE
-	};
+            EVENT_ID,
+            STARTS,
+            ENDS,
+            TITLE,
+            DESCRIPTION,
+            LOCATION,
+            SPEAKER,
+            URL,
+            FAVORITE
+    };
 
     public DBAdapter(Context context){
-        this.context = context;
         DBHelper = new DatabaseHelper(context);
     }
 
@@ -90,23 +87,23 @@ public class DBAdapter {
      * Begin a transaction
      */
     public void begin(){
-	if(db == null) open();
-	db.beginTransaction();
+        if(db == null) open();
+        db.beginTransaction();
     }
 
     /**
      * Commit all changes made during the current transaction and end it
      */
     public void commit(){
-	db.setTransactionSuccessful();
-	db.endTransaction();
+        db.setTransactionSuccessful();
+        db.endTransaction();
     }
 
     /**
      * Revert all changes made during the current transaction and end it
      */
     public void rollback(){
-	db.endTransaction();
+        db.endTransaction();
     }
 
     /**
@@ -116,26 +113,26 @@ public class DBAdapter {
      * @return the new state
      */
     public boolean toggleFavorite(String id){
-	if(db == null) open();
+        if(db == null) open();
 
-	// read current state
-	boolean fav = false;
-	Cursor result = db.query("favorites", new String[] {"favorite"},"_id=?",new String[] {id}, null, null, null);
-	if(result.moveToFirst()){
-	    if(result.getInt(0)>0) fav = true;
-	}
-	result.close();
+        // read current state
+        boolean fav = false;
+        Cursor result = db.query("favorites", new String[] {"favorite"},"_id=?",new String[] {id}, null, null, null);
+        if(result.moveToFirst()){
+            if(result.getInt(0)>0) fav = true;
+        }
+        result.close();
 
-	// flip
-	fav = !fav;
+        // flip
+        fav = !fav;
 
-	// save
-	ContentValues row = new ContentValues();
-	row.put("_id", id);
-	row.put("favorite", fav);
-	db.replace("favorites", null, row);
+        // save
+        ContentValues row = new ContentValues();
+        row.put("_id", id);
+        row.put("favorite", fav);
+        db.replace("favorites", null, row);
 
-	return fav;
+        return fav;
     }
 
     /**
@@ -145,18 +142,18 @@ public class DBAdapter {
      * @return
      */
     public EventRecord getEvent(String id){
-	EventRecord record = new EventRecord();
+        EventRecord record = new EventRecord();
 
-	if(db == null) open();
-	Cursor result = db.query("events LEFT OUTER JOIN favorites ON (events._id = favorites._id)",
-		 FIELDS, "events._id=?", new String[] {id}, null, null, null);
+        if(db == null) open();
+        Cursor result = db.query("events LEFT OUTER JOIN favorites ON (events._id = favorites._id)",
+                FIELDS, "events._id=?", new String[] {id}, null, null, null);
 
-	if(result.moveToFirst()){
-	    record = getEventFromCursor(result);
-	}
-	result.close();
+        if(result.moveToFirst()){
+            record = getEventFromCursor(result);
+        }
+        result.close();
 
-	return record;
+        return record;
     }
 
     /**
@@ -168,51 +165,51 @@ public class DBAdapter {
      * @return
      */
     public static EventRecord getEventFromCursor(Cursor row){
-	EventRecord record = new EventRecord();
-	record.id          = row.getString(row.getColumnIndex("_id")); //getColumnIndex doesn't work with table names WTF!?
-	record.starts      = row.getLong(row.getColumnIndex(STARTS));
-	record.ends        = row.getLong(row.getColumnIndex(ENDS));
-	record.title       = row.getString(row.getColumnIndex(TITLE));
-	record.description = row.getString(row.getColumnIndex(DESCRIPTION));
-	record.location    = row.getString(row.getColumnIndex(LOCATION));
-	record.speaker 	   = row.getString(row.getColumnIndex(SPEAKER));
-	record.url         = row.getString(row.getColumnIndex(URL));
-	if(row.getInt(row.getColumnIndex(FAVORITE)) > 0){
-	    record.favorite = true;
-	}
-	return record;
+        EventRecord record = new EventRecord();
+        record.id          = row.getString(row.getColumnIndex("_id")); //getColumnIndex doesn't work with table names WTF!?
+        record.starts      = row.getLong(row.getColumnIndex(STARTS));
+        record.ends        = row.getLong(row.getColumnIndex(ENDS));
+        record.title       = row.getString(row.getColumnIndex(TITLE));
+        record.description = row.getString(row.getColumnIndex(DESCRIPTION));
+        record.location    = row.getString(row.getColumnIndex(LOCATION));
+        record.speaker 	   = row.getString(row.getColumnIndex(SPEAKER));
+        record.url         = row.getString(row.getColumnIndex(URL));
+        if(row.getInt(row.getColumnIndex(FAVORITE)) > 0){
+            record.favorite = true;
+        }
+        return record;
     }
 
     //FIXME add params to pass WHERE clauses
     //FIXME shouldn't be used anymore?
     public ArrayList<EventRecord> getEvents(){
-	ArrayList<EventRecord> records = new ArrayList<EventRecord>();
+        ArrayList<EventRecord> records = new ArrayList<EventRecord>();
 
-	Cursor result = getEventsCursor(null);
+        Cursor result = getEventsCursor(null);
 
-	while(result.moveToNext()){
-	    EventRecord record = getEventFromCursor(result);
-	    records.add(record);
-	}
-	result.close();
+        while(result.moveToNext()){
+            EventRecord record = getEventFromCursor(result);
+            records.add(record);
+        }
+        result.close();
 
-	return records;
+        return records;
     }
 
     public Cursor getEventsCursor(String where){
-	if(db == null) open();
-	return db.query("events LEFT OUTER JOIN favorites ON ("+EVENT_ID+" = "+FAVORITE_ID+")",
-			 FIELDS, where, null, null, null, STARTS);
+        if(db == null) open();
+        return db.query("events LEFT OUTER JOIN favorites ON ("+EVENT_ID+" = "+FAVORITE_ID+")",
+                FIELDS, where, null, null, null, STARTS);
     }
 
     //FIXME add event name later
     public void deleteEvents(){
-	if(db == null) open();
-	db.delete("events", "1", null);
+        if(db == null) open();
+        db.delete("events", "1", null);
     }
 
     public void addEventRecord(EventRecord record){
-	if(db == null) open();
+        if(db == null) open();
 
         ContentValues row = new ContentValues();
         row.put("_id", record.id);
@@ -252,7 +249,7 @@ public class DBAdapter {
         @Override
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             for(int version=oldVersion+1; version<=newVersion; version++){
-        	if(executeQueryFile(db, "db/"+version+".sql")){
+                if(executeQueryFile(db, "db/"+version+".sql")){
                     Toast toast = Toast.makeText(context, "Database updated from "+oldVersion+" to "+newVersion, Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -274,16 +271,16 @@ public class DBAdapter {
             db.beginTransaction();
             String sql = "";
             try{
-        	for (String querie : queries) {
-        	    sql = querie.trim();
-        	    if(sql.length() == 0) continue;
-        	    db.execSQL(sql);
-        	}
-        	db.setTransactionSuccessful();
-        	ok = true;
+                for (String querie : queries) {
+                    sql = querie.trim();
+                    if(sql.length() == 0) continue;
+                    db.execSQL(sql);
+                }
+                db.setTransactionSuccessful();
+                ok = true;
             }catch(Exception e){
             }finally{
-        	db.endTransaction();
+                db.endTransaction();
             }
 
             return ok;

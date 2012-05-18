@@ -12,6 +12,11 @@
 	<TextView android:text="@string/opt_info" android:id="@+id/textView2"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:layout_margin="5px"></TextView>
+	<CheckBox android:text="@string/opt_ignoressl"
+	          android:layout_width="wrap_content"
+	          android:layout_height="wrap_content"
+	          android:id="@+id/opt_ignoressl"
+	          android:checked="true" />
 
 	<RelativeLayout
 	    android:id="@+id/relativeLayout1"
