@@ -1,7 +1,10 @@
 package org.splitbrain.giraffe;
 
+import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -53,6 +56,24 @@ public class MainActivity extends ListActivity {
                 Intent i = new Intent(context,OptionsActivity.class);
                 i.setData(intentdata);
                 startActivity(i);
+            }
+            
+            if(prefs.getString("url","") == "") {
+            	AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context);
+                noFeedBuilder.setMessage(R.string.main_no_feed_text)
+                .setTitle(R.string.main_no_feed_title)
+                .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        Intent i = new Intent(context, OptionsActivity.class);
+                        startActivity(i);
+                    }
+                })
+                .setNegativeButton(R.string.common_no, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        dialog.cancel();
+                    }
+                });
+                noFeedBuilder.show();
             }
     }
 
