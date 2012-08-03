@@ -25,4 +25,6 @@
     <string name="opt_error_no_url">No URL found.</string>
     <string name="opt_barcode_fail">Unable to retrieve barcode data. Please try again.</string>
     <string name="opt_ignoressl">Do not verify SSL certificates</string>
+    <string name="main_no_feed_title">No Schedule Feed Found</string>
+    <string name="main_no_feed_text">It appears that no schedule feed is loaded. Would you like to load one now?</string>
 </resources>
