@@ -57,7 +57,7 @@ public class DBAdapter {
     /**
      * Open the Database
      *
-     * @return
+     * @return this
      * @throws SQLException
      */
     public DBAdapter open() throws SQLException {
@@ -68,7 +68,7 @@ public class DBAdapter {
     /**
      * Open the Database
      *
-     * @return
+     * @return this
      * @throws SQLException
      */
     public DBAdapter openReadOnly() throws SQLException {
@@ -110,7 +110,7 @@ public class DBAdapter {
     /**
      * Sets/unsets the favorite state of the given event
      *
-     * @param id
+     * @param id ID of the entry to favorite
      * @return the new state
      */
     public boolean toggleFavorite(String id) {
@@ -139,8 +139,8 @@ public class DBAdapter {
     /**
      * Fetch a single event identified by its id from the database
      *
-     * @param id
-     * @return
+     * @param id ID of the record to return
+     * @return the record
      */
     public EventRecord getEvent(String id) {
         EventRecord record = new EventRecord();
@@ -160,10 +160,10 @@ public class DBAdapter {
     /**
      * Creates an Event record from the given Cursor
      * <p/>
-     * Results need to be in order of FILDS
+     * Results need to be in order of FIELDS
      *
-     * @param row
-     * @return
+     * @param row The row cursor
+     * @return The record the cursor is pointing to
      */
     public static EventRecord getEventFromCursor(Cursor row) {
         EventRecord record = new EventRecord();
@@ -179,22 +179,6 @@ public class DBAdapter {
             record.favorite = true;
         }
         return record;
-    }
-
-    //FIXME add params to pass WHERE clauses
-    //FIXME shouldn't be used anymore?
-    public ArrayList<EventRecord> getEvents() {
-        ArrayList<EventRecord> records = new ArrayList<EventRecord>();
-
-        Cursor result = getEventsCursor(null);
-
-        while (result.moveToNext()) {
-            EventRecord record = getEventFromCursor(result);
-            records.add(record);
-        }
-        result.close();
-
-        return records;
     }
 
     public Cursor getEventsCursor(String where) {
@@ -267,10 +251,10 @@ public class DBAdapter {
         private boolean executeQueryFile(SQLiteDatabase db, String filename) {
             boolean ok = false;
             String[] queries = loadQueryFile(filename);
-            if (queries == null) return ok;
+            if (queries == null) return false;
 
             db.beginTransaction();
-            String sql = "";
+            String sql;
             try {
                 for (String querie : queries) {
                     sql = querie.trim();
@@ -279,7 +263,7 @@ public class DBAdapter {
                 }
                 db.setTransactionSuccessful();
                 ok = true;
-            } catch (Exception e) {
+            } catch (Exception ignored) {
             } finally {
                 db.endTransaction();
             }
@@ -295,7 +279,7 @@ public class DBAdapter {
         private String[] loadQueryFile(String filename) {
 
             AssetManager assetManager = context.getAssets();
-            InputStream inputStream = null;
+            InputStream inputStream;
             try {
                 inputStream = assetManager.open(filename);
             } catch (IOException e) {
@@ -315,8 +299,7 @@ public class DBAdapter {
                 return null;
             }
 
-            String[] queries = outputStream.toString().split(";[\r\n]+");
-            return queries;
+            return outputStream.toString().split(";[\r\n]+");
         }
 
     }

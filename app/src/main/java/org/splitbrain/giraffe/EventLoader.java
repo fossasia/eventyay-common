@@ -1,5 +1,6 @@
 package org.splitbrain.giraffe;
 
+import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.widget.Toast;
 
@@ -75,7 +76,7 @@ public class EventLoader extends AsyncTask<URL, String, String> {
             publishProgress("Connecting to iCal URL...");
 
             // connect without SSL verification
-            HttpURLConnection http = null;
+            HttpURLConnection http;
             if (urls[0].getProtocol().toLowerCase().equals("https")) {
                 if (this.ignoreSSLCerts) trustAllHosts();
                 HttpsURLConnection https = (HttpsURLConnection) urls[0].openConnection();
@@ -101,7 +102,7 @@ public class EventLoader extends AsyncTask<URL, String, String> {
             //InputStream inputStream = assetManager.open("rp2011.ics");
 
             SimpleIcalParser ical = new SimpleIcalParser(inputStream);
-            SimpleIcalEvent event = null;
+            SimpleIcalEvent event;
             while ((event = ical.nextEvent()) != null) {
                 // build record
                 EventRecord record = getEventRecord(event);
@@ -170,9 +171,10 @@ public class EventLoader extends AsyncTask<URL, String, String> {
     /**
      * always verify the host - don't check for certificate
      *
-     * @http://stackoverflow.com/a/9133562/172068
+     * @link http://stackoverflow.com/a/9133562/172068
      */
     final static HostnameVerifier DO_NOT_VERIFY = new HostnameVerifier() {
+        @SuppressLint("BadHostnameVerifier")
         public boolean verify(String hostname, SSLSession session) {
             return true;
         }
@@ -190,18 +192,16 @@ public class EventLoader extends AsyncTask<URL, String, String> {
                 return new java.security.cert.X509Certificate[]{};
             }
 
+            @SuppressLint("TrustAllX509TrustManager")
             public void checkClientTrusted(
                     java.security.cert.X509Certificate[] chain, String authType)
                     throws java.security.cert.CertificateException {
-                // TODO Auto-generated method stub
-
             }
 
+            @SuppressLint("TrustAllX509TrustManager")
             public void checkServerTrusted(
                     java.security.cert.X509Certificate[] chain, String authType)
                     throws java.security.cert.CertificateException {
-                // TODO Auto-generated method stub
-
             }
         }};
 

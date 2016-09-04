@@ -39,8 +39,7 @@ public class MainActivity extends ListActivity {
         db.openReadOnly();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        Cursor cursor = null;
-        EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this, cursor);
+        EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this, null);
         setListAdapter(listAdapter);
         setFilter(0);
 
@@ -59,7 +58,7 @@ public class MainActivity extends ListActivity {
             startActivity(i);
         }
 
-        if (prefs.getString("url", "") == "") {
+        if (prefs.getString("url", "").equals("")) {
             AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context);
             noFeedBuilder.setMessage(R.string.main_no_feed_text)
                     .setTitle(R.string.main_no_feed_title)
@@ -81,7 +80,7 @@ public class MainActivity extends ListActivity {
     /**
      * Refresh list view with current data whenever the view is shown again
      *
-     * @FIXME we could store a dirty flag in the application context
+     * @fixme we could store a dirty flag in the application context
      */
     @Override
     public void onResume() {

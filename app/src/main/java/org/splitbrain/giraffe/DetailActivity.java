@@ -62,7 +62,7 @@ public class DetailActivity extends Activity {
             tv.setVisibility(View.GONE);
         }
 
-        String dt = "";
+        String dt;
         SimpleDateFormat df = new SimpleDateFormat("E, MMM d HH:mm");
         dt = df.format(new Date(record.starts * 1000));
         if (record.ends > 0) {
@@ -88,7 +88,7 @@ public class DetailActivity extends Activity {
     /**
      * Handles clicks on the favorite Icon
      *
-     * @FIXME duplicates code from EventItemAdapter
+     * @fixme duplicates code from EventItemAdapter
      */
     private final OnClickListener click_favorite = new OnClickListener() {
         public void onClick(View fav) {

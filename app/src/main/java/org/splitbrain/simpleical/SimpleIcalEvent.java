@@ -75,7 +75,7 @@ public class SimpleIcalEvent {
         date = date.replaceAll("Z$", "-0000");
         date = date.replaceAll("([0-9][0-9]):([0-9][0-9])$", "$1$2");
 
-        Date dt = null;
+        Date dt;
         try {
             // with timezone first
             SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmssZ");
@@ -126,12 +126,12 @@ public class SimpleIcalEvent {
     /**
      * Sets the value of the given key
      *
-     * @param key
-     * @param val
+     * @param key the key
+     * @param val the value
      */
     public void set(String key, String val) {
         key = key.toUpperCase();
-        IcalEventFacet facet = null;
+        IcalEventFacet facet;
         if (data.containsKey(key)) {
             facet = data.get(key);
         } else {
@@ -145,14 +145,14 @@ public class SimpleIcalEvent {
     /**
      * Sets a parameter value of a given key
      *
-     * @param key
-     * @param param
-     * @param val
+     * @param key the key
+     * @param param the attribute
+     * @param val the value
      */
     public void set(String key, String param, String val) {
         key = key.toUpperCase();
         param = param.toUpperCase();
-        IcalEventFacet facet = null;
+        IcalEventFacet facet;
         if (data.containsKey(key)) {
             facet = data.get(key);
         } else {
@@ -166,7 +166,7 @@ public class SimpleIcalEvent {
     /**
      * Returns the value of a given key
      *
-     * @param key
+     * @param key the key
      * @return null if the key doesn't exist
      */
     public String get(String key) {
@@ -181,8 +181,8 @@ public class SimpleIcalEvent {
     /**
      * Returns a parameter value of a given key
      *
-     * @param key
-     * @param param
+     * @param key the key
+     * @param param the attribute
      * @return null if the key or parameter doesn't exist
      */
     public String get(String key, String param) {

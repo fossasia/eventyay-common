@@ -132,7 +132,7 @@ public class OptionsActivity extends Activity {
                 return;
             }
 
-            URL link = null;
+            URL link;
             try {
                 link = new URL(url);
             } catch (MalformedURLException e) {
@@ -168,7 +168,7 @@ public class OptionsActivity extends Activity {
         if (resultCode == RESULT_OK) {
             // now, we see if there's any barcode data...
             String barcodeText = data.getStringExtra("SCAN_RESULT");
-            if (barcodeText != "") {
+            if (!barcodeText.equals("")) {
                 // Success! Now to fill in the new URL. The user still needs to press the load button to commit it.
                 EditText txturl = (EditText) findViewById(R.id.opt_txt_url);
                 txturl.setText(barcodeText);
