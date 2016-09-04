@@ -1,0 +1,27 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "org.splitbrain.giraffe"
+        minSdkVersion 4
+        targetSdkVersion 4
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_5
+            targetCompatibility JavaVersion.VERSION_1_5
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+}
+dependencies {
+    testCompile 'junit:junit:4.12'
+}
+
