@@ -19,7 +19,8 @@
             android:gravity="center_vertical"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_marginLeft="5dip"
-            android:textColor="@color/bright" />
+            android:textColor="@color/bright"
+            />
 
         <ImageView
             android:layout_width="wrap_content"

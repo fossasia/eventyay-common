@@ -18,6 +18,7 @@ import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends ListActivity {
@@ -49,6 +50,9 @@ public class MainActivity extends ListActivity {
         iv.setOnClickListener(click_filter);
         iv = (ImageView) findViewById(R.id.filterbtn_future);
         iv.setOnClickListener(click_filter);
+
+        TextView title = (TextView) findViewById(R.id.titlebar);
+        title.setOnClickListener(click_title);
 
         // pass URL intents to the option activity
         Uri intentdata = getIntent().getData();
@@ -188,6 +192,12 @@ public class MainActivity extends ListActivity {
         public void onClick(View v) {
             int state = Integer.parseInt((String) v.getTag());
             setFilter(state);
+        }
+    };
+
+    private final OnClickListener click_title = new OnClickListener() {
+        public void onClick(View view) {
+            openOptionsMenu();
         }
     };
 }
