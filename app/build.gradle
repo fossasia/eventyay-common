@@ -1,5 +1,23 @@
 apply plugin: 'com.android.application'
 
+/**
+ * we use the number of commits as versionCode
+ *
+ * @link https://plus.google.com/u/0/+MarcReichelt/posts/BX2he4vSJaM
+ */
+def getNumberOfGitCommits() {
+    return 'git rev-list --count HEAD'.execute().text.trim().toInteger()
+}
+
+/**
+ * we make the git hash available in the app
+ *
+ * @link https://plus.google.com/u/0/+MarcReichelt/posts/BX2he4vSJaM
+ */
+def getCurrentGitHash() {
+    return 'git rev-parse --short HEAD'.execute().text.trim()
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "22.0.1"
@@ -7,7 +25,11 @@ android {
     defaultConfig {
         applicationId "org.splitbrain.giraffe"
         minSdkVersion 4
-        targetSdkVersion 4
+        targetSdkVersion 23
+        versionName "0.8.1"
+        versionCode getNumberOfGitCommits()
+        resValue "string", "app_git_hash", getCurrentGitHash()
+
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_5
             targetCompatibility JavaVersion.VERSION_1_5
