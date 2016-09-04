@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
@@ -13,51 +14,51 @@
         android:layout_marginBottom="5dip">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:id="@+id/linearLayout2"
             android:orientation="vertical"
             android:layout_weight="1"
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_weight="1"
                 android:layout_width="wrap_content"
-                android:text="Headline"
+                tools:text="Headline"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/detail_title"
-                android:textColor="@color/highlight"></TextView>
+                android:textColor="@color/highlight"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Wed, 12:00 - 13:30"
-                android:id="@+id/detail_timeslot"></TextView>
+                tools:text="Wed, 12:00 - 13:30"
+                android:id="@+id/detail_timeslot"/>
         </LinearLayout>
 
         <ImageView
             android:layout_width="wrap_content"
             android:src="@drawable/icongray"
             android:layout_height="wrap_content"
-            android:id="@+id/detail_favorite"></ImageView>
+            android:id="@+id/detail_favorite"
+            android:contentDescription="@string/toggle_favorite" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/detail_speaker"
-        android:text="Speaker"
+        tools:text="Speaker"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_weight="0"
-        android:layout_width="fill_parent"></TextView>
+        android:layout_width="fill_parent"/>
 
     <TextView
         android:id="@+id/detail_location"
-        android:text="Location"
+        tools:text="Location"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:layout_weight="0"
-        android:layout_width="fill_parent"></TextView>
+        android:layout_width="fill_parent"/>
 
     <ScrollView
         android:layout_width="fill_parent"
@@ -67,18 +68,18 @@
         <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
             <TextView
-                android:text="Details"
+                tools:text="Details"
                 android:scrollbars="vertical"
                 android:layout_height="wrap_content"
                 android:id="@+id/detail_text"
                 android:layout_width="fill_parent"
                 android:autoLink="web"
                 android:textColorLink="@color/highlight"
-                android:layout_marginTop="10dip"></TextView>
+                android:layout_marginTop="10dip"/>
 
             <LinearLayout
                 android:layout_width="fill_parent"
@@ -87,15 +88,15 @@
                 android:layout_height="wrap_content">
 
                 <TextView
-                    android:text="↗ Website"
+                    tools:text="↗ Website"
                     android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_weight="1"
                     android:id="@+id/detail_url"
                     android:textColor="@color/highlight"
                     android:textColorLink="@color/highlight"
                     android:layout_marginTop="20dip"
-                    android:layout_marginBottom="20dip"></TextView>
+                    android:layout_marginBottom="20dip"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

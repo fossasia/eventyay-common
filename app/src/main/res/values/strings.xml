@@ -2,7 +2,7 @@
 <resources>
     <string name="hello">Hello World, EventPlannerActivity!</string>
     <string name="app_name">Giraffe</string>
-    <string name="app_about">Giraffe is a personal conference schedule planner for Android.\n\n2011 (c) Andreas Gohr\nsplitbrain.org/go/giraffe</string>
+    <string name="app_about">Giraffe is a personal conference schedule planner for Android.\n\n2011 © Andreas Gohr\nsplitbrain.org/go/giraffe</string>
     <string name="app_usage">Usage:\n\n1. Choose &quot;iCal Url&quot; from the options menu.\n2. Enter the URL to an .ics iCal file.\n3. Click (re)load data.\n\nSessions can be marked as favorite by clicking the Giraffe icon. Session details are available by a click on its name. Use the icons at the top to filter for favorites and future sessions only.</string>
     <string name="opt_info">Enter the iCal URL of the conference schedule in the field above.</string>
     <string name="opt_url">iCal URL:</string>
@@ -27,4 +27,7 @@
     <string name="opt_ignoressl">Do not verify SSL certificates</string>
     <string name="main_no_feed_title">No Schedule Feed Found</string>
     <string name="main_no_feed_text">It appears that no schedule feed is loaded. Would you like to load one now?</string>
+    <string name="toggle_favorite">Toggle Favorite</string>
+    <string name="time_filter">Time Filter</string>
+    <string name="favorite_filter">Favorite Filter</string>
 </resources>

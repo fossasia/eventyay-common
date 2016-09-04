@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
@@ -16,7 +17,8 @@
             android:id="@+id/imageView1"
             android:src="@drawable/giraffe"
             android:layout_height="wrap_content"
-            android:layout_marginRight="10dip"></ImageView>
+            android:layout_marginRight="10dip"
+            tools:ignore="ContentDescription" />
 
         <LinearLayout
             android:layout_height="fill_parent"
@@ -30,14 +32,14 @@
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
-                android:textColor="@color/highlight"></TextView>
+                android:textColor="@color/highlight"/>
 
             <TextView
                 android:text="@string/app_about"
                 android:id="@+id/textView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:autoText="false"></TextView>
+                />
         </LinearLayout>
     </LinearLayout>
 
@@ -45,6 +47,6 @@
         android:text="@string/app_usage"
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"></TextView>
+        android:layout_height="wrap_content"/>
 
 </LinearLayout>

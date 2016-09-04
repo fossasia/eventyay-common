@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tableLayout1"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
@@ -16,27 +17,31 @@
             android:layout_width="wrap_content"
             android:layout_marginRight="3dip"
             android:layout_gravity="center"
-            android:layout_weight="0">
+            >
 
             <TextView
                 android:id="@+id/day"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Wed"
+                tools:text="Wed"
                 android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:textColor="@color/highlight"></TextView>
+                android:gravity="center|bottom"
+                android:textColor="@color/highlight"
+                android:layout_weight="1"
+                />
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="fill_parent"
-                android:text="12:30"
+                tools:text="12:30"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_gravity="center"
-                android:gravity="center_horizontal"
-                android:textColor="@color/highlight"></TextView>
+                android:gravity="center|top"
+                android:textColor="@color/highlight"
+                android:layout_weight="1"
+                />
         </LinearLayout>
 
         <LinearLayout
@@ -49,26 +54,27 @@
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
-                android:text="Event Name"
+                tools:text="Event Name"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5px"
+                android:layout_marginTop="5dp"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textColor="@color/highlight" />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
-                android:text="Location"
+                tools:text="Location"
                 android:layout_height="wrap_content"
-                android:textSize="15px"
-                android:layout_marginLeft="10dip"></TextView>
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginLeft="10dip"/>
 
             <TextView
                 android:id="@+id/speaker"
                 android:layout_width="wrap_content"
-                android:text="Speaker"
+                tools:text="Speaker"
                 android:layout_height="wrap_content"
-                android:textSize="15px"
-                android:layout_marginLeft="10dip"></TextView>
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_marginLeft="10dip"/>
         </LinearLayout>
 
         <ImageView
@@ -76,6 +82,7 @@
             android:layout_height="fill_parent"
             android:layout_weight="0"
             android:src="@drawable/icongray"
-            android:id="@+id/favorite"></ImageView>
+            android:id="@+id/favorite"
+            android:contentDescription="@string/toggle_favorite" />
     </TableRow>
 </TableLayout>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
@@ -9,16 +10,16 @@
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5px"></TextView>
+        android:layout_margin="5dp"/>
 
     <EditText
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="5px"
+        android:layout_margin="5dp"
         android:id="@+id/opt_txt_url"
         android:inputType="textUri">
 
-        <requestFocus></requestFocus>
+        <requestFocus/>
     </EditText>
 
     <TextView
@@ -26,7 +27,7 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5px"></TextView>
+        android:layout_margin="5dp"/>
 
     <CheckBox
         android:text="@string/opt_ignoressl"
@@ -70,22 +71,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/progressBar1"
-            android:layout_gravity="center_horizontal"></ProgressBar>
+            android:layout_gravity="center_horizontal"/>
 
         <TextView
-            android:text="TextView"
+            tools:text="progress"
             android:layout_gravity="center_horizontal"
             android:id="@+id/opt_txt_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10px"></TextView>
+            android:layout_margin="10dp"/>
 
         <Button
             android:text="@android:string/cancel"
             android:layout_gravity="center_horizontal"
             android:id="@+id/opt_btn_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"></Button>
+            android:layout_height="wrap_content"/>
     </LinearLayout>
 
 </LinearLayout>
