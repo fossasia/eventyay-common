@@ -2,7 +2,8 @@ package org.splitbrain.simpleical;
 
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * To work on unit tests, switch the Test Artifact in the Build Variants view.
@@ -19,24 +20,24 @@ public class SimpleIcalEventTest {
 
         String fails = "";
         for (String date : dates) {
-            try{
+            try {
                 SimpleIcalEvent.parseDate(date);
-            }catch (Exception e){
-                fails += e.getMessage()+"\n";
+            } catch (Exception e) {
+                fails += e.getMessage() + "\n";
             }
         }
-        if(fails.length() > 0) fail(fails);
+        if (fails.length() > 0) fail(fails);
 
     }
 
 
     @Test
     public void testParseDuration1() {
-        assertEquals(1000* (15*24*60*60 + 5*60*60 + 20), SimpleIcalEvent.parseDuration("P15DT5H0M20S"));
+        assertEquals(1000 * (15 * 24 * 60 * 60 + 5 * 60 * 60 + 20), SimpleIcalEvent.parseDuration("P15DT5H0M20S"));
     }
 
     @Test
     public void testParseDuration2() {
-        assertEquals(1000* (60*60), SimpleIcalEvent.parseDuration("PT1H00M"));
+        assertEquals(1000 * (60 * 60), SimpleIcalEvent.parseDuration("PT1H00M"));
     }
 }

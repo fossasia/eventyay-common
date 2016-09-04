@@ -1,52 +1,91 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:orientation="vertical" android:layout_width="fill_parent"
-	android:layout_height="fill_parent">
-	<TextView android:text="@string/opt_url" android:id="@+id/textView1"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_margin="5px"></TextView>
-	<EditText android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_margin="5px" android:id="@+id/opt_txt_url" android:inputType="textUri">
-		<requestFocus></requestFocus>
-	</EditText>
-	<TextView android:text="@string/opt_info" android:id="@+id/textView2"
-		android:layout_width="wrap_content" android:layout_height="wrap_content"
-		android:layout_margin="5px"></TextView>
-	<CheckBox android:text="@string/opt_ignoressl"
-	          android:layout_width="wrap_content"
-	          android:layout_height="wrap_content"
-	          android:id="@+id/opt_ignoressl"
-	          android:checked="true" />
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent">
 
-	<RelativeLayout
-	    android:id="@+id/relativeLayout1"
-	    android:layout_width="fill_parent"
-	    android:layout_height="wrap_content" >
+    <TextView
+        android:text="@string/opt_url"
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"></TextView>
 
-	    <Button
-	        android:id="@+id/opt_btn_refresh"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentRight="true"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginRight="50dp"
-	        android:text="@string/opt_refresh" />
+    <EditText
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"
+        android:id="@+id/opt_txt_url"
+        android:inputType="textUri">
 
-	    <Button
-	        android:id="@+id/opt_btn_barcode"
-	        android:layout_width="wrap_content"
-	        android:layout_height="wrap_content"
-	        android:layout_alignParentTop="true"
-	        android:layout_marginRight="26dp"
-	        android:layout_toLeftOf="@+id/opt_btn_refresh"
-	        android:text="@string/opt_barcode" />
+        <requestFocus></requestFocus>
+    </EditText>
 
-	</RelativeLayout>
+    <TextView
+        android:text="@string/opt_info"
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="5px"></TextView>
 
-	<LinearLayout android:orientation="vertical" android:layout_width="fill_parent" android:layout_height="wrap_content" android:id="@+id/opt_panel_running">
-		<ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" android:id="@+id/progressBar1" android:layout_gravity="center_horizontal"></ProgressBar>
-		<TextView android:text="TextView" android:layout_gravity="center_horizontal" android:id="@+id/opt_txt_progress" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_margin="10px"></TextView>
-		<Button android:text="@android:string/cancel" android:layout_gravity="center_horizontal" android:id="@+id/opt_btn_cancel" android:layout_width="wrap_content" android:layout_height="wrap_content"></Button>
-	</LinearLayout>
+    <CheckBox
+        android:text="@string/opt_ignoressl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/opt_ignoressl"
+        android:checked="true" />
+
+    <RelativeLayout
+        android:id="@+id/relativeLayout1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/opt_btn_refresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="50dp"
+            android:text="@string/opt_refresh" />
+
+        <Button
+            android:id="@+id/opt_btn_barcode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginRight="26dp"
+            android:layout_toLeftOf="@+id/opt_btn_refresh"
+            android:text="@string/opt_barcode" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/opt_panel_running">
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar1"
+            android:layout_gravity="center_horizontal"></ProgressBar>
+
+        <TextView
+            android:text="TextView"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/opt_txt_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10px"></TextView>
+
+        <Button
+            android:text="@android:string/cancel"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/opt_btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"></Button>
+    </LinearLayout>
 
 </LinearLayout>

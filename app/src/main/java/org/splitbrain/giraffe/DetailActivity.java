@@ -1,8 +1,5 @@
 package org.splitbrain.giraffe;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +9,9 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class DetailActivity extends Activity {
     Context context;
@@ -24,7 +24,7 @@ public class DetailActivity extends Activity {
 
         String id = "";
         Bundle extras = getIntent().getExtras();
-        if(extras != null) id = extras.getString("id");
+        if (extras != null) id = extras.getString("id");
 
         DBAdapter db = new DBAdapter(this);
         db.open();
@@ -39,35 +39,35 @@ public class DetailActivity extends Activity {
         tv.setText(record.description);
 
         tv = (TextView) findViewById(R.id.detail_speaker);
-        if(record.speaker.length() > 0){
+        if (record.speaker.length() > 0) {
             tv.setText(record.speaker);
-        }else{
+        } else {
             tv.setVisibility(View.GONE);
         }
 
         tv = (TextView) findViewById(R.id.detail_location);
-        if(record.location.length() > 0){
+        if (record.location.length() > 0) {
             tv.setText(record.location);
-        }else{
+        } else {
             tv.setVisibility(View.GONE);
         }
 
 
         tv = (TextView) findViewById(R.id.detail_url);
-        if(record.url.length() > 0){
+        if (record.url.length() > 0) {
             tv.setTag(record.url);
             tv.setOnClickListener(click_url);
             tv.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tv.setVisibility(View.GONE);
         }
 
         String dt = "";
         SimpleDateFormat df = new SimpleDateFormat("E, MMM d HH:mm");
-        dt = df.format(new Date(record.starts*1000));
-        if(record.ends > 0){
+        dt = df.format(new Date(record.starts * 1000));
+        if (record.ends > 0) {
             df = new SimpleDateFormat("HH:mm");
-            dt += " - "+df.format(new Date(record.ends*1000));
+            dt += " - " + df.format(new Date(record.ends * 1000));
         }
 
         tv = (TextView) findViewById(R.id.detail_timeslot);
@@ -75,9 +75,9 @@ public class DetailActivity extends Activity {
 
         ImageView iv = (ImageView) findViewById(R.id.detail_favorite);
         iv.setClickable(true);
-        if(record.favorite){
+        if (record.favorite) {
             iv.setImageResource(R.drawable.icon);
-        }else{
+        } else {
             iv.setImageResource(R.drawable.icongray);
         }
         iv.setTag(record.id);
@@ -90,7 +90,7 @@ public class DetailActivity extends Activity {
      *
      * @FIXME duplicates code from EventItemAdapter
      */
-    private final OnClickListener click_favorite = new OnClickListener(){
+    private final OnClickListener click_favorite = new OnClickListener() {
         public void onClick(View fav) {
             ImageView favIV = (ImageView) fav;
 
@@ -98,9 +98,9 @@ public class DetailActivity extends Activity {
             DBAdapter db = new DBAdapter(context);
             db.open();
             boolean isfav = db.toggleFavorite((String) favIV.getTag());
-            if(isfav){
+            if (isfav) {
                 favIV.setImageResource(R.drawable.icon);
-            }else{
+            } else {
                 favIV.setImageResource(R.drawable.icongray);
             }
             db.close();
@@ -109,10 +109,10 @@ public class DetailActivity extends Activity {
 
     /**
      * Handles clicks on the URL
-     *
+     * <p/>
      * Opens the web browser
      */
-    private final OnClickListener click_url = new OnClickListener(){
+    private final OnClickListener click_url = new OnClickListener() {
         public void onClick(View link) {
             TextView tv = (TextView) link;
             Intent i = new Intent(Intent.ACTION_VIEW, Uri.parse((String) tv.getTag()));

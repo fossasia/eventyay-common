@@ -18,7 +18,7 @@ public class SimpleIcalEvent {
     /**
      * Constructor
      */
-    public SimpleIcalEvent(){
+    public SimpleIcalEvent() {
         data = new HashMap<String, IcalEventFacet>();
     }
 
@@ -27,13 +27,13 @@ public class SimpleIcalEvent {
      *
      * @return null if the field isn't set or can't be parsed
      */
-    public Date getStartDate(){
+    public Date getStartDate() {
         String date = get("DTSTART");
-        if(date == null) return null;
+        if (date == null) return null;
 
-        try{
+        try {
             return parseDate(date);
-        }catch(ParseException e){
+        } catch (ParseException e) {
             return null;
         }
     }
@@ -43,23 +43,23 @@ public class SimpleIcalEvent {
      *
      * @return null if the field isn't set or can't be parsed
      */
-    public Date getEndDate(){
+    public Date getEndDate() {
         String date = get("DTEND");
 
         // no end set, try to use a duration
-        if(date == null){
+        if (date == null) {
             String duration = get("DURATION");
-            if(duration == null) return null;
+            if (duration == null) return null;
 
             Date start = getStartDate();
-            if(start == null) return null;
+            if (start == null) return null;
 
             return new Date(start.getTime() + parseDuration(duration));
         }
 
-        try{
+        try {
             return parseDate(date);
-        }catch(ParseException e){
+        } catch (ParseException e) {
             return null;
         }
     }
@@ -76,13 +76,13 @@ public class SimpleIcalEvent {
         date = date.replaceAll("([0-9][0-9]):([0-9][0-9])$", "$1$2");
 
         Date dt = null;
-        try{
+        try {
             // with timezone first
-            SimpleDateFormat df = new SimpleDateFormat( "yyyyMMdd'T'HHmmssZ" );
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmssZ");
             dt = df.parse(date);
-        }catch(ParseException e){
+        } catch (ParseException e) {
             // no timezone
-            SimpleDateFormat df = new SimpleDateFormat( "yyyyMMdd'T'HHmmss" );
+            SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd'T'HHmmss");
             dt = df.parse(date);
         }
         return dt;
@@ -90,7 +90,7 @@ public class SimpleIcalEvent {
 
     /**
      * Simplistic ical duration parser
-     *
+     * <p/>
      * Will return 0 if parsing fails
      *
      * @param duration A string containing a duration in ical format
@@ -100,27 +100,27 @@ public class SimpleIcalEvent {
         long length = 0;
         Pattern pattern = Pattern.compile("(\\+|-)?(P([0-9]+W)?([0-9]+D)?)?(T([0-9]+H)?([0-9]+M)?([0-9]+S)?)?");
         Matcher matcher = pattern.matcher(duration);
-        if(matcher.find()){
-            if(matcher.group(3) != null){
-                length += Integer.parseInt(matcher.group(3).substring(0,matcher.group(3).length()-1)) *7*24*60*60; // weeks
+        if (matcher.find()) {
+            if (matcher.group(3) != null) {
+                length += Integer.parseInt(matcher.group(3).substring(0, matcher.group(3).length() - 1)) * 7 * 24 * 60 * 60; // weeks
             }
-            if(matcher.group(4) != null){
-                length += Integer.parseInt(matcher.group(4).substring(0,matcher.group(4).length()-1)) *24*60*60; // days
+            if (matcher.group(4) != null) {
+                length += Integer.parseInt(matcher.group(4).substring(0, matcher.group(4).length() - 1)) * 24 * 60 * 60; // days
             }
-            if(matcher.group(6) != null){
-                length += Integer.parseInt(matcher.group(6).substring(0,matcher.group(6).length()-1)) *60*60; // hours
+            if (matcher.group(6) != null) {
+                length += Integer.parseInt(matcher.group(6).substring(0, matcher.group(6).length() - 1)) * 60 * 60; // hours
             }
-            if(matcher.group(7) != null){
-                length += Integer.parseInt(matcher.group(7).substring(0,matcher.group(7).length()-1)) *60; // minutes
+            if (matcher.group(7) != null) {
+                length += Integer.parseInt(matcher.group(7).substring(0, matcher.group(7).length() - 1)) * 60; // minutes
             }
-            if(matcher.group(8) != null){
-                length += Integer.parseInt(matcher.group(8).substring(0,matcher.group(8).length()-1)); // seconds
+            if (matcher.group(8) != null) {
+                length += Integer.parseInt(matcher.group(8).substring(0, matcher.group(8).length() - 1)); // seconds
             }
 
             // negative duration
-            if(matcher.group(1) != null && matcher.group(1).equals("-")) length *= -1;
+            if (matcher.group(1) != null && matcher.group(1).equals("-")) length *= -1;
         }
-        return length*1000; // make it milli seconds
+        return length * 1000; // make it milli seconds
     }
 
     /**
@@ -129,14 +129,14 @@ public class SimpleIcalEvent {
      * @param key
      * @param val
      */
-    public void set(String key, String val){
-        key   = key.toUpperCase();
+    public void set(String key, String val) {
+        key = key.toUpperCase();
         IcalEventFacet facet = null;
-        if(data.containsKey(key)){
+        if (data.containsKey(key)) {
             facet = data.get(key);
-        }else{
+        } else {
             facet = new IcalEventFacet();
-            data.put(key,facet);
+            data.put(key, facet);
         }
 
         facet.set(val);
@@ -149,18 +149,18 @@ public class SimpleIcalEvent {
      * @param param
      * @param val
      */
-    public void set(String key, String param, String val){
-        key   = key.toUpperCase();
+    public void set(String key, String param, String val) {
+        key = key.toUpperCase();
         param = param.toUpperCase();
         IcalEventFacet facet = null;
-        if(data.containsKey(key)){
+        if (data.containsKey(key)) {
             facet = data.get(key);
-        }else{
+        } else {
             facet = new IcalEventFacet();
-            data.put(key,facet);
+            data.put(key, facet);
         }
 
-        facet.set(param,val);
+        facet.set(param, val);
     }
 
     /**
@@ -169,11 +169,11 @@ public class SimpleIcalEvent {
      * @param key
      * @return null if the key doesn't exist
      */
-    public String get(String key){
+    public String get(String key) {
         key = key.toUpperCase();
-        if(data.containsKey(key)){
+        if (data.containsKey(key)) {
             return data.get(key).get();
-        }else{
+        } else {
             return null;
         }
     }
@@ -185,12 +185,12 @@ public class SimpleIcalEvent {
      * @param param
      * @return null if the key or parameter doesn't exist
      */
-    public String get(String key, String param){
-        key   = key.toUpperCase();
+    public String get(String key, String param) {
+        key = key.toUpperCase();
         param = param.toUpperCase();
-        if(data.containsKey(key)){
+        if (data.containsKey(key)) {
             return data.get(key).get(param);
-        }else{
+        } else {
             return null;
         }
     }
@@ -199,28 +199,28 @@ public class SimpleIcalEvent {
         private String value;
         private final HashMap<String, String> extra;
 
-        public IcalEventFacet(){
+        public IcalEventFacet() {
             extra = new HashMap<String, String>();
         }
 
-        public void set(String val){
+        public void set(String val) {
             value = val;
         }
 
-        public String get(){
+        public String get() {
             return value;
         }
 
-        public void set(String key, String val){
-            key   = key.toUpperCase();
+        public void set(String key, String val) {
+            key = key.toUpperCase();
             extra.put(key, val);
         }
 
-        public String get(String key){
-            key   = key.toUpperCase();
-            if(extra.containsKey(key)){
+        public String get(String key) {
+            key = key.toUpperCase();
+            if (extra.containsKey(key)) {
                 return extra.get(key);
-            }else{
+            } else {
                 return null;
             }
         }

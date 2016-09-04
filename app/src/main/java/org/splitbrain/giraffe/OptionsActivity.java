@@ -1,8 +1,5 @@
 package org.splitbrain.giraffe;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ActivityNotFoundException;
@@ -22,6 +19,9 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 public class OptionsActivity extends Activity {
     Context context;
@@ -47,13 +47,13 @@ public class OptionsActivity extends Activity {
 
     }
 
-    public void resetLayout(){
+    public void resetLayout() {
         // set URL field from intent or preferences
         EditText txturl = (EditText) findViewById(R.id.opt_txt_url);
         Uri intenturl = getIntent().getData();
-        if(intenturl != null){
+        if (intenturl != null) {
             txturl.setText(intenturl.toString().replaceAll("^webcal://", "http://"));
-        }else{
+        } else {
             txturl.setText(prefs.getString("url", ""));
         }
 
@@ -73,19 +73,19 @@ public class OptionsActivity extends Activity {
         btn_barcode.setVisibility(View.VISIBLE);
     }
 
-    public void writeProgress(String text){
+    public void writeProgress(String text) {
         TextView txtprg = (TextView) findViewById(R.id.opt_txt_progress);
         txtprg.setText(text);
     }
 
     private final OnClickListener click_cancel = new OnClickListener() {
-        public void onClick(View v){
+        public void onClick(View v) {
             eventloader.cancel(false);
         }
     };
 
     private final OnClickListener click_barcode = new OnClickListener() {
-        public void onClick(View v){
+        public void onClick(View v) {
             Intent barcodeScanner = new Intent("com.google.zxing.client.android.SCAN");
             barcodeScanner.putExtra("FORMATS", "QR_CODE,DATA_MATRIX");
             // See if we have the zxing app installed. If we do, we handle the results of this later.
@@ -93,40 +93,40 @@ public class OptionsActivity extends Activity {
                 startActivityForResult(barcodeScanner, 0);
             }
             // if the app isn't installed, we ask if we can download it
-            catch(ActivityNotFoundException e) {
+            catch (ActivityNotFoundException e) {
                 AlertDialog.Builder notFoundBuilder = new AlertDialog.Builder(context);
                 notFoundBuilder.setMessage(R.string.opt_zxing_text)
-                .setTitle(R.string.opt_zxing_title)
-                .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        try{
-                            // if so, get it from the market...
-                            Intent getApp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_market_zxing)));
-                            startActivity(getApp);
-                        }
-                        // ...or from the website if we don't have the Market
-                        catch(ActivityNotFoundException e) {
-                            Intent getAppAlt = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_web_zxing)));
-                            startActivity(getAppAlt);
-                        }
-                    }
-                })
-                .setNegativeButton(R.string.common_no, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        dialog.cancel();
-                    }
-                });
+                        .setTitle(R.string.opt_zxing_title)
+                        .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                try {
+                                    // if so, get it from the market...
+                                    Intent getApp = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_market_zxing)));
+                                    startActivity(getApp);
+                                }
+                                // ...or from the website if we don't have the Market
+                                catch (ActivityNotFoundException e) {
+                                    Intent getAppAlt = new Intent(Intent.ACTION_VIEW, Uri.parse(getString(R.string.url_web_zxing)));
+                                    startActivity(getAppAlt);
+                                }
+                            }
+                        })
+                        .setNegativeButton(R.string.common_no, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
                 notFoundBuilder.show();
             }
         }
     };
 
     private final OnClickListener click_refresh = new OnClickListener() {
-        public void onClick(View v){
+        public void onClick(View v) {
             // check if URL was set
             EditText txturl = (EditText) findViewById(R.id.opt_txt_url);
             String url = txturl.getText().toString().trim();
-            if(url.length() == 0){
+            if (url.length() == 0) {
                 Toast toast = Toast.makeText(context, R.string.opt_error_no_url, Toast.LENGTH_SHORT);
                 toast.show();
                 return;
@@ -156,7 +156,7 @@ public class OptionsActivity extends Activity {
             ll.setVisibility(View.VISIBLE);
 
             eventloader = new EventLoader(OptionsActivity.this);
-            eventloader.setIgnoreSSLCerts(((CheckBox) findViewById(R.id.opt_ignoressl)).isChecked()) ;
+            eventloader.setIgnoreSSLCerts(((CheckBox) findViewById(R.id.opt_ignoressl)).isChecked());
             eventloader.execute(link);
         }
     };
@@ -165,7 +165,7 @@ public class OptionsActivity extends Activity {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // First, check to see if the scanner returned successfully
-        if(resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK) {
             // now, we see if there's any barcode data...
             String barcodeText = data.getStringExtra("SCAN_RESULT");
             if (barcodeText != "") {
@@ -174,14 +174,12 @@ public class OptionsActivity extends Activity {
                 txturl.setText(barcodeText);
                 Toast toast = Toast.makeText(context, R.string.opt_barcode_ok, Toast.LENGTH_SHORT);
                 toast.show();
-            }
-            else {
+            } else {
                 // No barcode data was found. Bizarre, but the user should know.
                 Toast toast = Toast.makeText(context, R.string.opt_barcode_fail, Toast.LENGTH_SHORT);
                 toast.show();
             }
-        }
-        else if(resultCode != RESULT_CANCELED) {
+        } else if (resultCode != RESULT_CANCELED) {
             // If the user didn't back out of the app and we've arrived here, something's gone wrong.
             Toast toast = Toast.makeText(context, R.string.opt_barcode_fail, Toast.LENGTH_SHORT);
             toast.show();

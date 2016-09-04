@@ -2,22 +2,47 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
+    android:layout_height="fill_parent">
+
     <LinearLayout
-    	android:layout_width="fill_parent"
-    	android:id="@+id/linearLayout1"
-    	android:layout_height="wrap_content"
-    	android:background="@android:drawable/bottom_bar"
-    	>
-        <TextView 
-        	android:text="@string/app_name"
-        	android:id="@+id/titlebar"
-        	android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content"
-			android:layout_weight="1" android:layout_height="fill_parent" android:gravity="center_vertical" android:textSize="24dip" android:layout_marginLeft="5dip" android:textColor="@color/bright"/>
-        <ImageView android:layout_width="wrap_content" android:id="@+id/filterbtn_fav" android:tag="1" android:src="@drawable/filter1_off" android:layout_height="fill_parent" android:layout_margin="10dip"></ImageView>
-        <ImageView android:layout_width="wrap_content" android:id="@+id/filterbtn_future" android:tag="2" android:src="@drawable/filter2_off" android:layout_height="fill_parent" android:layout_margin="10dip"></ImageView>
+        android:layout_width="fill_parent"
+        android:id="@+id/linearLayout1"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/bottom_bar">
+
+        <TextView
+            android:text="@string/app_name"
+            android:id="@+id/titlebar"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="fill_parent"
+            android:gravity="center_vertical"
+            android:textSize="24dip"
+            android:layout_marginLeft="5dip"
+            android:textColor="@color/bright" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/filterbtn_fav"
+            android:tag="1"
+            android:src="@drawable/filter1_off"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dip"></ImageView>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:id="@+id/filterbtn_future"
+            android:tag="2"
+            android:src="@drawable/filter2_off"
+            android:layout_height="fill_parent"
+            android:layout_margin="10dip"></ImageView>
     </LinearLayout>
-<ListView android:id="@android:id/list" android:layout_height="wrap_content" android:layout_width="fill_parent" android:paddingLeft="5dip" android:paddingRight="5dip"></ListView>
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:paddingLeft="5dip"
+        android:paddingRight="5dip"></ListView>
 </LinearLayout>
