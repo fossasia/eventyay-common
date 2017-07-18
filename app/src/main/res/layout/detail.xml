@@ -26,7 +26,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:id="@+id/detail_title"
-                android:textColor="@color/highlight"/>
+                android:textColor="@color/colorAccent"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -78,7 +78,7 @@
                 android:id="@+id/detail_text"
                 android:layout_width="fill_parent"
                 android:autoLink="web"
-                android:textColorLink="@color/highlight"
+                android:textColorLink="@color/colorAccent"
                 android:layout_marginTop="10dip"/>
 
             <LinearLayout
@@ -93,8 +93,8 @@
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:id="@+id/detail_url"
-                    android:textColor="@color/highlight"
-                    android:textColorLink="@color/highlight"
+                    android:textColor="@color/colorAccent"
+                    android:textColorLink="@color/colorAccent"
                     android:layout_marginTop="20dip"
                     android:layout_marginBottom="20dip"/>
             </LinearLayout>

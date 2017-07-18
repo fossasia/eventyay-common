@@ -1,88 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tableLayout1"
+    android:background="@android:color/white"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-    <TableRow
+    <LinearLayout
         android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
+        android:background="@android:color/white"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:orientation="vertical"
-            android:layout_height="fill_parent"
             android:layout_width="wrap_content"
-            android:layout_marginRight="3dip"
+            android:layout_height="fill_parent"
             android:layout_gravity="center"
-            >
+            android:layout_marginRight="3dip"
+            android:background="@android:color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/day"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:text="Wed"
                 android:layout_gravity="center"
-                android:gravity="center|bottom"
-                android:textColor="@color/highlight"
                 android:layout_weight="1"
-                />
+                android:gravity="center|bottom"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorAccent"
+                tools:text="Wed" />
 
             <TextView
                 android:id="@+id/time"
                 android:layout_width="fill_parent"
-                tools:text="12:30"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
                 android:layout_gravity="center"
-                android:gravity="center|top"
-                android:textColor="@color/highlight"
                 android:layout_weight="1"
-                />
+                android:gravity="center|top"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textColor="@color/colorAccent"
+                tools:text="12:30" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
+            android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
-            android:layout_width="wrap_content"
-            android:layout_weight="1">
+            android:background="@android:color/white"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/title"
                 android:layout_width="wrap_content"
-                tools:text="Event Name"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="@color/highlight" />
+                android:textColor="@color/colorAccent"
+                tools:text="Event Name" />
 
             <TextView
                 android:id="@+id/location"
                 android:layout_width="wrap_content"
-                tools:text="Location"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_marginLeft="10dip"/>
+                tools:text="Location" />
 
             <TextView
                 android:id="@+id/speaker"
                 android:layout_width="wrap_content"
-                tools:text="Speaker"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dip"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_marginLeft="10dip"/>
+                tools:text="Speaker" />
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/favorite"
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_weight="0"
-            android:src="@drawable/icongray"
-            android:id="@+id/favorite"
-            android:contentDescription="@string/toggle_favorite" />
-    </TableRow>
-</TableLayout>
+            android:contentDescription="@string/toggle_favorite"
+            android:src="@drawable/icongray" />
+    </LinearLayout>
+</LinearLayout>

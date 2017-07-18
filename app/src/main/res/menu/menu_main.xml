@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?><!-- Switched to nav drawer for everything now except search in the action bar. -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_bookmark"
+        android:icon="@drawable/ic_bookmark"
+        android:menuCategory="secondary"
+        android:title="Bookmark"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_filter"
+        android:icon="@drawable/ic_filter"
+        android:menuCategory="secondary"
+        android:title="Filter"
+        app:showAsAction="ifRoom" />
+</menu>

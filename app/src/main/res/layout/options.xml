@@ -1,40 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_options"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/options"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
+
+        </android.support.v7.widget.Toolbar>
+
+    </android.support.design.widget.AppBarLayout>
 
     <TextView
-        android:text="@string/opt_url"
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:text="@string/opt_url" />
 
     <EditText
+        android:id="@+id/opt_txt_url"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:id="@+id/opt_txt_url"
         android:inputType="textUri">
 
-        <requestFocus/>
+        <requestFocus />
     </EditText>
 
     <TextView
-        android:text="@string/opt_info"
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"/>
+        android:layout_margin="5dp"
+        android:text="@string/opt_info" />
 
     <CheckBox
-        android:text="@string/opt_ignoressl"
+        android:id="@+id/opt_ignoressl"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/opt_ignoressl"
-        android:checked="true" />
+        android:checked="true"
+        android:text="@string/opt_ignoressl" />
 
     <RelativeLayout
         android:id="@+id/relativeLayout1"
@@ -62,31 +86,31 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/opt_panel_running"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/opt_panel_running">
+        android:orientation="vertical">
 
         <ProgressBar
+            android:id="@+id/progressBar1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/progressBar1"
-            android:layout_gravity="center_horizontal"/>
+            android:layout_gravity="center_horizontal" />
 
         <TextView
-            tools:text="progress"
-            android:layout_gravity="center_horizontal"
             android:id="@+id/opt_txt_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"/>
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="10dp"
+            tools:text="progress" />
 
         <Button
-            android:text="@android:string/cancel"
-            android:layout_gravity="center_horizontal"
             android:id="@+id/opt_btn_cancel"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="@android:string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

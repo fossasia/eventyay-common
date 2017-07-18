@@ -30,4 +30,7 @@
     <string name="toggle_favorite">Toggle Favorite</string>
     <string name="time_filter">Time Filter</string>
     <string name="favorite_filter">Favorite Filter</string>
+    <string name="bookmark">Bookmark</string>
+    <string name="about">About</string>
+    <string name="options">Options</string>
 </resources>

@@ -1,7 +1,6 @@
 package org.splitbrain.giraffe;
 
 import android.app.AlertDialog;
-import android.app.ListActivity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -12,20 +11,26 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class MainActivity extends ListActivity {
+public class MainActivity extends AppCompatActivity {
     Context context;
     DBAdapter db;
     SharedPreferences prefs;
     int filterstate = 0;
+    RecyclerView recyclerView;
+    EventItemCursorAdapter listAdapter;
+    LinearLayoutManager layoutManager;
+    TextView title;
 
     /**
      * Called when the activity is first created.
@@ -36,23 +41,23 @@ public class MainActivity extends ListActivity {
         setContentView(R.layout.main);
         this.context = this;
 
+        setTitle("");
+
         db = new DBAdapter(this);
         db.openReadOnly();
 
+        title = (TextView) findViewById(R.id.titlebar);
+
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this, null);
-        setListAdapter(listAdapter);
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        listAdapter = new EventItemCursorAdapter(this, null);
+        recyclerView.setAdapter(listAdapter);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         setFilter(0);
 
-
-        ImageView iv;
-        iv = (ImageView) findViewById(R.id.filterbtn_fav);
-        iv.setOnClickListener(click_filter);
-        iv = (ImageView) findViewById(R.id.filterbtn_future);
-        iv.setOnClickListener(click_filter);
-
-        TextView title = (TextView) findViewById(R.id.titlebar);
-        title.setOnClickListener(click_title);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
+        setSupportActionBar(toolbar);
 
         // pass URL intents to the option activity
         Uri intentdata = getIntent().getData();
@@ -63,7 +68,7 @@ public class MainActivity extends ListActivity {
         }
 
         if (prefs.getString("url", "").equals("")) {
-            AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context);
+            AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
             noFeedBuilder.setMessage(R.string.main_no_feed_text)
                     .setTitle(R.string.main_no_feed_title)
                     .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
@@ -88,11 +93,12 @@ public class MainActivity extends ListActivity {
      */
     @Override
     public void onResume() {
-        EventItemCursorAdapter eica = (EventItemCursorAdapter) getListAdapter();
-        Cursor cursor = eica.getCursor();
-        if (cursor != null) {
-            cursor.requery();
-        }
+
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        listAdapter = new EventItemCursorAdapter(this, null);
+        recyclerView.setAdapter(listAdapter);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
         super.onResume();
     }
 
@@ -126,9 +132,9 @@ public class MainActivity extends ListActivity {
             toast.show();
         }
         // update button images
-        ImageView iv1 = (ImageView) findViewById(R.id.filterbtn_fav);
-        ImageView iv2 = (ImageView) findViewById(R.id.filterbtn_future);
-        if ((filterstate & 1) > 0) {
+        /*ImageView iv1 = (ImageView) findViewById(R.id.filterbtn_fav);
+        ImageView iv2 = (ImageView) findViewById(R.id.filterbtn_future);*/
+        /*if ((filterstate & 1) > 0) {
             iv1.setImageResource(R.drawable.filter1_on);
         } else {
             iv1.setImageResource(R.drawable.filter1_off);
@@ -137,7 +143,7 @@ public class MainActivity extends ListActivity {
             iv2.setImageResource(R.drawable.filter2_on);
         } else {
             iv2.setImageResource(R.drawable.filter2_off);
-        }
+        }*/
 
         // create WHERE clause
         String where = "";
@@ -154,39 +160,43 @@ public class MainActivity extends ListActivity {
         // apply the filter
         Cursor cursor = db.getEventsCursor(where);
         startManagingCursor(cursor);
-        EventItemCursorAdapter eica = (EventItemCursorAdapter) getListAdapter();
-        eica.changeCursor(cursor);
+        recyclerView = (RecyclerView) findViewById(R.id.list);
+        listAdapter = new EventItemCursorAdapter(this, cursor);
+        recyclerView.setAdapter(listAdapter);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
     }
 
+    public void titleOption(View view) {
+
+        new AlertDialog.Builder(this, R.style.AlertDialogCustom)
+                .setTitle("Options")
+                .setMessage("Select the option to see options or read about the app.")
+                .setPositiveButton("URL",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i = new Intent(MainActivity.this, OptionsActivity.class);
+                                startActivity(i);
+                            }
+                        })
+                .setNegativeButton("About",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent i = new Intent(MainActivity.this, AboutActivity.class);
+                                startActivity(i);
+                            }
+                        }).create().show();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuItem item1 = menu.add(R.string.menu_urlsetup);
-        item1.setIcon(android.R.drawable.ic_menu_preferences);
-        item1.setOnMenuItemClickListener(click_options);
 
-        MenuItem item2 = menu.add(R.string.menu_about);
-        item2.setIcon(android.R.drawable.ic_menu_info_details);
-        item2.setOnMenuItemClickListener(click_about);
-
-        return super.onCreateOptionsMenu(menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
     }
-
-    private final OnMenuItemClickListener click_about = new OnMenuItemClickListener() {
-        public boolean onMenuItemClick(MenuItem arg0) {
-            Intent i = new Intent(context, AboutActivity.class);
-            startActivity(i);
-            return true;
-        }
-    };
-
-    private final OnMenuItemClickListener click_options = new OnMenuItemClickListener() {
-        public boolean onMenuItemClick(MenuItem arg0) {
-            Intent i = new Intent(context, OptionsActivity.class);
-            startActivity(i);
-            return true;
-        }
-    };
 
     private final OnClickListener click_filter = new OnClickListener() {
         public void onClick(View v) {
@@ -200,4 +210,19 @@ public class MainActivity extends ListActivity {
             openOptionsMenu();
         }
     };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.action_bookmark) {
+            int state = Integer.parseInt("1");
+            setFilter(state);
+        } else if (id == R.id.action_filter) {
+            int state = Integer.parseInt("2");
+            setFilter(state);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
 }
