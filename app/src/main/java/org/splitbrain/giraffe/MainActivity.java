@@ -171,7 +171,7 @@ public class MainActivity extends AppCompatActivity {
 
         new AlertDialog.Builder(this, R.style.AlertDialogCustom)
                 .setTitle("Options")
-                .setMessage("Select the option to see options or read about the app.")
+                .setMessage("Select the option to change URL or read about the app.")
                 .setPositiveButton("URL",
                         new DialogInterface.OnClickListener() {
                             @Override
