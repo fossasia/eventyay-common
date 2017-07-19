@@ -1,105 +1,136 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:padding="5dip">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:id="@+id/linearLayout1"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
-        android:layout_marginBottom="5dip">
+        android:background="@android:color/transparent"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:id="@+id/linearLayout2"
-            android:orientation="vertical"
-            android:layout_weight="1"
-            android:layout_height="wrap_content">
+        <android.support.v7.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/toolbar_detail"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/colorPrimary"
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Dark">
 
             <TextView
-                android:layout_width="wrap_content"
-                tools:text="Headline"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:id="@+id/detail_title"
-                android:textColor="@color/colorAccent"/>
-
-            <TextView
+                android:id="@+id/titlebar_detail"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                tools:text="Wed, 12:00 - 13:30"
-                android:id="@+id/detail_timeslot"/>
-        </LinearLayout>
+                android:clickable="true"
+                android:onClick="titleOption"
+                android:text="@string/app_name"
+                android:textColor="@color/colorAccent"
+                android:textSize="20sp" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:src="@drawable/icongray"
-            android:layout_height="wrap_content"
-            android:id="@+id/detail_favorite"
-            android:contentDescription="@string/toggle_favorite" />
-    </LinearLayout>
+        </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/detail_speaker"
-        tools:text="Speaker"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_weight="0"
-        android:layout_width="fill_parent"/>
+    </android.support.design.widget.AppBarLayout>
 
-    <TextView
-        android:id="@+id/detail_location"
-        tools:text="Location"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_weight="0"
-        android:layout_width="fill_parent"/>
-
-    <ScrollView
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
-        android:id="@+id/scrollView1"
-        android:layout_height="wrap_content">
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:padding="5dip">
 
         <LinearLayout
-            android:id="@+id/linearLayout3"
+            android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <TextView
-                tools:text="Details"
-                android:scrollbars="vertical"
-                android:layout_height="wrap_content"
-                android:id="@+id/detail_text"
-                android:layout_width="fill_parent"
-                android:autoLink="web"
-                android:textColorLink="@color/colorAccent"
-                android:layout_marginTop="10dip"/>
+            android:layout_marginBottom="5dip"
+            android:layout_weight="0">
 
             <LinearLayout
-                android:layout_width="fill_parent"
-                android:id="@+id/linearLayout4"
-                android:layout_marginTop="5dip"
-                android:layout_height="wrap_content">
+                android:id="@+id/linearLayout2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
-                    tools:text="↗ Website"
+                    android:id="@+id/detail_title"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_width="0dp"
-                    android:layout_weight="1"
-                    android:id="@+id/detail_url"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/colorAccent"
-                    android:textColorLink="@color/colorAccent"
-                    android:layout_marginTop="20dip"
-                    android:layout_marginBottom="20dip"/>
+                    tools:text="Headline" />
+
+                <TextView
+                    android:id="@+id/detail_timeslot"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    tools:text="Wed, 12:00 - 13:30" />
             </LinearLayout>
+
+            <ImageView
+                android:id="@+id/detail_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/toggle_favorite"
+                android:src="@drawable/icongray" />
         </LinearLayout>
-    </ScrollView>
 
+        <TextView
+            android:id="@+id/detail_speaker"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="Speaker" />
 
+        <TextView
+            android:id="@+id/detail_location"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            tools:text="Location" />
+
+        <ScrollView
+            android:id="@+id/scrollView1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/detail_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dip"
+                    android:autoLink="web"
+                    android:scrollbars="vertical"
+                    android:textColorLink="@color/colorAccent"
+                    tools:text="Details" />
+
+                <LinearLayout
+                    android:id="@+id/linearLayout4"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dip">
+
+                    <TextView
+                        android:id="@+id/detail_url"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dip"
+                        android:layout_marginTop="20dip"
+                        android:layout_weight="1"
+                        android:textColor="@color/colorAccent"
+                        android:textColorLink="@color/colorAccent"
+                        tools:text="↗ Website" />
+                </LinearLayout>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
 </LinearLayout>

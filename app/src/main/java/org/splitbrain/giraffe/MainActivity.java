@@ -12,13 +12,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,9 +25,7 @@ public class MainActivity extends AppCompatActivity {
     DBAdapter db;
     SharedPreferences prefs;
     int filterstate = 0;
-    RecyclerView recyclerView;
-    EventItemCursorAdapter listAdapter;
-    LinearLayoutManager layoutManager;
+    ListView listview;
     TextView title;
 
     /**
@@ -46,16 +42,15 @@ public class MainActivity extends AppCompatActivity {
         db = new DBAdapter(this);
         db.openReadOnly();
 
-        title = (TextView) findViewById(R.id.titlebar);
+        listview = (ListView) findViewById(R.id.list);
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        recyclerView = (RecyclerView) findViewById(R.id.list);
-        listAdapter = new EventItemCursorAdapter(this, null);
-        recyclerView.setAdapter(listAdapter);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this, null);
+        listview.setAdapter(listAdapter);
         setFilter(0);
 
+
+        title = (TextView) findViewById(R.id.titlebar);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_main);
         setSupportActionBar(toolbar);
 
@@ -68,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (prefs.getString("url", "").equals("")) {
-            AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context, R.style.AlertDialogCustom);
+            AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context);
             noFeedBuilder.setMessage(R.string.main_no_feed_text)
                     .setTitle(R.string.main_no_feed_title)
                     .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
@@ -94,11 +89,12 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onResume() {
 
-        recyclerView = (RecyclerView) findViewById(R.id.list);
-        listAdapter = new EventItemCursorAdapter(this, null);
-        recyclerView.setAdapter(listAdapter);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        setFilter(0);
+        EventItemCursorAdapter eica = (EventItemCursorAdapter) listview.getAdapter();
+        Cursor cursor = eica.getCursor();
+        if (cursor != null) {
+            cursor.requery();
+        }
         super.onResume();
     }
 
@@ -131,19 +127,6 @@ public class MainActivity extends AppCompatActivity {
             Toast toast = Toast.makeText(context, msg, Toast.LENGTH_SHORT);
             toast.show();
         }
-        // update button images
-        /*ImageView iv1 = (ImageView) findViewById(R.id.filterbtn_fav);
-        ImageView iv2 = (ImageView) findViewById(R.id.filterbtn_future);*/
-        /*if ((filterstate & 1) > 0) {
-            iv1.setImageResource(R.drawable.filter1_on);
-        } else {
-            iv1.setImageResource(R.drawable.filter1_off);
-        }
-        if ((filterstate & 2) > 0) {
-            iv2.setImageResource(R.drawable.filter2_on);
-        } else {
-            iv2.setImageResource(R.drawable.filter2_off);
-        }*/
 
         // create WHERE clause
         String where = "";
@@ -160,11 +143,8 @@ public class MainActivity extends AppCompatActivity {
         // apply the filter
         Cursor cursor = db.getEventsCursor(where);
         startManagingCursor(cursor);
-        recyclerView = (RecyclerView) findViewById(R.id.list);
-        listAdapter = new EventItemCursorAdapter(this, cursor);
-        recyclerView.setAdapter(listAdapter);
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        EventItemCursorAdapter eica = (EventItemCursorAdapter) listview.getAdapter();
+        eica.changeCursor(cursor);
     }
 
     public void titleOption(View view) {
@@ -193,34 +173,18 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
-
-    private final OnClickListener click_filter = new OnClickListener() {
-        public void onClick(View v) {
-            int state = Integer.parseInt((String) v.getTag());
-            setFilter(state);
-        }
-    };
-
-    private final OnClickListener click_title = new OnClickListener() {
-        public void onClick(View view) {
-            openOptionsMenu();
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         if (id == R.id.action_bookmark) {
-            int state = Integer.parseInt("1");
-            setFilter(state);
+            setFilter(1);
         } else if (id == R.id.action_filter) {
-            int state = Integer.parseInt("2");
-            setFilter(state);
+            setFilter(2);
         }
         return super.onOptionsItemSelected(item);
     }

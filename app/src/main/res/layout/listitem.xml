@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tableLayout1"
-    android:background="@android:color/white"
     android:layout_width="fill_parent"
     android:layout_height="wrap_content">
 
-    <LinearLayout
+    <TableRow
         android:id="@+id/tableRow1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="center"
             android:layout_marginRight="3dip"
-            android:background="@android:color/white"
             android:orientation="vertical">
 
             <TextView
@@ -49,7 +45,6 @@
             android:layout_width="wrap_content"
             android:layout_height="fill_parent"
             android:layout_gravity="center_vertical"
-            android:background="@android:color/white"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -86,5 +81,5 @@
             android:layout_weight="0"
             android:contentDescription="@string/toggle_favorite"
             android:src="@drawable/icongray" />
-    </LinearLayout>
-</LinearLayout>
+    </TableRow>
+</TableLayout>
