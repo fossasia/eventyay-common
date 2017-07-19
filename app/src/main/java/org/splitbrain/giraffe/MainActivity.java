@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (prefs.getString("url", "").equals("")) {
-            AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context);
+            AlertDialog.Builder noFeedBuilder = new AlertDialog.Builder(context,R.style.AlertDialogCustom);
             noFeedBuilder.setMessage(R.string.main_no_feed_text)
                     .setTitle(R.string.main_no_feed_title)
                     .setPositiveButton(R.string.common_yes, new DialogInterface.OnClickListener() {
@@ -88,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
      */
     @Override
     public void onResume() {
-
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        EventItemCursorAdapter listAdapter = new EventItemCursorAdapter(this, null);
+        listview.setAdapter(listAdapter);
         setFilter(0);
-        EventItemCursorAdapter eica = (EventItemCursorAdapter) listview.getAdapter();
-        Cursor cursor = eica.getCursor();
-        if (cursor != null) {
-            cursor.requery();
-        }
         super.onResume();
     }
 
