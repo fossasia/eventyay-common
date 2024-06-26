@@ -1,6 +1,7 @@
 import AuthTemplate from '@/AuthTemplate.vue'
 import CheckInCamera from '@/components/CheckIn/CheckInCamera.vue'
 import CheckInStats from '@/components/CheckIn/CheckInStats.vue'
+import Device from '@/components/Registration/Device/Device.vue'
 import RegistrationKiosk from '@/components/Registration/Kiosk/KioskOverview.vue'
 import RegistrationStats from '@/components/Registration/Station/RegistrationStats.vue'
 import RegistrationStation from '@/components/Registration/Station/StationOverview.vue'
@@ -19,6 +20,11 @@ const router = createRouter({
       path: '/',
       name: 'userAuth',
       component: UserAuth
+    },
+    {
+      path: '/device',
+      name: 'device',
+      component: Device
     },
     {
       path: '/panel',

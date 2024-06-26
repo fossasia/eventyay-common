@@ -42,6 +42,12 @@ async function submitLogin() {
   loadingStore.contentLoaded()
 }
 
+function registerDevice() {
+  router.push({
+    name: 'device'
+  })
+}
+
 onMounted(() => {
   if (authStore.isAuthenticated) {
     router.push({
@@ -108,6 +114,14 @@ onMounted(() => {
           >Click here to reset password</a
         >
       </p>
+      <StandardButton
+        :type="'button'"
+        :text="'Register-Device'"
+        :disabled="false"
+        class="btn-primary mt-6 w-full justify-center"
+        @click="registerDevice"
+      >
+      </StandardButton>
     </div>
   </div>
 </template>

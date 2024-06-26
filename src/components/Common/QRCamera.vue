@@ -37,6 +37,9 @@ async function processQR() {
   if (props.qrType === 'checkIn') {
     await processCheckInStore.checkInAttendeeScannerToRoom(stationId, scannerType)
   }
+  if (props.qrType === 'device') {
+    //device registration
+  }
   cameraStore.paused = false
 }
 </script>
