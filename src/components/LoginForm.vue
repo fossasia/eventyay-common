@@ -13,12 +13,20 @@ const userStore = useUserStore()
 
 const email = ref('')
 const password = ref('')
+const server = ref('')
 const showError = ref(false)
+const showServerError = ref(false)
 
 // router
 const router = useRouter()
 
 async function submitLogin() {
+  console.log(server.value)
+  if (server.value === '' || server.value === 'Select a Server') {
+    showServerError.value = true
+    return
+  }
+  showServerError.value = false
   loadingStore.contentLoading()
   showError.value = false
 
@@ -43,6 +51,12 @@ async function submitLogin() {
 }
 
 function registerDevice() {
+  console.log(server.value)
+  if (server.value === '' || server.value === 'Select a Server') {
+    showServerError.value = true
+    return
+  }
+  showServerError.value = false
   router.push({
     name: 'device'
   })
@@ -95,6 +109,15 @@ onMounted(() => {
         </div>
 
         <div>
+          <label for="select">Select a Server</label>
+          <select id="select" v-model="server" class="mt-2 block w-full">
+            <option>Open-Event</option>
+            <option>Eventyay</option>
+            <option>Testing</option>
+          </select>
+        </div>
+
+        <div>
           <StandardButton
             :type="'submit'"
             :text="'Login'"
@@ -107,7 +130,7 @@ onMounted(() => {
         </div>
       </form>
 
-      <p class="mt-10 text-center text-sm">
+      <p class="mt-5 text-center text-sm">
         <span>Forgot password?</span>
         {{ ' ' }}
         <a href="https://eventyay.com/reset-password" class="font-medium leading-6 text-primary"
@@ -122,6 +145,9 @@ onMounted(() => {
         @click="registerDevice"
       >
       </StandardButton>
+      <div v-if="showServerError" class="mt-5">
+        <p class="text-center text-sm text-danger">Please select a server first</p>
+      </div>
     </div>
   </div>
 </template>
