@@ -4,6 +4,7 @@ import QRCamera from '@/components/Utilities/QRCamera.vue'
 import { useCameraStore } from '@/stores/camera'
 import { useProcessRegistrationStore } from '@/stores/processRegistration'
 import { useProcessCheckInStore } from '@/stores/processCheckIn'
+import { useProcessDeviceStore } from '@/stores/processDevice'
 
 const props = defineProps({
   qrType: {
@@ -23,6 +24,7 @@ const props = defineProps({
 const cameraStore = useCameraStore()
 const processRegistrationStore = useProcessRegistrationStore()
 const processCheckInStore = useProcessCheckInStore()
+const processDeviceStore = useProcessDeviceStore()
 
 const route = useRoute()
 const stationId = route.params.stationId
@@ -38,7 +40,7 @@ async function processQR() {
     await processCheckInStore.checkInAttendeeScannerToRoom(stationId, scannerType)
   }
   if (props.qrType === 'device') {
-    //device registration
+    await processDeviceStore.authDevice(cameraStore.qrCodeValue)
   }
   cameraStore.paused = false
 }
