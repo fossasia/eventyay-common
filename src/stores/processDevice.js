@@ -1,10 +1,11 @@
 import { useCameraStore } from '@/stores/camera'
+import { mande } from 'mande'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
-
+import { useRouter } from 'vue-router'
 export const useProcessDeviceStore = defineStore('processDevice', () => {
   const cameraStore = useCameraStore()
-
+  const router = useRouter()
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
@@ -71,12 +72,17 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
       if (response) {
         const data = response
         console.log(data.api_token)
+        localStorage.setItem('api_token', data.api_token)
+        localStorage.setItem('organizer', data.organizer)
+        localStorage.setItem('url', url)
+        router.push({ name: 'eventyayevents' })
         showSuccessMsg()
       } else {
         console.log('Something happend')
         showErrorMsg()
       }
     } catch (error) {
+      console.log(error)
       console.log('Error in catch')
       showErrorMsg()
     }
