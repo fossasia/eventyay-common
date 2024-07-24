@@ -51,6 +51,12 @@ const submitForm = () => {
         />
       </div>
     </form>
-    <div v-if="!loading && !events.length && !error">No events available</div>
+    <div v-if="!loading && !events.length && !error">No events available
+        <StandardButton
+          :text="'Refresh'"
+          class="btn-primary mt-6 w-full justify-center"
+          @click="fetchEvents(url.value, apiToken.value, organiser.value)"
+        />
+        </div>
   </div>
 </template>
