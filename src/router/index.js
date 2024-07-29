@@ -1,6 +1,7 @@
 import AuthTemplate from '@/AuthTemplate.vue'
 import CheckInCamera from '@/components/CheckIn/CheckInCamera.vue'
 import CheckInStats from '@/components/CheckIn/CheckInStats.vue'
+import EventyayEventCheckIn from '@/components/Eventyay/EventyayEventCheckIn.vue'
 import EventyayEvents from '@/components/Eventyay/EventyayEvents.vue'
 import Device from '@/components/Registration/Device/Device.vue'
 import RegistrationKiosk from '@/components/Registration/Kiosk/KioskOverview.vue'
@@ -31,6 +32,11 @@ const router = createRouter({
       path: '/eventyayevents',
       name: 'eventyayevents',
       component: EventyayEvents
+    },
+    {
+      path: '/eventyaycheckin',
+      name: 'eventyaycheckin',
+      component: EventyayEventCheckIn
     },
     {
       path: '/panel',
