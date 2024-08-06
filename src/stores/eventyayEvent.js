@@ -8,7 +8,7 @@ export const useEventyayEventStore = defineStore('eventyayEvent', () => {
   const error = ref(null)
 
   async function fetchEvents(url, apiToken, organizer) {
-    loading.value = true
+    loading.value = false
     error.value = null
 
     try {
@@ -17,6 +17,7 @@ export const useEventyayEventStore = defineStore('eventyayEvent', () => {
       const response = await api.get(`/api/v1/organizers/${organizer}/events/`)
       console.log('Hello', response)
       events.value = response.results
+      loading.value = true
     } catch (err) {
       error.value = err.message
     } finally {

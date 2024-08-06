@@ -16,13 +16,18 @@ const password = ref('')
 const server = ref('')
 const showError = ref(false)
 const showServerError = ref(false)
-
+const errmessage = ref('')
 // router
 const router = useRouter()
 
 async function submitLogin() {
   console.log(server.value)
   if (server.value === '' || server.value === 'Select a Server') {
+    showServerError.value = true
+    return
+  }
+  if (server.value === 'Eventyay') {
+    errmessage.value = 'Please Register a Device for Eventyay'
     showServerError.value = true
     return
   }
@@ -53,6 +58,12 @@ async function submitLogin() {
 function registerDevice() {
   console.log(server.value)
   if (server.value === '' || server.value === 'Select a Server') {
+    errmessage.value = 'Please select a server first'
+    showServerError.value = true
+    return
+  }
+  if (server.value === 'Open-Event') {
+    errmessage.value = 'Please Login with credentials for Open-Event'
     showServerError.value = true
     return
   }
@@ -146,7 +157,7 @@ onMounted(() => {
       >
       </StandardButton>
       <div v-if="showServerError" class="mt-5">
-        <p class="text-center text-sm text-danger">Please select a server first</p>
+        <p class="text-center text-sm text-danger">{{ errmessage }}</p>
       </div>
     </div>
   </div>

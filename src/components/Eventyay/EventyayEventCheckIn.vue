@@ -9,6 +9,6 @@ loadingStore.contentLoaded()
   <div
     class="-mt-16 grid h-screen w-full grid-cols-1 place-items-center items-center justify-center align-middle"
   >
-    <QRCamera :qr-type="'Check-in'" :scan-type="'Check-In'" />
+    <QRCamera :qr-type="'eventyaycheckin'" :scan-type="'Check-In'" />
   </div>
 </template>
