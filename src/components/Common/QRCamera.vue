@@ -31,7 +31,6 @@ const stationId = route.params.stationId
 const scannerType = route.params.scannerType
 
 async function processQR() {
-  console.log('Processing QR')
   cameraStore.paused = true
   if (props.qrType === 'registration') {
     await processRegistrationStore.registerAttendeeScanner(stationId)

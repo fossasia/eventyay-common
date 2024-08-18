@@ -17,12 +17,12 @@ const server = ref('')
 const showError = ref(false)
 const showServerError = ref(false)
 const errmessage = ref('')
+const DEFAULT_SERVER_VALUE = 'Select a Server'
 // router
 const router = useRouter()
 
 async function submitLogin() {
-  console.log(server.value)
-  if (server.value === '' || server.value === 'Select a Server') {
+  if (server.value === '' || server.value === DEFAULT_SERVER_VALUE) {
     showServerError.value = true
     return
   }

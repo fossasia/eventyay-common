@@ -29,7 +29,6 @@ const submitForm = () => {
   if (selectedEvent.value) {
     localStorage.setItem('selectedEvent', selectedEvent.value)
     router.push({ name: 'eventyaycheckin' })
-    console.log('Selected event:', selectedEvent.value)
   } else {
     console.error('Please select an event.')
   }

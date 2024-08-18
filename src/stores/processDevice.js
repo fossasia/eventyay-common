@@ -1,3 +1,4 @@
+import { useApiStore } from '@/stores/api'
 import { useCameraStore } from '@/stores/camera'
 import { mande } from 'mande'
 import { defineStore } from 'pinia'
@@ -9,7 +10,7 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
-
+  const apiStore = useApiStore()
   function $reset() {
     message.value = ''
     showSuccess.value = false
@@ -43,13 +44,10 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
   async function authDevice(val) {
     try {
       const qrData = JSON.parse(val)
-      console.log(qrData)
       if (qrData.handshake_version > 1) {
         message.value = 'Unsupported handshake version'
         showErrorMsg()
         return
-      } else {
-        console.log('Handshake version is 1')
       }
 
       const payload = {
@@ -62,28 +60,24 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
         software_version: 'x.x'
       }
       let url = qrData.url
+      const port = import.meta.env.VITE_LOCAL_PORT || 3000
       if (url.includes('localhost')) {
-        url = `${url}:8000` // Add your desired port number here
+        url = `${url}:${port}` // Add your desired port number here
       }
-      console.log(url)
       const api = mande(url, { headers: { 'Content-Type': 'application/json' } })
       const response = await api.post('/api/v1/device/initialize', payload)
-      console.log(response)
       if (response) {
+        apiStore.newSession(true)
         const data = response
-        console.log(data.api_token)
         localStorage.setItem('api_token', data.api_token)
         localStorage.setItem('organizer', data.organizer)
         localStorage.setItem('url', url)
-        router.push({ name: 'eventyayevents' })
+        router.push({ name: 'eventyayselect' })
         showSuccessMsg()
       } else {
-        console.log('Something happend')
         showErrorMsg()
       }
     } catch (error) {
-      console.log(error)
-      console.log('Error in catch')
       showErrorMsg()
     }
   }
