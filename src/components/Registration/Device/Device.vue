@@ -29,13 +29,5 @@ async function registerDevice() {
     <div v-if="showError">
       <p class="text-sm text-danger">Oops! something went wrong</p>
     </div>
-    <div>
-      <input type="text" id="auth_token" placeholder="Device Key" class="input" />
-      <StandardButton
-        :text="'Register Device'"
-        class="btn-primary mt-6 w-full justify-center"
-        @click="registerDevice()"
-      />
-    </div>
   </div>
 </template>

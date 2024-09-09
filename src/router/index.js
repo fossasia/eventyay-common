@@ -4,6 +4,7 @@ import CheckInStats from '@/components/CheckIn/CheckInStats.vue'
 import EventyayEventCheckIn from '@/components/Eventyay/EventyayEventCheckIn.vue'
 import EventyayEvents from '@/components/Eventyay/EventyayEvents.vue'
 import EventyayEventSelection from '@/components/Eventyay/EventyayEventSelection.vue'
+import EventyayLeedLogin from '@/components/Eventyay/EventyayLeedLogin.vue'
 import Device from '@/components/Registration/Device/Device.vue'
 import RegistrationKiosk from '@/components/Registration/Kiosk/KioskOverview.vue'
 import RegistrationStats from '@/components/Registration/Station/RegistrationStats.vue'
@@ -43,6 +44,11 @@ const router = createRouter({
       path: '/eventyayselect',
       name: 'eventyayselect',
       component: EventyayEventSelection
+    },
+    {
+      path: '/eventyayleedlogin',
+      name: 'eventyayleedlogin',
+      component: EventyayLeedLogin
     },
     {
       path: '/panel',

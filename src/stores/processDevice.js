@@ -41,9 +41,9 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
     showError.value = false
   }
 
-  async function authDevice(val) {
+  async function authDevice() {
     try {
-      const qrData = JSON.parse(val)
+      const qrData = JSON.parse(cameraStore.qrCodeValue)
       if (qrData.handshake_version > 1) {
         message.value = 'Unsupported handshake version'
         showErrorMsg()
@@ -60,7 +60,7 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
         software_version: 'x.x'
       }
       let url = qrData.url
-      const port = import.meta.env.VITE_LOCAL_PORT || 3000
+      const port = import.meta.env.VITE_LOCAL_PORT || 8000
       if (url.includes('localhost')) {
         url = `${url}:${port}` // Add your desired port number here
       }

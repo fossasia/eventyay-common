@@ -26,9 +26,18 @@ watchEffect(() => {
 })
 
 const submitForm = () => {
+  if (localStorage.getItem('selectedEventSlug') || localStorage.getItem('selectedEventName')) {
+    localStorage.removeItem('selectedEventSlug')
+    localStorage.removeItem('selectedEventName')
+  }
+
   if (selectedEvent.value) {
-    localStorage.setItem('selectedEvent', selectedEvent.value)
-    router.push({ name: 'eventyaycheckin' })
+    const selectedEventData = events.find((event) => event.slug === selectedEvent.value)
+    if (selectedEventData) {
+      localStorage.setItem('selectedEventSlug', selectedEventData.slug)
+      localStorage.setItem('selectedEventName', selectedEventData.name.en)
+      router.push({ name: 'eventyaycheckin' })
+    }
   } else {
     console.error('Please select an event.')
   }
@@ -57,7 +66,7 @@ const submitForm = () => {
       No events available
       <StandardButton
         :text="'Refresh'"
-        class="btn-primary mt-6 w-full justify-center"
+        class="btn-primary mt-6 w-1/2 justify-center"
         @click="fetchEvents(url.value, apiToken.value, organiser.value)"
       />
     </div>

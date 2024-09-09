@@ -5,6 +5,7 @@ import { useCameraStore } from '@/stores/camera'
 import { useProcessRegistrationStore } from '@/stores/processRegistration'
 import { useProcessCheckInStore } from '@/stores/processCheckIn'
 import { useProcessDeviceStore } from '@/stores/processDevice'
+import { useProcessEventyayCheckInStore } from '@/stores/processEventyayCheckIn'
 
 const props = defineProps({
   qrType: {
@@ -25,7 +26,7 @@ const cameraStore = useCameraStore()
 const processRegistrationStore = useProcessRegistrationStore()
 const processCheckInStore = useProcessCheckInStore()
 const processDeviceStore = useProcessDeviceStore()
-
+const processEventyayCheckIn = useProcessEventyayCheckInStore()
 const route = useRoute()
 const stationId = route.params.stationId
 const scannerType = route.params.scannerType
@@ -40,11 +41,10 @@ async function processQR() {
     await processCheckInStore.checkInAttendeeScannerToRoom(stationId, scannerType)
   }
   if (props.qrType === 'device') {
-    await processDeviceStore.authDevice(cameraStore.qrCodeValue)
+    await processDeviceStore.authDevice()
   }
   if (props.qrType === 'eventyaycheckin') {
-    console.log(cameraStore.qrCodeValue)
-    console.log('Check-in')
+    await processEventyayCheckIn.checkIn()
   }
   cameraStore.paused = false
 }
