@@ -1,60 +1,126 @@
 import { useCameraStore } from '@/stores/camera'
+import { mande } from 'mande'
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 
 export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckIn', () => {
   const cameraStore = useCameraStore()
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
+
   function $reset() {
     message.value = ''
     showSuccess.value = false
     showError.value = false
   }
 
-  const response = computed(() => {
-    let classType = ''
-    if (showSuccess.value) {
-      classType = 'text-success'
-    }
-    if (showError.value) {
-      classType = 'text-danger'
-    }
-    return {
-      message: message.value,
-      class: classType
-    }
-  })
-
-  function showErrorMsg() {
+  function showErrorMsg(msg) {
+    message.value = msg
     showSuccess.value = false
     showError.value = true
   }
 
-  function showSuccessMsg() {
+  function showSuccessMsg(msg) {
+    message.value = msg
     showSuccess.value = true
     showError.value = false
   }
 
+  // Function to generate a random nonce
+  function generateNonce(length = 32) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    let result = ''
+    for (let i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    return result
+  }
+
+  async function getlist() {
+    const apiToken = localStorage.getItem('api_token')
+    const url = localStorage.getItem('url')
+    const slug = localStorage.getItem('selectedEventSlug')
+    const org = localStorage.getItem('organizer')
+    const api = mande(url, { headers: { Authorization: `Device ${apiToken}` } })
+
+    // Fetch the check-in lists
+    const response = await api.get(`/api/v1/organizers/${org}/events/${slug}/checkinlists/`)
+
+    // Extract all IDs from the results
+    const listIds = response.results.map((list) => list.id.toString())
+    return listIds
+  }
+
   async function checkIn() {
     const qrData = JSON.parse(cameraStore.qrCodeValue)
-    const event = localStorage.getItem('selectedEventName')
 
-    if (qrData.event === event) {
-      console.log(cameraStore.qrCodeValue)
-      message.value = 'Check in successful'
-      showSuccessMsg()
-    } else {
-      console.log(qrData.event)
-      console.log(event)
-      message.value = 'Invalid Event'
-      showErrorMsg()
+    const apiToken = localStorage.getItem('api_token')
+    const url = localStorage.getItem('url')
+    const org = localStorage.getItem('organizer')
+
+    // Instead of calling getlist(), let's use a hardcoded value for now
+    const checkInList = ['2']
+
+    // Generate a random nonce
+    const nonce = generateNonce()
+
+    // Prepare the POST request body
+    const requestBody = {
+      secret: qrData.ticket,
+      source_type: 'barcode',
+      lists: checkInList,
+      force: false,
+      ignore_unpaid: false,
+      nonce: nonce,
+      datetime: null,
+      questions_supported: false
+    }
+
+
+    try {
+      const response = await fetch(`${url}/api/v1/organizers/${org}/checkinrpc/redeem/`, {
+        method: 'POST',
+        headers: {
+          Authorization: `Device ${apiToken}`,
+          Accept: 'application/json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(requestBody)
+      })
+
+      if (!response.ok) {
+        const errorData = await response.json()
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+
+      if (data.status === 'ok') {
+        const pdfDownload = data.position.downloads.find((download) => download.output === 'pdf')
+        if (pdfDownload) {
+          const printWindow = window.open(pdfDownload.url, '_blank')
+          printWindow.onload = function () {
+            printWindow.print()
+          }
+        } else {
+          console.warn('PDF download URL not found in the response')
+        }
+
+        showSuccessMsg(`Check-in successful for ${data.position.attendee_name}`)
+      } else {
+        showErrorMsg('Check-in failed: Unexpected response')
+      }
+    } catch (error) {
+      console.error('Fetch error:', error)
+      showErrorMsg('Check-in failed: ' + error.message)
     }
   }
 
   return {
-    response,
+    message,
+    showSuccess,
+    showError,
     checkIn,
     $reset
   }

@@ -56,7 +56,6 @@ async function submitLogin() {
 }
 
 function registerDevice() {
-  console.log(server.value)
   if (server.value === '' || server.value === 'Select a Server') {
     errmessage.value = 'Please select a server first'
     showServerError.value = true
@@ -150,7 +149,7 @@ onMounted(() => {
       </p>
       <StandardButton
         :type="'button'"
-        :text="'Register-Device'"
+        text="Register-Device"
         :disabled="false"
         class="btn-primary mt-6 w-full justify-center"
         @click="registerDevice"

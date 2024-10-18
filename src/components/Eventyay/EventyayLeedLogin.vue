@@ -23,9 +23,10 @@ async function submitLogin() {
     email: email.value,
     key: password.value
   }
-  console.log(payload)
   const response = await leedauth.leedlogin(payload)
-  console.log(response)
+  if (response.success) {
+    router.push({ name: 'leadscan' })
+  }
 }
 loadingStore.contentLoaded()
 </script>

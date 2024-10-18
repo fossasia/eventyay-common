@@ -6,6 +6,8 @@ import { useProcessRegistrationStore } from '@/stores/processRegistration'
 import { useProcessCheckInStore } from '@/stores/processCheckIn'
 import { useProcessDeviceStore } from '@/stores/processDevice'
 import { useProcessEventyayCheckInStore } from '@/stores/processEventyayCheckIn'
+import { useLeadScanStore } from '@/stores/leadscan'
+import { storeToRefs } from 'pinia'
 
 const props = defineProps({
   qrType: {
@@ -27,6 +29,9 @@ const processRegistrationStore = useProcessRegistrationStore()
 const processCheckInStore = useProcessCheckInStore()
 const processDeviceStore = useProcessDeviceStore()
 const processEventyayCheckIn = useProcessEventyayCheckInStore()
+const processLeadScan = useLeadScanStore()
+const { message, showSuccess, showError } = storeToRefs(processEventyayCheckIn)
+
 const route = useRoute()
 const stationId = route.params.stationId
 const scannerType = route.params.scannerType
@@ -46,6 +51,9 @@ async function processQR() {
   if (props.qrType === 'eventyaycheckin') {
     await processEventyayCheckIn.checkIn()
   }
+  if (props.qrType === 'eventyaylead') {
+    await processLeadScan.scanLead()
+  }
   cameraStore.paused = false
 }
 </script>
@@ -57,5 +65,8 @@ async function processQR() {
     </h2>
     <h3 v-if="details" class="mb-3">{{ details }}</h3>
     <QRCamera @scanned="processQR"></QRCamera>
+    <p :class="{ 'text-green-500': showSuccess, 'text-red-500': showError }" class="mt-4">
+      {{ message }}
+    </p>
   </div>
 </template>

@@ -72,7 +72,7 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
         localStorage.setItem('api_token', data.api_token)
         localStorage.setItem('organizer', data.organizer)
         localStorage.setItem('url', url)
-        router.push({ name: 'eventyayselect' })
+        router.push({ name: 'eventyayevents' })
         showSuccessMsg()
       } else {
         showErrorMsg()

@@ -12,18 +12,16 @@ const url = ref('')
 const eventyayEventStore = useEventyayEventStore()
 const selectedEvent = ref(null)
 const router = useRouter()
-const { events, loading, error, fetchEvents } = eventyayEventStore
+const { events, error, fetchEvents } = eventyayEventStore
 
-watchEffect(() => {
-  apiToken.value = localStorage.getItem('api_token')
-  organiser.value = localStorage.getItem('organizer')
-  url.value = localStorage.getItem('url')
+apiToken.value = localStorage.getItem('api_token')
+organiser.value = localStorage.getItem('organizer')
+url.value = localStorage.getItem('url')
 
-  if (apiToken.value && organiser.value && url.value) {
-    fetchEvents(url.value, apiToken.value, organiser.value)
-    loadingStore.contentLoaded()
-  }
-})
+if (apiToken.value && organiser.value && url.value) {
+  fetchEvents(url.value, apiToken.value, organiser.value)
+  loadingStore.contentLoaded()
+}
 
 const submitForm = () => {
   if (localStorage.getItem('selectedEventSlug') || localStorage.getItem('selectedEventName')) {
@@ -36,7 +34,7 @@ const submitForm = () => {
     if (selectedEventData) {
       localStorage.setItem('selectedEventSlug', selectedEventData.slug)
       localStorage.setItem('selectedEventName', selectedEventData.name.en)
-      router.push({ name: 'eventyaycheckin' })
+      router.push({ name: 'eventyayselect' })
     }
   } else {
     console.error('Please select an event.')
@@ -62,7 +60,7 @@ const submitForm = () => {
         />
       </div>
     </form>
-    <div v-if="!loading && !events.length && !error">
+    <div v-if="!events.length && !error">
       No events available
       <StandardButton
         :text="'Refresh'"

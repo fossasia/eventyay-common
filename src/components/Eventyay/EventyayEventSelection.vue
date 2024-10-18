@@ -8,7 +8,7 @@ loadingStore.contentLoaded()
 
 const router = useRouter()
 function checkIn() {
-  router.push({ name: 'eventyayevents' })
+  router.push({ name: 'eventyaycheckin' })
 }
 function leadscan() {
   router.push({ name: 'eventyayleedlogin' })
