@@ -129,8 +129,8 @@ onMounted(() => {
 
         <div>
           <StandardButton
-            :type="'submit'"
-            :text="'Login'"
+            type="submit"
+            text="Login"
             class="btn-primary mt-6 w-full justify-center"
           />
         </div>
@@ -148,9 +148,9 @@ onMounted(() => {
         >
       </p>
       <StandardButton
-        :type="'button'"
+        type="button"
         text="Register-Device"
-        :disabled="false"
+        disabled="false"
         class="btn-primary mt-6 w-full justify-center"
         @click="registerDevice"
       >

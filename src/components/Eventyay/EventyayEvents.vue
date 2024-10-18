@@ -54,8 +54,8 @@ const submitForm = () => {
       </div>
       <div>
         <StandardButton
-          :type="'submit'"
-          :text="'Select Event'"
+          type="submit"
+          text="Select Event"
           class="btn-primary mt-6 w-full justify-center"
         />
       </div>
@@ -63,7 +63,7 @@ const submitForm = () => {
     <div v-if="!events.length && !error">
       No events available
       <StandardButton
-        :text="'Refresh'"
+        text="Refresh"
         class="btn-primary mt-6 w-1/2 justify-center"
         @click="fetchEvents(url.value, apiToken.value, organiser.value)"
       />

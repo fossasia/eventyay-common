@@ -67,8 +67,8 @@ loadingStore.contentLoaded()
 
         <div>
           <StandardButton
-            :type="'submit'"
-            :text="'Login'"
+            type="submit"
+            text="Login"
             class="btn-primary mt-6 w-full justify-center"
           />
         </div>

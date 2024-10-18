@@ -25,7 +25,7 @@ async function registerDevice() {
   <div
     class="-mt-16 grid h-screen w-full grid-cols-1 place-items-center items-center justify-center align-middle"
   >
-    <QRCamera :qr-type="'device'" :scan-type="'Device Registration'" />
+    <QRCamera qr-type="device" scan-type="Device Registration" />
     <div v-if="showError">
       <p class="text-sm text-danger">Oops! something went wrong</p>
     </div>
