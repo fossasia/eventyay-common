@@ -1,16 +1,22 @@
 import { useApiStore } from '@/stores/api'
 import { useCameraStore } from '@/stores/camera'
+import { useEventyayApi } from '@/stores/eventyayapi'
+
 import { mande } from 'mande'
 import { defineStore } from 'pinia'
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
+
 export const useProcessDeviceStore = defineStore('processDevice', () => {
-  const cameraStore = useCameraStore()
   const router = useRouter()
+  const cameraStore = useCameraStore()
+  const apiStore = useApiStore()
+  const processApi = useEventyayApi()
+
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
-  const apiStore = useApiStore()
+
   function $reset() {
     message.value = ''
     showSuccess.value = false
@@ -69,11 +75,10 @@ export const useProcessDeviceStore = defineStore('processDevice', () => {
       if (response) {
         apiStore.newSession(true)
         const data = response
-        localStorage.setItem('api_token', data.api_token)
-        localStorage.setItem('organizer', data.organizer)
-        localStorage.setItem('url', url)
-        router.push({ name: 'eventyayevents' })
         showSuccessMsg()
+        console.log(data)
+        processApi.setApiCred(data.api_token, url, data.organizer)
+        router.push({ name: 'eventyayevents' })
       } else {
         showErrorMsg()
       }

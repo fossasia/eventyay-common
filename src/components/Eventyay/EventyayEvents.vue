@@ -1,40 +1,32 @@
 <script setup>
 import { useLoadingStore } from '@/stores/loading'
-import { ref, onMounted, watchEffect } from 'vue'
+import { useEventyayApi } from '@/stores/eventyayapi'
 import { useEventyayEventStore } from '@/stores/eventyayEvent'
+
+import { ref, onMounted, watchEffect } from 'vue'
 import StandardButton from '@/components/Common/StandardButton.vue'
 import { useRouter } from 'vue-router'
+
 const loadingStore = useLoadingStore()
-
-const apiToken = ref('')
-const organiser = ref('')
-const url = ref('')
-const eventyayEventStore = useEventyayEventStore()
-const selectedEvent = ref(null)
 const router = useRouter()
-const { events, error, fetchEvents } = eventyayEventStore
 
-apiToken.value = localStorage.getItem('api_token')
-organiser.value = localStorage.getItem('organizer')
-url.value = localStorage.getItem('url')
+const selectedEvent = ref(null)
+const eventyayEventStore = useEventyayEventStore()
+const { events, error } = eventyayEventStore
+const processApi = useEventyayApi()
+const { apitoken, url, organizer, selectedRole } = processApi
 
-if (apiToken.value && organiser.value && url.value) {
-  fetchEvents(url.value, apiToken.value, organiser.value)
-  loadingStore.contentLoaded()
-}
+loadingStore.contentLoaded()
+eventyayEventStore.fetchEvents(url, apitoken, organizer)
 
 const submitForm = () => {
-  if (localStorage.getItem('selectedEventSlug') || localStorage.getItem('selectedEventName')) {
-    localStorage.removeItem('selectedEventSlug')
-    localStorage.removeItem('selectedEventName')
-  }
-
   if (selectedEvent.value) {
     const selectedEventData = events.find((event) => event.slug === selectedEvent.value)
     if (selectedEventData) {
-      localStorage.setItem('selectedEventSlug', selectedEventData.slug)
-      localStorage.setItem('selectedEventName', selectedEventData.name.en)
-      router.push({ name: 'eventyayselect' })
+      processApi.setEventSlug(selectedEventData.slug)
+      if (selectedRole === 'exhibitor') router.push({ name: 'eventyayleedlogin' })
+      if (selectedRole === 'checkin' || selectedRole === 'badge')
+        router.push({ name: 'eventyaycheckin' })
     }
   } else {
     console.error('Please select an event.')
@@ -43,7 +35,6 @@ const submitForm = () => {
 </script>
 <template>
   <div class="-mt-16 flex h-screen flex-col justify-center">
-    <div v-if="loading">Loading events...</div>
     <div v-if="error" class="text-danger">{{ error }}</div>
     <form v-if="events.length" @submit.prevent="submitForm">
       <div v-for="event in events" :key="event.slug" class="mb-2">

@@ -1,4 +1,6 @@
 import { useCameraStore } from '@/stores/camera'
+import { useEventyayApi } from '@/stores/eventyayapi'
+
 import { mande } from 'mande'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -8,6 +10,8 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
+  const processApi = useEventyayApi()
+  const { apitoken, url, organizer, eventSlug, exikey } = processApi
 
   function $reset() {
     message.value = ''
@@ -29,12 +33,8 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
 
   async function scanLead() {
     const qrData = JSON.parse(cameraStore.qrCodeValue)
-
-    const apiToken = localStorage.getItem('api_token')
-    const url = localStorage.getItem('url')
-    const key = localStorage.getItem('exhikey')
-    const slug = localStorage.getItem('selectedEventSlug')
-
+    console.log(qrData)
+    console.log(apiToken, url, organizer, eventSlug, exikey)
     // Prepare the POST request body
     const requestBody = {
       lead: qrData.lead,
@@ -45,15 +45,18 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
 
     try {
       const headers = {
-        Authorization: `Device ${apiToken}`,
+        Authorization: `Device ${apitoken}`,
         Accept: 'application/json',
-        Exhibitor: key
+        Exhibitor: exikey
       }
 
-      const api = mande(`${url}/api/v1/event/admin/${slug}/exhibitors/lead/create`, {
+      const api = mande(`${url}/api/v1/event/${organizer}/${eventSlug}/exhibitors/lead/create`, {
         headers: headers
       })
       const response = await api.post(requestBody)
+      console.log(response)
+
+      showSuccessMsg('Lead scanned successfully!')
     } catch (err) {
       showErrorMsg('Check-in failed: ' + err.message)
     }

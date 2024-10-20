@@ -13,6 +13,7 @@ export const useEventyayEventStore = defineStore('eventyayEvent', () => {
       const api = mande(url, { headers: { authorization: `Device ${apiToken}` } })
       const response = await api.get(`/api/v1/organizers/${organizer}/events/`)
       events.value = response.results
+      console.log(response)
     } catch (err) {
       error.value = err.message
     }

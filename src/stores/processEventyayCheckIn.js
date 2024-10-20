@@ -1,4 +1,6 @@
 import { useCameraStore } from '@/stores/camera'
+import { useEventyayApi } from '@/stores/eventyayapi'
+
 import { mande } from 'mande'
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
@@ -8,6 +10,8 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
+  const processApi = useEventyayApi()
+  const { apitoken, url, organizer, eventSlug } = processApi
 
   function $reset() {
     message.value = ''
@@ -38,14 +42,12 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
   }
 
   async function getlist() {
-    const apiToken = localStorage.getItem('api_token')
-    const url = localStorage.getItem('url')
-    const slug = localStorage.getItem('selectedEventSlug')
-    const org = localStorage.getItem('organizer')
-    const api = mande(url, { headers: { Authorization: `Device ${apiToken}` } })
+    const api = mande(url, { headers: { Authorization: `Device ${apitoken}` } })
 
     // Fetch the check-in lists
-    const response = await api.get(`/api/v1/organizers/${org}/events/${slug}/checkinlists/`)
+    const response = await api.get(
+      `/api/v1/organizers/${organizer}/events/${eventSlug}/checkinlists/`
+    )
 
     // Extract all IDs from the results
     const listIds = response.results.map((list) => list.id.toString())
@@ -54,10 +56,6 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
 
   async function checkIn() {
     const qrData = JSON.parse(cameraStore.qrCodeValue)
-
-    const apiToken = localStorage.getItem('api_token')
-    const url = localStorage.getItem('url')
-    const org = localStorage.getItem('organizer')
 
     // Instead of calling getlist(), let's use a hardcoded value for now
     const checkInList = ['2']
@@ -77,12 +75,11 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
       questions_supported: false
     }
 
-
     try {
-      const response = await fetch(`${url}/api/v1/organizers/${org}/checkinrpc/redeem/`, {
+      const response = await fetch(`${url}/api/v1/organizers/${organizer}/checkinrpc/redeem/`, {
         method: 'POST',
         headers: {
-          Authorization: `Device ${apiToken}`,
+          Authorization: `Device ${apitoken}`,
           Accept: 'application/json',
           'Content-Type': 'application/json'
         },

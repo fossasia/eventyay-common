@@ -34,10 +34,10 @@ loadingStore.contentLoaded()
 <template>
   <div class="-mt-16 flex h-screen flex-col justify-center">
     <div class="my-auto sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="text-center">Sign in with your credentials</h2>
+      <h2 class="text-center">Sign in with your Exhibitor credentials</h2>
       <form class="mt-10 space-y-3" @submit.prevent="submitLogin">
         <div>
-          <label for="email">User ID</label>
+          <label for="email">Contact Email</label>
           <div class="mt-2">
             <input
               id="email"
@@ -51,7 +51,7 @@ loadingStore.contentLoaded()
         </div>
 
         <div>
-          <label for="password">Password</label>
+          <label for="password">Exhibitor Key</label>
           <div class="mt-2">
             <input
               id="password"

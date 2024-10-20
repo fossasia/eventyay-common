@@ -1,31 +1,28 @@
 <script setup>
 import QRCamera from '@/components/Common/QRCamera.vue'
-import { useLoadingStore } from '@/stores/loading'
 import StandardButton from '@/components/Common/StandardButton.vue'
+import { useLoadingStore } from '@/stores/loading'
 import { useProcessDeviceStore } from '@/stores/processDevice'
+import { useEventyayApi } from '@/stores/eventyayapi'
 import { ref } from 'vue'
+
 const loadingStore = useLoadingStore()
 loadingStore.contentLoaded()
+const processApi = useEventyayApi()
+const { selectedRole } = processApi
 
 const processDeviceStore = useProcessDeviceStore()
 const showError = ref(false)
-async function registerDevice() {
-  const auth_token = document.getElementById('auth_token').value
-  const payload = { handshake_version: 1, url: 'http://localhost', token: auth_token }
-  try {
-    const resp = await processDeviceStore.authDevice(JSON.stringify(payload))
-  } catch (error) {
-    showError.value = true
-    console.error('Error registering device:', error)
-  }
-}
 </script>
 
 <template>
-  <div
-    class="-mt-16 grid h-screen w-full grid-cols-1 place-items-center items-center justify-center align-middle"
-  >
+  <div class="flex h-screen w-full flex-col items-center justify-center">
+    <h1 class="text-2xl font-bold">Welcome {{ selectedRole }}</h1>
     <QRCamera qr-type="device" scan-type="Device Registration" />
+    <p class="text-center">
+      Please contact your organiser to provide the QR Code to you.<br />
+      You need one QR code per device.
+    </p>
     <div v-if="showError">
       <p class="text-sm text-danger">Oops! something went wrong</p>
     </div>
