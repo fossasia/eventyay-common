@@ -59,7 +59,7 @@ async function processQR() {
 </script>
 <template>
   <!-- padding to counter camera in mobile view -->
-  <div class="pt-24 text-center">
+  <div class="pt-2 text-center">
     <h2 class="mb-3">
       Scan QR<span v-if="scanType" class="capitalize"> - {{ scanType }}</span>
     </h2>

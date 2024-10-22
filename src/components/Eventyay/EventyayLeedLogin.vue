@@ -20,7 +20,6 @@ const router = useRouter()
 
 async function submitLogin() {
   const payload = {
-    email: email.value,
     key: password.value
   }
   const response = await leedauth.leedlogin(payload)
@@ -36,20 +35,6 @@ loadingStore.contentLoaded()
     <div class="my-auto sm:mx-auto sm:w-full sm:max-w-sm">
       <h2 class="text-center">Sign in with your Exhibitor credentials</h2>
       <form class="mt-10 space-y-3" @submit.prevent="submitLogin">
-        <div>
-          <label for="email">Contact Email</label>
-          <div class="mt-2">
-            <input
-              id="email"
-              v-model="email"
-              name="email"
-              type="email"
-              required="true"
-              class="block w-full"
-            />
-          </div>
-        </div>
-
         <div>
           <label for="password">Exhibitor Key</label>
           <div class="mt-2">
@@ -68,13 +53,13 @@ loadingStore.contentLoaded()
         <div>
           <StandardButton
             type="submit"
-            text="Login"
+            text="Authenticate"
             class="btn-primary mt-6 w-full justify-center"
           />
         </div>
 
         <div v-if="showError">
-          <p class="text-sm text-danger">Wrong credentials or account does not exist</p>
+          <p class="text-sm text-danger">Wrong credentials or Exhibitor does not exist</p>
         </div>
       </form>
     </div>

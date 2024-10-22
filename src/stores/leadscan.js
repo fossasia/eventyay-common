@@ -10,8 +10,6 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
   const message = ref('')
   const showSuccess = ref(false)
   const showError = ref(false)
-  const processApi = useEventyayApi()
-  const { apitoken, url, organizer, eventSlug, exikey } = processApi
 
   function $reset() {
     message.value = ''
@@ -33,9 +31,8 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
 
   async function scanLead() {
     const qrData = JSON.parse(cameraStore.qrCodeValue)
-    console.log(qrData)
-    console.log(apiToken, url, organizer, eventSlug, exikey)
-    // Prepare the POST request body
+    const processApi = useEventyayApi()
+    const { apitoken, url, organizer, eventSlug, exikey } = processApi
     const requestBody = {
       lead: qrData.lead,
       scanned: 'null',
@@ -53,12 +50,31 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
       const api = mande(`${url}/api/v1/event/${organizer}/${eventSlug}/exhibitors/lead/create`, {
         headers: headers
       })
-      const response = await api.post(requestBody)
-      console.log(response)
 
-      showSuccessMsg('Lead scanned successfully!')
-    } catch (err) {
-      showErrorMsg('Check-in failed: ' + err.message)
+      const response = await api.post(requestBody)
+      console.log('here', response)
+
+      if(response.success) {
+        showSuccessMsg({
+          message: 'Lead Scanned Successfully!',
+          attendee: response.attendee
+        })
+      }
+    } 
+    catch (err) {
+      console.log('Error details:', err.body)
+    
+      if (err.response && err.response.status === 409) {
+        showErrorMsg({
+          message: err.body.error || 'Lead Already Scanned!',
+          attendee: err.body.attendee
+        })
+      }else{
+        showErrorMsg({ 
+          message: 'Check-in failed: ' + (err.body?.error || err.message || 'Unknown error'),
+          attendee: null
+        })
+      }
     }
   }
 

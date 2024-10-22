@@ -16,8 +16,8 @@ const showError = ref(false)
 </script>
 
 <template>
-  <div class="flex h-screen w-full flex-col items-center justify-center">
-    <h1 class="text-2xl font-bold">Welcome {{ selectedRole }}</h1>
+  <div class="flex h-screen w-full flex-col items-center justify-center text-center">
+    <h1 class="text-4xl font-bold">Welcome {{ selectedRole.toUpperCase() }}</h1>
     <QRCamera qr-type="device" scan-type="Device Registration" />
     <p class="text-center">
       Please contact your organiser to provide the QR Code to you.<br />
