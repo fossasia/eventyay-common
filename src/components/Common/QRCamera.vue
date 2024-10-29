@@ -30,7 +30,6 @@ const processCheckInStore = useProcessCheckInStore()
 const processDeviceStore = useProcessDeviceStore()
 const processEventyayCheckIn = useProcessEventyayCheckInStore()
 const processLeadScan = useLeadScanStore()
-const { message, showSuccess, showError } = storeToRefs(processEventyayCheckIn)
 
 const route = useRoute()
 const stationId = route.params.stationId
@@ -65,8 +64,5 @@ async function processQR() {
     </h2>
     <h3 v-if="details" class="mb-3">{{ details }}</h3>
     <QRCamera @scanned="processQR"></QRCamera>
-    <p :class="{ 'text-green-500': showSuccess, 'text-red-500': showError }" class="mt-4">
-      {{ message }}
-    </p>
   </div>
 </template>

@@ -2,18 +2,25 @@
 import { watch, ref } from 'vue'
 import QRCamera from '@/components/Common/QRCamera.vue'
 import StandardButton from '@/components/Common/StandardButton.vue'
+import TagInput from '@/components/Common/TagInput.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { useLeadScanStore } from '@/stores/leadscan'
+import { useTagStore } from '@/stores/tags'
 import { storeToRefs } from 'pinia'
+import { useEventyayApi } from '@/stores/eventyayapi'
+import { mande } from 'mande'
 
 const loadingStore = useLoadingStore()
 const leadScanStore = useLeadScanStore()
+const tagStore = useTagStore()
+const processApi = useEventyayApi()
 
-const { message, showSuccess, showError } = storeToRefs(leadScanStore)
+const { message, showSuccess, showError, currentLeadId } = storeToRefs(leadScanStore)
+const { currentTags } = storeToRefs(tagStore)
 const countdown = ref(5)
-const timerInstance = ref(null)  // To store the timer reference
-const timeoutInstance = ref(null)  // To store the setTimeout reference
-const notes = ref('')  // For notes input
+const timerInstance = ref(null)
+const timeoutInstance = ref(null)
+const notes = ref('')
 
 loadingStore.contentLoaded()
 
@@ -39,16 +46,37 @@ function stopTimer() {
 
 function handleNotesInput() {
   stopTimer()
-  countdown.value = '...'  // Replace the countdown with dots when typing
+  countdown.value = '...' // Replace the countdown with dots when typing
 }
 
-function handleSave() {
-  // Add your save logic here
-  console.log('Saving notes:', notes.value)
-  leadScanStore.$reset()
+async function handleSave() {
+  const { url, organizer, eventSlug, apitoken, exikey } = processApi
+  const api = mande(
+    `${url}/api/v1/event/${organizer}/${eventSlug}/exhibitors/lead/${currentLeadId.value}/update`,
+    {
+      headers: {
+        Authorization: `Device ${apitoken}`,
+        Accept: 'application/json',
+        Exhibitor: exikey
+      }
+    }
+  )
+
+  try {
+    await api.post({
+      note: notes.value,
+      tags: currentTags.value
+    })
+    tagStore.reset()
+    leadScanStore.$reset()
+  } catch (error) {
+    console.error('Failed to save lead:', error)
+  }
 }
 
 function handleCancel() {
+  notes.value = ''
+  tagStore.reset()
   leadScanStore.$reset()
 }
 
@@ -60,9 +88,12 @@ watch([showSuccess, showError], ([newSuccess, newError]) => {
 })
 
 function showPopup() {
-  notes.value = ''  // Reset notes
+  notes.value = ''
+  tagStore.reset()
+  if (message.value.lead_id) {
+    currentLeadId.value = message.value.lead_id
+  }
   startCountdown()
-  // Store the timeout reference
   timeoutInstance.value = setTimeout(() => {
     leadScanStore.$reset()
   }, 5000)
@@ -70,49 +101,55 @@ function showPopup() {
 </script>
 
 <template>
-  <div class="flex flex-col h-screen w-full justify-center items-center">
+  <div class="flex h-screen w-full flex-col items-center justify-center">
     <QRCamera qr-type="eventyaylead" scan-type="Lead-Scan" />
-
+    <StandardButton
+      text="Download Leads"
+      @click="leadScanStore.exportLeads"
+      class="btn-secondary mt-6 w-1/4 justify-center"
+    />
     <!-- Attendee Info Popup Modal -->
     <div
       v-if="(showSuccess || showError) && message.attendee"
       class="fixed inset-0 flex items-center justify-center"
     >
-      <div class="rounded w-1/4 bg-white p-5 shadow-lg relative">
+      <div class="relative w-1/3 rounded bg-white p-5 shadow-lg">
         <!-- Countdown display -->
-        <div class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center 
-                    rounded-full bg-gray-200 text-gray-600 font-medium">
+        <div
+          class="bg-gray-200 text-gray-600 absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-full font-medium"
+        >
           {{ countdown }}
         </div>
-        
-        <h2 
-            :class="showError ? 'text-danger mb-2 text-xl' : 'text-success mb-2 text-xl'"
-        >
+
+        <h2 :class="showError ? 'mb-2 text-xl text-danger' : 'mb-2 text-xl text-success'">
           {{ message.message }}
         </h2>
         <div>
           <p><b>Name:</b> {{ message.attendee.name || 'No name provided' }}</p>
           <p><b>Email:</b> {{ message.attendee.email || 'No email provided' }}</p>
           <input
-              v-model="notes"
-              type="text"
-              class="w-full mt-2 p-2 border border-gray-300 rounded"
-              placeholder="Take Notes"
-              @focus="handleNotesInput"
-              @input="handleNotesInput"
+            v-model="notes"
+            type="text"
+            class="border-gray-300 mt-2 w-full rounded border p-2"
+            placeholder="Take Notes"
+            @focus="handleNotesInput"
+            @input="handleNotesInput"
           />
-          <div class="flex flex-row justify-around" >
+          <div class="mt-2" @click="handleNotesInput">
+            <TagInput v-model="currentTags" />
+          </div>
+          <div class="flex flex-row justify-around">
             <StandardButton
               type="submit"
               text="Save"
               @click="handleSave"
-              class="btn-primary w-1/4 mt-6 justify-center"
+              class="btn-primary mt-6 w-1/4 justify-center"
             />
             <StandardButton
               type="submit"
               text="Cancel"
               @click="handleCancel"
-              class="btn-secondary w-1/4 mt-6 justify-center"
+              class="btn-secondary mt-6 w-1/4 justify-center"
             />
           </div>
         </div>
