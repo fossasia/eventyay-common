@@ -69,7 +69,7 @@ function removeTag(index) {
         v-for="tag in availableTags.filter((t) => !currentTags.includes(t))"
         :key="tag"
         @click="addExistingTag(tag)"
-        class="rounded-full px-2 py-1 text-sm text-black hover:bg-secondary hover:text-white"
+        class="rounded-full border px-2 py-1 text-sm text-black hover:bg-secondary hover:text-white"
       >
         + {{ tag }}
       </button>
@@ -79,7 +79,7 @@ function removeTag(index) {
     <input
       v-model="inputValue"
       type="text"
-      class="border-gray-300 w-full rounded border p-2"
+      class="w-full rounded border p-2"
       placeholder="Add tags (comma-separated)"
       @input="handleInput"
       @keydown="handleKeydown"

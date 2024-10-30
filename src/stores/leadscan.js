@@ -33,7 +33,7 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
   async function scanLead() {
     const qrData = JSON.parse(cameraStore.qrCodeValue)
     const processApi = useEventyayApi()
-    const { apitoken, url, organizer, eventSlug, exikey } = processApi
+    const { apitoken, url, organizer, eventSlug, exikey, exhiname, boothid, boothname } = processApi
     const requestBody = {
       lead: qrData.lead,
       scanned: 'null',
@@ -97,12 +97,17 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
   function convertToCSV(leads) {
     console.log('Converting to CSV')
     const formatDate = (date) => new Date(date).toISOString().split('T')[0]
+    const formatTime = (date) => new Date(date).toISOString().split('T')[1].split('.')[0]
     const headers = [
       'ID',
+      'Exhibitor',
       'Pseudonymization ID',
       'Scanned Date',
+      'Scan Time',
       'Scan Type',
       'Device Name',
+      'Booth ID',
+      'Booth Name',
       'Attendee Name',
       'Email',
       'Note',
@@ -112,10 +117,14 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
     // Convert leads to rows
     const rows = leads.map((lead) => [
       lead.id,
+      lead.exhibitor_name,
       lead.pseudonymization_id,
       formatDate(lead.scanned),
+      formatTime(lead.scanned),
       lead.scan_type,
       lead.device_name,
+      lead.booth_id,
+      lead.booth_name,
       lead.attendee.name,
       lead.attendee.email || '',
       lead.attendee.note || '',
@@ -141,7 +150,7 @@ export const useLeadScanStore = defineStore('processLeadScan', () => {
   }
 
   async function exportLeads() {
-    console.log("Exporting leads")
+    console.log('Exporting leads')
     const processApi = useEventyayApi()
     const { apitoken, url, organizer, eventSlug, exikey } = processApi
 

@@ -2,13 +2,15 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useEventyayApi = defineStore('processApi', () => {
-
   const apitoken = ref('')
   const url = ref('')
   const organizer = ref('')
   const eventSlug = ref('')
   const exikey = ref('')
   const selectedRole = ref('')
+  const exhiname = ref('')
+  const boothname = ref('')
+  const boothid = ref('')
 
   function setApiCred(newToken, newUrl, newOrg) {
     apitoken.value = newToken
@@ -20,8 +22,11 @@ export const useEventyayApi = defineStore('processApi', () => {
     eventSlug.value = slug
   }
 
-  function setExhibitorKey(key) {
+  function setExhibitor(key, name, booth, bid) {
     exikey.value = key
+    exhiname.value = name
+    boothname.value = booth
+    boothid.value = bid
   }
 
   function setRole(role) {
@@ -31,13 +36,16 @@ export const useEventyayApi = defineStore('processApi', () => {
   return {
     setApiCred,
     setEventSlug,
-    setExhibitorKey,
+    setExhibitor,
     selectedRole,
     setRole,
     apitoken,
     url,
     organizer,
     eventSlug,
-    exikey
+    exikey,
+    exhiname,
+    boothname,
+    boothid
   }
 })

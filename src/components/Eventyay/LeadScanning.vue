@@ -14,7 +14,7 @@ const loadingStore = useLoadingStore()
 const leadScanStore = useLeadScanStore()
 const tagStore = useTagStore()
 const processApi = useEventyayApi()
-
+const { exhiname, boothname, boothid } = processApi
 const { message, showSuccess, showError, currentLeadId } = storeToRefs(leadScanStore)
 const { currentTags } = storeToRefs(tagStore)
 const countdown = ref(5)
@@ -101,7 +101,11 @@ function showPopup() {
 </script>
 
 <template>
-  <div class="flex h-screen w-full flex-col items-center justify-center">
+  <div class="flex h-screen w-full flex-col items-center justify-center overscroll-none">
+    <div class="absolute top-20 text-center">
+      <h1 class="text-3xl font-bold">{{ exhiname }}</h1>
+      <h2 class="text-xl font-bold">{{ boothname }} - {{ boothid }}</h2>
+    </div>
     <QRCamera qr-type="eventyaylead" scan-type="Lead-Scan" />
     <StandardButton
       text="Download Leads"
@@ -127,7 +131,10 @@ function showPopup() {
         <div>
           <p><b>Name:</b> {{ message.attendee.name || 'No name provided' }}</p>
           <p><b>Email:</b> {{ message.attendee.email || 'No email provided' }}</p>
-          <input
+          <div class="mt-2" @click="handleNotesInput">
+            <TagInput v-model="currentTags" />
+          </div>
+          <textarea
             v-model="notes"
             type="text"
             class="border-gray-300 mt-2 w-full rounded border p-2"
@@ -135,9 +142,6 @@ function showPopup() {
             @focus="handleNotesInput"
             @input="handleNotesInput"
           />
-          <div class="mt-2" @click="handleNotesInput">
-            <TagInput v-model="currentTags" />
-          </div>
           <div class="flex flex-row justify-around">
             <StandardButton
               type="submit"
