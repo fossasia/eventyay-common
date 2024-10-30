@@ -59,8 +59,8 @@ function handleCancel() {
 
 function handlePrintBadge() {
   if (badgeUrl.value) {
-        console.log(`${url}${badgeUrl.value}`)
-        const printWindow = window.open(`${url}${badgeUrl.value}`)
+    console.log(`${url}${badgeUrl.value}`)
+    const printWindow = window.open(`${url}${badgeUrl.value}`)
     if (printWindow) {
       printWindow.onload = function () {
         printWindow.print()
@@ -77,6 +77,8 @@ async function handlePrint() {
     await processEventyayCheckInStore.printBadge(badgeUrl.value)
   }
   handlePrintBadge()
+  console.log('Badge printed')
+  startCountdown()
 }
 
 watch([showSuccess, showError], ([newSuccess, newError], [oldSuccess, oldError]) => {
@@ -120,14 +122,6 @@ onUnmounted(() => {
         </h2>
         <div>
           <p><b>Name:</b> {{ message.attendee }}</p>
-          <input
-            v-model="notes"
-            type="text"
-            class="border-gray-300 mt-2 w-full rounded border p-2"
-            placeholder="Take Notes"
-            @focus="handleNotesInput"
-            @input="handleNotesInput"
-          />
           <div class="mt-4 flex flex-col space-y-3">
             <StandardButton
               v-if="badgeUrl && showSuccess"
@@ -137,20 +131,6 @@ onUnmounted(() => {
               @click="handlePrint"
               class="btn-primary w-full justify-center"
             />
-            <div class="flex flex-row justify-around">
-              <StandardButton
-                type="submit"
-                text="Save"
-                @click="handleSave"
-                class="btn-primary w-1/2 justify-center"
-              />
-              <StandardButton
-                type="submit"
-                text="Cancel"
-                @click="handleCancel"
-                class="btn-secondary w-1/2 justify-center"
-              />
-            </div>
           </div>
         </div>
       </div>

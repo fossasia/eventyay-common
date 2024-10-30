@@ -72,7 +72,6 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
       })
 
       const response = await api.get()
-      console.log('Badge response:', response)
       return response
     } catch (error) {
       if (error.response?.status === 409) {
@@ -90,13 +89,11 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
       // First request to trigger generation
       console.log('Badge URL:', badgeUrl)
       let badgeResponse = await getBadgeStatus(badgeUrl)
-      console.log('1. Badge response:', badgeResponse)
       // If badge isn't ready, poll every second for up to 10 seconds
       if (!badgeResponse) {
-        for (let i = 0; i < 10; i++) {
+        for (let i = 0; i < 5; i++) {
           await new Promise((resolve) => setTimeout(resolve, 1000))
           badgeResponse = await getBadgeStatus(badgeUrl)
-          console.log('2. Badge response:', badgeResponse)
           if (badgeResponse) break
         }
       }
@@ -115,8 +112,6 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
             URL.revokeObjectURL(blobUrl)
           }
         }
-      } else {
-        throw new Error('Badge generation timed out')
       }
     } catch (error) {
       console.error('Error printing badge:', error)
