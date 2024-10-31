@@ -108,7 +108,7 @@ onMounted(() => {
             type="button"
             text="I am a Exhibitor"
             class="btn-primary mt-6 w-full justify-center"
-            @click="handleRoleSelection('exhibitor')"
+            @click="handleRoleSelection('Exhibitor')"
           />
         </div>
         <div>
@@ -116,7 +116,7 @@ onMounted(() => {
             type="button"
             text="I am a Checkin Staff"
             class="btn-primary mt-6 w-full justify-center"
-            @click="handleRoleSelection('checkin')"
+            @click="handleRoleSelection('CheckIn')"
           />
         </div>
         <div>
@@ -124,7 +124,7 @@ onMounted(() => {
             type="button"
             text="Badge Printing Station"
             class="btn-primary mt-6 w-full justify-center"
-            @click="handleRoleSelection('badge')"
+            @click="handleRoleSelection('Badge Station')"
           />
         </div>
       </div>

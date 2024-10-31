@@ -23,9 +23,11 @@ const submitForm = () => {
   if (selectedEvent.value) {
     const selectedEventData = events.find((event) => event.slug === selectedEvent.value)
     if (selectedEventData) {
+      console.log('Selected Event:', selectedEventData)
+      console.log('Selected Role:', selectedRole)
       processApi.setEventSlug(selectedEventData.slug)
-      if (selectedRole === 'exhibitor') router.push({ name: 'eventyayleedlogin' })
-      if (selectedRole === 'checkin' || selectedRole === 'badge')
+      if (selectedRole === 'Exhibitor') router.push({ name: 'eventyayleedlogin' })
+      if (selectedRole === 'CheckIn' || selectedRole === 'Badge Station')
         router.push({ name: 'eventyaycheckin' })
     }
   } else {

@@ -1,51 +1,70 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
-export const useEventyayApi = defineStore('processApi', () => {
-  const apitoken = ref('')
-  const url = ref('')
-  const organizer = ref('')
-  const eventSlug = ref('')
-  const exikey = ref('')
-  const selectedRole = ref('')
-  const exhiname = ref('')
-  const boothname = ref('')
-  const boothid = ref('')
+export const useEventyayApi = defineStore(
+  'processApi',
+  () => {
+    const apitoken = ref('')
+    const url = ref('')
+    const organizer = ref('')
+    const eventSlug = ref('')
+    const exikey = ref('')
+    const selectedRole = ref('')
+    const exhiname = ref('')
+    const boothname = ref('')
+    const boothid = ref('')
 
-  function setApiCred(newToken, newUrl, newOrg) {
-    apitoken.value = newToken
-    url.value = newUrl
-    organizer.value = newOrg
-  }
+    function $reset() {
+      apitoken.value = ''
+      url.value = ''
+      organizer.value = ''
+      eventSlug.value = ''
+      exikey.value = ''
+      selectedRole.value = ''
+      exhiname.value = ''
+      boothname.value = ''
+      boothid.value = ''
+    }
 
-  function setEventSlug(slug) {
-    eventSlug.value = slug
-  }
+    function setApiCred(newToken, newUrl, newOrg) {
+      apitoken.value = newToken
+      url.value = newUrl
+      organizer.value = newOrg
+    }
 
-  function setExhibitor(key, name, booth, bid) {
-    exikey.value = key
-    exhiname.value = name
-    boothname.value = booth
-    boothid.value = bid
-  }
+    function setEventSlug(slug) {
+      eventSlug.value = slug
+    }
 
-  function setRole(role) {
-    selectedRole.value = role
-  }
+    function setExhibitor(key, name, booth, bid) {
+      exikey.value = key
+      exhiname.value = name
+      boothname.value = booth
+      boothid.value = bid
+    }
 
-  return {
-    setApiCred,
-    setEventSlug,
-    setExhibitor,
-    selectedRole,
-    setRole,
-    apitoken,
-    url,
-    organizer,
-    eventSlug,
-    exikey,
-    exhiname,
-    boothname,
-    boothid
+    function setRole(role) {
+      selectedRole.value = role
+    }
+
+    return {
+      $reset,
+      setApiCred,
+      setEventSlug,
+      setExhibitor,
+      selectedRole,
+      setRole,
+      apitoken,
+      url,
+      organizer,
+      eventSlug,
+      exikey,
+      exhiname,
+      boothname,
+      boothid
+    }
+  },
+  {
+    persist: true
   }
-})
+)
