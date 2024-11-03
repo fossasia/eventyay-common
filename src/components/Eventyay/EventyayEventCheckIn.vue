@@ -1,6 +1,7 @@
 <script setup>
 import StandardButton from '@/components/Common/StandardButton.vue'
 import QRCamera from '@/components/Common/QRCamera.vue'
+import BadgePrintPreview from '@/components/Common/BadgePrintPreview.vue'
 import { useLoadingStore } from '@/stores/loading'
 import { useProcessEventyayCheckInStore } from '@/stores/processEventyayCheckIn'
 import { useEventyayApi } from '@/stores/eventyayapi'
@@ -9,13 +10,13 @@ import { watch, ref, onUnmounted } from 'vue'
 
 const loadingStore = useLoadingStore()
 loadingStore.contentLoaded()
-
+const showPrintPreview = ref(false)
 const processEventyayCheckInStore = useProcessEventyayCheckInStore()
 const { message, showSuccess, showError, badgeUrl, isGeneratingBadge } = storeToRefs(
   processEventyayCheckInStore
 )
 const processApi = useEventyayApi()
-const { apitoken, url, organizer, eventSlug } = processApi
+const { apitoken, url, organizer, eventSlug, eventname } = processApi
 const countdown = ref(5)
 const timerInstance = ref(null)
 const timeoutInstance = ref(null)
@@ -58,15 +59,15 @@ function handleCancel() {
 }
 
 function handlePrintBadge() {
+  console.log('Printing badge...')
   if (badgeUrl.value) {
-    console.log(`${url}${badgeUrl.value}`)
-    const printWindow = window.open(`${url}${badgeUrl.value}`)
-    if (printWindow) {
-      printWindow.onload = function () {
-        printWindow.print()
-      }
-    }
+    showPrintPreview.value = true
   }
+}
+
+function handlePrintClose() {
+  showPrintPreview.value = false
+  startCountdown()
 }
 
 async function handlePrint() {
@@ -77,8 +78,6 @@ async function handlePrint() {
     await processEventyayCheckInStore.printBadge(badgeUrl.value)
   }
   handlePrintBadge()
-  console.log('Badge printed')
-  startCountdown()
 }
 
 watch([showSuccess, showError], ([newSuccess, newError], [oldSuccess, oldError]) => {
@@ -103,6 +102,10 @@ onUnmounted(() => {
 
 <template>
   <div class="flex h-screen w-full flex-col items-center justify-center">
+    <div class="absolute top-20 text-center">
+      <h1 class="text-4xl font-bold">{{ eventname }}</h1>
+      <p name="date" class="text-gray-600 text-lg font-semibold">{{ new Date().toDateString() }}</p>
+    </div>
     <QRCamera qr-type="eventyaycheckin" scan-type="Check-In" />
     <!-- Attendee Info Popup Modal -->
     <div
@@ -122,18 +125,29 @@ onUnmounted(() => {
         </h2>
         <div>
           <p><b>Name:</b> {{ message.attendee }}</p>
-          <div class="mt-4 flex flex-col space-y-3">
+          <div class="mt-4 flex flex-col space-y-3" @click="handleNotesInput">
             <StandardButton
               v-if="badgeUrl && showSuccess"
               type="button"
-              :text="isGeneratingBadge ? 'Generating Badge...' : 'Print Badge'"
+              :text="isGeneratingBadge ? 'Generating Badge...' : 'Generate Badge'"
               :disabled="isGeneratingBadge"
               @click="handlePrint"
               class="btn-primary w-full justify-center"
+            />
+            <StandardButton
+              type="submit"
+              text="Done"
+              @click="handleCancel"
+              class="btn-info mt-6 w-1/4 justify-center"
             />
           </div>
         </div>
       </div>
     </div>
+    <BadgePrintPreview
+      v-if="showPrintPreview"
+      :url="`${url}${badgeUrl}`"
+      @close="handlePrintClose"
+    />
   </div>
 </template>

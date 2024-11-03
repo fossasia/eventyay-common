@@ -8,6 +8,7 @@ export const useEventyayApi = defineStore(
     const url = ref('')
     const organizer = ref('')
     const eventSlug = ref('')
+    const eventname = ref('')
     const exikey = ref('')
     const selectedRole = ref('')
     const exhiname = ref('')
@@ -19,6 +20,7 @@ export const useEventyayApi = defineStore(
       url.value = ''
       organizer.value = ''
       eventSlug.value = ''
+      eventname.value = ''
       exikey.value = ''
       selectedRole.value = ''
       exhiname.value = ''
@@ -32,8 +34,9 @@ export const useEventyayApi = defineStore(
       organizer.value = newOrg
     }
 
-    function setEventSlug(slug) {
+    function setEvent(slug, name) {
       eventSlug.value = slug
+      eventname.value = name
     }
 
     function setExhibitor(key, name, booth, bid) {
@@ -50,7 +53,7 @@ export const useEventyayApi = defineStore(
     return {
       $reset,
       setApiCred,
-      setEventSlug,
+      setEvent,
       setExhibitor,
       selectedRole,
       setRole,
@@ -58,6 +61,7 @@ export const useEventyayApi = defineStore(
       url,
       organizer,
       eventSlug,
+      eventname,
       exikey,
       exhiname,
       boothname,

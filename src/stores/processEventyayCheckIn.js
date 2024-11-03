@@ -58,7 +58,6 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
     return listIds
   }
 
-  // In processEventyayCheckIn.js
   async function getBadgeStatus(badgeUrl) {
     const processApi = useEventyayApi()
     const { apitoken, url } = processApi
@@ -67,15 +66,13 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
       const api = mande(`${url}${badgeUrl}`, {
         headers: {
           Authorization: `Device ${apitoken}`,
-          Accept: 'application/json'
         }
       })
 
       const response = await api.get()
       return response
     } catch (error) {
-      if (error.response?.status === 409) {
-        // Badge is still generating
+      if (error.response?.status === 406) {
         return null
       }
       throw error
@@ -86,10 +83,7 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
     isGeneratingBadge.value = true
 
     try {
-      // First request to trigger generation
-      console.log('Badge URL:', badgeUrl)
       let badgeResponse = await getBadgeStatus(badgeUrl)
-      // If badge isn't ready, poll every second for up to 10 seconds
       if (!badgeResponse) {
         for (let i = 0; i < 5; i++) {
           await new Promise((resolve) => setTimeout(resolve, 1000))
@@ -99,16 +93,13 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
       }
 
       if (badgeResponse) {
-        // Create a blob from the PDF data
         const blob = new Blob([badgeResponse], { type: 'application/pdf' })
         const blobUrl = URL.createObjectURL(blob)
 
-        // Open print dialog
         const printWindow = window.open(blobUrl, '_blank')
         if (printWindow) {
           printWindow.onload = function () {
             printWindow.print()
-            // Clean up the blob URL after printing
             URL.revokeObjectURL(blobUrl)
           }
         }
@@ -149,7 +140,7 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
         Authorization: `Device ${apitoken}`,
         Accept: 'application/json'
       }
-      const api = mande(`${url}/api/v1/organizers/${organizer}/checkinrpc/redeem/`, {
+      const api = mande(`${url}/api/v1/organizers/${organizer}/checkin/redeem/`, {
         headers: headers
       })
       const response = await api.post(requestBody)
