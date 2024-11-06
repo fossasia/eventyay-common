@@ -38,7 +38,7 @@ jobs:
       - name: Install dependencies
         run: npm install
       - name: Build
-        run: npm run build --base=/open-event-checkin
+        run: npm run build --base=/eventyay-checkin
       - name: Fix router
         run: cp dist/index.html dist/404.html
       - name: Setup Pages
