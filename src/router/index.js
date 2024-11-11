@@ -4,6 +4,7 @@ import CheckInStats from '@/components/CheckIn/CheckInStats.vue'
 import EventyayEventCheckIn from '@/components/Eventyay/EventyayEventCheckIn.vue'
 import EventyayEvents from '@/components/Eventyay/EventyayEvents.vue'
 import EventyayLeedLogin from '@/components/Eventyay/EventyayLeedLogin.vue'
+import EventyaySearchCheckIn from '@/components/Eventyay/EventyaySearchCheckIn.vue'
 import LeadScanning from '@/components/Eventyay/LeadScanning.vue'
 import Device from '@/components/Registration/Device/Device.vue'
 import RegistrationKiosk from '@/components/Registration/Kiosk/KioskOverview.vue'
@@ -39,6 +40,11 @@ const router = createRouter({
       path: '/eventyaycheckin',
       name: 'eventyaycheckin',
       component: EventyayEventCheckIn
+    },
+    {
+      path: '/eventyaysearchcheckin',
+      name: 'eventyaysearchcheckin',
+      component: EventyaySearchCheckIn
     },
     {
       path: '/eventyayleedlogin',
