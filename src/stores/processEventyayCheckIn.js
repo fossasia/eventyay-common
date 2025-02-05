@@ -98,7 +98,7 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
 
         const printWindow = window.open(blobUrl, '_blank')
         if (printWindow) {
-          printWindow.onload = function () {
+          printWindow.onload = function() {
             printWindow.print()
             URL.revokeObjectURL(blobUrl)
           }
@@ -117,23 +117,43 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
 
   async function checkIn() {
     console.log('Check-in')
-    const qrData = JSON.parse(cameraStore.qrCodeValue)
     const processApi = useEventyayApi()
-    const { apitoken, url, organizer, eventSlug } = processApi
+    const { apitoken, url, organizer, servername, eventSlug } = processApi
+    const qrData = ""
+    if (servername === 'Open-Event') {
+      qrData = cameraStore.qrCodeValue
+    } else {
+      qrData = JSON.parse(cameraStore.qrCodeValue)
+    }
 
     const checkInList = await getlist()
     const nonce = generateNonce()
 
-    const requestBody = {
-      secret: qrData.ticket,
-      source_type: 'barcode',
-      lists: checkInList,
-      force: false,
-      ignore_unpaid: false,
-      nonce: nonce,
-      datetime: null,
-      questions_supported: false
-    }
+	const requestBody = {}
+	
+	if (servername === 'Open-Event') {
+	  requestBody = {
+		secret: qrData,
+		source_type: 'barcode',
+		lists: checkInList,
+		force: false,
+		ignore_unpaid: false,
+		nonce: nonce,
+		datetime: null,
+		questions_supported: false
+	  }
+	} else {
+		requestBody = {
+      	  secret: qrData.ticket,
+      	  source_type: 'barcode',
+          lists: checkInList,
+          force: false,
+          ignore_unpaid: false,
+      	  nonce: nonce,
+      	  datetime: null,
+      	  questions_supported: false
+    	}
+	}
 
     try {
       const headers = {

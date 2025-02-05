@@ -14,6 +14,7 @@ export const useEventyayApi = defineStore(
     const exhiname = ref('')
     const boothname = ref('')
     const boothid = ref('')
+    const servername = ref('')
 
     function $reset() {
       apitoken.value = ''
@@ -50,6 +51,10 @@ export const useEventyayApi = defineStore(
       selectedRole.value = role
     }
 
+    function setServer(server) {
+      servername.value = server
+    }
+
     return {
       $reset,
       setApiCred,
@@ -57,6 +62,7 @@ export const useEventyayApi = defineStore(
       setExhibitor,
       selectedRole,
       setRole,
+      setServer,
       apitoken,
       url,
       organizer,
@@ -65,7 +71,8 @@ export const useEventyayApi = defineStore(
       exikey,
       exhiname,
       boothname,
-      boothid
+      boothid,
+      servername
     }
   },
   {
