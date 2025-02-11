@@ -119,7 +119,7 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
     console.log('Check-in')
     const processApi = useEventyayApi()
     const { apitoken, url, organizer, servername, eventSlug } = processApi
-    
+
 	let qrData = {} 
     if (servername === 'Open-Event') {
       qrData = {
