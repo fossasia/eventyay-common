@@ -98,7 +98,7 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
 
         const printWindow = window.open(blobUrl, '_blank')
         if (printWindow) {
-          printWindow.onload = function () {
+          printWindow.onload = function() {
             printWindow.print()
             URL.revokeObjectURL(blobUrl)
           }
@@ -117,13 +117,22 @@ export const useProcessEventyayCheckInStore = defineStore('processEventyayCheckI
 
   async function checkIn() {
     console.log('Check-in')
-    const qrData = JSON.parse(cameraStore.qrCodeValue)
     const processApi = useEventyayApi()
-    const { apitoken, url, organizer, eventSlug } = processApi
+    const { apitoken, url, organizer, servername, eventSlug } = processApi
+
+	let qrData = {} 
+    if (servername === 'Open-Event') {
+      qrData = {
+				ticket: cameraStore.qrCodeValue
+			}
+    } else {
+      qrData = JSON.parse(cameraStore.qrCodeValue)
+    }
 
     const checkInList = await getlist()
     const nonce = generateNonce()
 
+	
     const requestBody = {
       secret: qrData.ticket,
       source_type: 'barcode',

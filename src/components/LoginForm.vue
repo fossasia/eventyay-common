@@ -63,11 +63,7 @@ function registerDevice() {
     showServerError.value = true
     return
   }
-  if (server.value === 'Open-Event') {
-    errmessage.value = 'Please Login with credentials for Open-Event'
-    showServerError.value = true
-    return
-  }
+  processApi.setServer(server.value)
   showServerError.value = false
   router.push({
     name: 'device'
